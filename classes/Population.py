@@ -2,15 +2,14 @@ from classes.Individual import Individual
 import numpy as np
 
 class Population:
+    """
+    size: size of population
+    n_values: size of value array of individual
+
+    individual's fitness is initialized to np.inf .
+    """
 
     def __init__(self, size, n_values):
-        """
-        size: size of population
-        n_values: size of value array of individual
-
-        individual's fitness is initialized to np.inf .
-        
-        """
 
         self.size = size
         self.n_values = n_values

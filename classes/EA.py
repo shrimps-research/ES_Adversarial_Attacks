@@ -1,5 +1,3 @@
-from operator import is_
-from tabnanny import verbose
 from Individual import Individual
 from Population import Population
 from Recombination import Intermediate
@@ -12,6 +10,7 @@ class EA:
                 parent_size, offspring_size, values_size,
                 recombination, mutation, selection,
                 fallback_patience, verbose) -> None:
+
         self.evaluatin_function = evaluatin_function
         self.is_minimization = is_minimization
         self.budget = budget
@@ -35,5 +34,7 @@ class EA:
 
         while curr_budget < self.budget:
             if self.is_minimization:
-
+                pass
+            pass
+        pass
                 # Keep track of best fit individual and evaluation
