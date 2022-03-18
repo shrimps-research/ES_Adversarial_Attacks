@@ -16,12 +16,12 @@ class Population:
         self.individuals = [Individual(n_values, np.inf) for i in range(size)]
 
 
-
     def all_fitnesses(self):
         """
         Return an array of the population's fitnesses.
         """
         return np.array([individual.fitness for individual in self.individuals])
+
 
     def ave_fitness(self):
         """

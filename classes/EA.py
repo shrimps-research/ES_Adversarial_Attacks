@@ -1,8 +1,10 @@
-from Individual import Individual
-from Population import Population
-from Recombination import Intermediate
-from Mutation import CustomSigma
-from Selection import OneCommaL, OnePlusL
+from classes.Individual import Individual
+from classes.Population import Population
+from classes.Recombination import Intermediate
+from classes.Mutation import CustomSigma
+from classes.Selection import OneCommaL, OnePlusL
+
+import numpy as np
 
 class EA:
 
@@ -20,21 +22,52 @@ class EA:
         self.recombination = recombination
         self.mutation = mutation
         self.selection = selection
-        self.fallbacvk_patience = fallback_patience
+        self.fallback_patience = fallback_patience
         self.verbose=verbose
-
-        self.population = Population(self.parent_size, self.values_size)
+        self.parent = Population(self.parent_size, self.values_size)
+        self.offspring = Population(self.offspring_size, self.values_size)
 
     def run(self):
+        if not self.is_minimization:
+            print(f'check if minimization is ok')
+            exit()
+
+        # Initialize budget and best evaluation
         curr_budget = 0
-        best_eval = self.population.best_fitness(is_min=True)
-        best_individual = self.population.individuals[self.population.best_fitness(True,True)]
-        self.population.evaluate_fitness(self.evaluatin_function)
+        best_eval = np.inf if self.is_minimization else np.NINF
+
+        # Initial evaluation step
+        self.parent.evaluate_fitness(self.evaluatin_function)
         curr_budget += self.parent_size
 
         while curr_budget < self.budget:
+
+            # Temporary minimization handler
             if self.is_minimization:
-                pass
-            pass
-        pass
+
                 # Keep track of best fit individual and evaluation
+                curr_best_eval = self.parent.best_fitness(is_min=True)
+                if curr_best_eval < best_eval:
+                    best_eval = curr_best_eval
+                    best_individual = self.parent.individuals[self.parent.best_fitness(True,True)]
+                    # Reset patience since we found a new best
+                    curr_patience = 0
+                    if self.verbose > 1:
+                        print(f"new best val: {best_eval}, used budget: {curr_budget}")
+
+                # Recombination: creates new offspring
+                offspring = self.recombination.recombine(self.parent)
+
+                # Mutation: mutate all individuals
+                self.mutation.mutate_population(offspring)
+
+                # Evaluate offspring population
+                offspring.evaluate_fitness(self.evaluatin_function)
+                curr_budget += self.offspring_size
+
+                # Next generation parents selection
+                self.parents = self.selection.select(self.parent, offspring)
+
+        return best_individual, best_eval
+
+                
