@@ -3,43 +3,60 @@ import numpy as np
 
 class Population:
 
-    def __init__(self, size, n_values, is_min, evaluation_function):
+    def __init__(self, size, n_values):
         """
         size: size of population
         n_values: size of value array of individual
-        is_min: if != 0 then switch from maximization to minimization problem
-        evaluation_function: function that returns the evaluation for an individual
+
+        individual's fitness is initialized to np.inf .
+        
         """
 
         self.size = size
-        self.is_min = is_min
-        if is_min:
-            self.individuals = [Individual(n_values, np.inf) for i in range(size)]
-        else:
-            self.individuals = [Individual(n_values, np.NINF) for i in range(size)]
-        self.eval_fun = evaluation_function
+        self.n_values = n_values
+        self.individuals = [Individual(n_values, np.inf) for i in range(size)]
+
+
 
     def all_fitnesses(self):
+        """
+        Return an array of the population's fitnesses.
+        """
         return np.array([individual.fitness for individual in self.individuals])
 
     def ave_fitness(self):
+        """
+        Calculates the average fitness of the population.
+        """
         return sum(self.all_fitnesses()) / len(self.individuals)
 
 
     def max_fitness(self, get_index=False):
+        """
+        Calculates the maximum fitness of the population.
+        """
         if get_index:
             return np.argmax(self.all_fitnesses())
         return np.max(self.all_fitnesses())
 
 
     def min_fitness(self,get_index=False):
+        """
+        Calculates the minimum fitness of the population.
+        """
         if get_index:
             return np.argmin(self.all_fitnesses())
         return np.min(self.all_fitnesses())
         
 
-    def best_fitness(self, get_index=False):
-        if self.is_min:
+    def best_fitness(self, is_min=True, get_index=False):
+        """
+        Calculates the mbest fitness based on the problem.
+
+        is_min: True if it is a minimisation problem
+        get_index: returns the index of the best fitted individual
+        """
+        if is_min:
             if get_index:
                 return self.min_fitness(get_index=True)
             return self.min_fitness()
@@ -50,9 +67,12 @@ class Population:
 
 
     def best_individual(self):
+        """
+        Returns the best individual in the population.
+        """
         return self.individuals[self.best_fitness(get_index=True)]
 
 
-    def evaluate_fitness(self):
+    def evaluate_fitness(self,evaluation_function):
         for individual in self.individuals:
-            individual.fitness = self.eval_fun(individual.values)
+            individual.fitness = evaluation_function(individual.values)

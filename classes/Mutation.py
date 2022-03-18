@@ -4,12 +4,14 @@ from classes.Population import Population
 from classes.Individual import Individual
 
 class Mutation:
-    def mutate(self, individual: Individual) -> np.ndarray:
+    def mutate(self, individual: Individual):
         pass
 
 
 class CustomSigma(Mutation):
-
+    """
+    Custom sigma method, different from the individual sigma done during the course.
+    """
     def __init__(self, lr, lr_prime):
         self.lr = lr
         self.lr_prime = lr_prime  

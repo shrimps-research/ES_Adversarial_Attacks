@@ -10,20 +10,22 @@ class OnePlusL(Selection):
     """
     Get the best individuals from both the parent and offspring populations
     """
-    def select(self, parents: Population,offspring: Population):
-        all_individuals = np.concatenate([parents,offspring])
-        evals = np.concatenate([parents.all_fitnesses() ,offspring.all_fitnesses()])
+    def select(self, parents: Population, offspring: Population):
+        all_individuals = np.concatenate([parents.individuals, offspring.individuals])
+        evals = np.concatenate([parents.all_fitnesses(), offspring.all_fitnesses()])
 
         indexes = evals.argsort()[:parents.size]
-        return [all_individuals[idx] for idx in indexes]
+        parents.individuals = [all_individuals[idx] for idx in indexes]
+        return parents
 
 
 class OneCommaL(Selection):
     """
     Get the best individuals from the offspring population
     """
-    def select(self, offspring: Population):
+    def select(self, parents: Population, offspring: Population):
         evals = offspring.all_fitnesses()
-        indexes = evals.argsort()[:offspring.size]
-        return [offspring[idx] for idx in indexes]
+        indexes = evals.argsort()[:parents.size]
+        parents.individuals = [offspring.individuals[idx] for idx in indexes]
+        return parents
 
