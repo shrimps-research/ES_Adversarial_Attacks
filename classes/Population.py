@@ -19,21 +19,23 @@ class Population:
             self.individuals = [Individual(n_values, np.NINF) for i in range(size)]
         self.eval_fun = evaluation_function
 
+    def all_fitnesses(self):
+        return np.array([individual.fitness for individual in self.individuals])
 
     def ave_fitness(self):
-        return sum(individual.fitness for individual in self.individuals) / len(self.individuals)
+        return sum(self.all_fitnesses()) / len(self.individuals)
 
 
     def max_fitness(self, get_index=False):
         if get_index:
-            return np.argmax([ individual.fitness for individual in self.individuals])
-        return max(individual.fitness for individual in self.individuals)
+            return np.argmax(self.all_fitnesses())
+        return np.max(self.all_fitnesses())
 
 
     def min_fitness(self,get_index=False):
         if get_index:
-            return np.argmin([ individual.fitness for individual in self.individuals])
-        return min(individual.fitness for individual in self.individuals)
+            return np.argmin(self.all_fitnesses())
+        return np.min(self.all_fitnesses())
         
 
     def best_fitness(self, get_index=False):

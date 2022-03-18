@@ -24,5 +24,3 @@ class CustomSigma(Mutation):
 
             sigma_noise = np.random.normal(0,individual.sigmas[curr_sig],1)
             individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
-        
-        
