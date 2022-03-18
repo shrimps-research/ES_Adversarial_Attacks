@@ -51,9 +51,11 @@ def main():
     if args.verbose:
         print("arguments passed:",args)
     
+    # Dictionaries to keep all our Classes
     recombinations = {  'intermediate': Intermediate(args.offspring_size) }
 
-    mutations = {       'individual_sigma': IndividualSigma() }
+    mutations = {       'individual_sigma': IndividualSigma(),
+                        'correlated': Correlated() }
 
     selections = {      'one_plus_l': OnePlusL(),
                         'one_comma_l': OneCommaL() }

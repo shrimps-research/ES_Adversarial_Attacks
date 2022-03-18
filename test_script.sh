@@ -1,1 +1,1 @@
-python Attack_main.py -func 'ackley' -min True -b 100000 -ps 60 -os 600 -vs 200 -r 'intermediate' -m 'individual_sigma' -s 'one_comma_l' -fp 10000000 -v 2
+python Attack_main.py -func 'ackley' -min True -b 100000 -ps 100 -os 1500 -vs 200 -r 'intermediate' -m 'individual_sigma' -s 'one_comma_l' -fp 10000000 -v 2
