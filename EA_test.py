@@ -13,15 +13,15 @@ import numpy as np
 # Hyperparameter optimisation
 evaluation_function = Ackley().evaluate #eval_fun
 is_minimization = True
-budget = 200000
-parent_size = 10
-offspring_size = 50
-values_size = 50
+budget = 50000
+parent_size = 35
+offspring_size = 320
+values_size = 150
 recombination = Intermediate(offspring_size)
 mutation = IndividualSigma()
 selection = OneCommaL()
 fallback_patience = 1000000 #budget/10
-verbose = 2
+verbose = 1
 
 
 
