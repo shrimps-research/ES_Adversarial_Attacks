@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from classes.Individual import Individual
 from classes.Population import Population
 from classes.Recombination import Intermediate
@@ -7,7 +8,12 @@ from classes.Selection import OneCommaL, OnePlusL
 import numpy as np
 
 class EA:
-
+    """
+    Current constraints: 
+        - offspring population must be at least as big as parent population
+        - maximisation not yet implemented 
+    
+    """
     def __init__(self,evaluation_function, is_minimization, budget,
                 parent_size, offspring_size, values_size,
                 recombination, mutation, selection,
@@ -66,6 +72,8 @@ class EA:
                 offspring.evaluate_fitness(self.evaluation_function)
                 curr_budget += self.offspring_size
                 curr_patience += self.offspring_size
+                if (verbose == 1) and (curr_budget/10000 > 1):
+                    print(f"current best {best_eval}, current budget: {curr_budget}/{self.budget}")
 
                 # Next generation parents selection with fallback
                 if curr_patience >= self.fallback_patience:

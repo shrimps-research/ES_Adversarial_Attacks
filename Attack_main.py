@@ -14,37 +14,37 @@ def main():
     
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-eval_func', action='store', 
+    parser.add_argument('-func', action='store', 
                         dest='eval_func', type=str,
                         default='ackley')
-    parser.add_argument('-is_min', action='store', 
+    parser.add_argument('-min', action='store', 
                         dest='is_min', type=bool,
                         default=True)
-    parser.add_argument('-budget', action='store', 
+    parser.add_argument('-b', action='store', 
                         dest='budget', type=int,
                         default=50000)
-    parser.add_argument('-parent_size', action='store', 
+    parser.add_argument('-ps', action='store', 
                         dest='parent_size', type=int,
                         default=20)
-    parser.add_argument('-offspring_size', action='store', 
+    parser.add_argument('-os', action='store', 
                         dest='offspring_size', type=int,
                         default=140)
-    parser.add_argument('-value_size', action='store', 
+    parser.add_argument('-vs', action='store', 
                         dest='value_size', type=int,
                         default=100)
-    parser.add_argument('-recombination', action='store', 
+    parser.add_argument('-r', action='store', 
                         dest='recombination', type=str,
                         default='intermediate')
-    parser.add_argument('-mutation', action='store', 
+    parser.add_argument('-m', action='store', 
                         dest='mutation', type=str,
                         default='individual_sigma')
-    parser.add_argument('-selection', action='store', 
+    parser.add_argument('-s', action='store', 
                         dest='selection', type=str,
                         default='one_comma_l')
-    parser.add_argument('-fallback_patience', action='store', 
+    parser.add_argument('-fp', action='store', 
                         dest='fallback_patience', type=int,
                         default=1000000)
-    parser.add_argument('-verbose', action='store', 
+    parser.add_argument('-v', action='store', 
                         dest='verbose', type=int,
                         default=1)
     args = parser.parse_args()
