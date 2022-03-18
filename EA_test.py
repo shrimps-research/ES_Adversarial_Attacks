@@ -6,26 +6,26 @@ from classes.Mutation import *
 from classes.Selection import *
 from classes.EA import *
 
+from classes.Evaluation import *
+
 import numpy as np
 
-
-def eval_fun(values):
-    return sum(values)
-
+# Hyperparameter optimisation
+evaluation_function = Ackley().evaluate #eval_fun
 is_minimization = True
-budget = 1000
+budget = 200000
 parent_size = 10
-offspring_size = 60
-values_size = 200
+offspring_size = 50
+values_size = 50
 recombination = Intermediate(offspring_size)
-mutation = CustomSigma()
-selection = OnePlusL()
-fallback_patience = 10000
+mutation = IndividualSigma()
+selection = OneCommaL()
+fallback_patience = 1000000 #budget/10
 verbose = 2
 
 
 
-ea = EA(evaluatin_function=eval_fun,
+ea = EA(evaluation_function=evaluation_function,
         is_minimization=is_minimization,
         budget=budget,
         parent_size=parent_size,

@@ -8,12 +8,12 @@ import numpy as np
 
 class EA:
 
-    def __init__(self,evaluatin_function, is_minimization, budget,
+    def __init__(self,evaluation_function, is_minimization, budget,
                 parent_size, offspring_size, values_size,
                 recombination, mutation, selection,
                 fallback_patience, verbose) -> None:
 
-        self.evaluatin_function = evaluatin_function
+        self.evaluation_function = evaluation_function
         self.is_minimization = is_minimization
         self.budget = budget
         self.parent_size = parent_size
@@ -34,10 +34,11 @@ class EA:
 
         # Initialize budget and best evaluation
         curr_budget = 0
+        curr_patience = 0
         best_eval = np.inf if self.is_minimization else np.NINF
 
         # Initial evaluation step
-        self.parent.evaluate_fitness(self.evaluatin_function)
+        self.parent.evaluate_fitness(self.evaluation_function)
         curr_budget += self.parent_size
 
         while curr_budget < self.budget:
@@ -62,11 +63,18 @@ class EA:
                 self.mutation.mutate_population(offspring)
 
                 # Evaluate offspring population
-                offspring.evaluate_fitness(self.evaluatin_function)
+                offspring.evaluate_fitness(self.evaluation_function)
                 curr_budget += self.offspring_size
+                curr_patience += self.offspring_size
 
-                # Next generation parents selection
-                self.parents = self.selection.select(self.parent, offspring)
+                # Next generation parents selection with fallback
+                if curr_patience >= self.fallback_patience:
+                    self.parents = OneCommaL().select(self.parent,offspring)
+                    curr_patience = 0
+                    if self.verbose:
+                        print(f'+++ Fallback activated on budget: {curr_budget}')
+                else:
+                    self.parents = self.selection.select(self.parent, offspring)
 
         return best_individual, best_eval
 

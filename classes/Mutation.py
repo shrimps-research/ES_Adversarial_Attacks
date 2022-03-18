@@ -15,9 +15,34 @@ class Mutation:
             self.mutate(individual)
 
 
+class IndividualSigma(Mutation):
+    """
+    Individual sigma method.
+    """
+
+    def mutate(self, individual: Individual):
+        """
+        Mutates a single individual
+        """
+        lr = 1/np.sqrt(2*(np.sqrt(individual.n_values)))
+        lr_prime = 1/(np.sqrt(2*individual.n_values))
+
+        normal_matr_prime = np.random.normal(0,lr_prime,1)
+        for curr_sig in range(individual.n_values):
+            # Update current sigma
+            normal_matr = np.random.normal(0,lr,1)
+            individual.sigmas[curr_sig] = individual.sigmas[curr_sig]*(
+                                    np.exp(normal_matr+normal_matr_prime))
+
+            sigma_noise = np.random.normal(0,individual.sigmas[curr_sig],1)
+            individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
+
+
+
 class CustomSigma(Mutation):
     """
-    Custom sigma method, different from the individual sigma done during the course.
+    Custom sigma method, experiment with using random lr_prime for each sigma.
+    Not very efficient..
     """
 
     def mutate(self, individual: Individual):
@@ -37,4 +62,4 @@ class CustomSigma(Mutation):
             sigma_noise = np.random.normal(0,individual.sigmas[curr_sig],1)
             individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
 
-    
+
