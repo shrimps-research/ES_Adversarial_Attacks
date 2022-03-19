@@ -1,4 +1,4 @@
-from classes.Individual import Individual
+from Individual import Individual
 import numpy as np
 
 class Population:

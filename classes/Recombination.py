@@ -1,5 +1,5 @@
-from classes.Individual import Individual
-from classes.Population import Population
+from Individual import Individual
+from Population import Population
 import numpy as np
 
 class Recombination:
@@ -40,7 +40,6 @@ class Intermediate(Recombination):
             offspring_population.individuals[i] = offspring
 
             i += 1
-        
         return offspring_population
 
         

@@ -1,5 +1,5 @@
 import numpy as np
-from classes.Population import Population
+from Population import Population
 
 class Selection:
     def select(self, population: Population):

@@ -2,8 +2,8 @@ import numpy as np
 import random
 import math
 
-from classes.Population import Population
-from classes.Individual import Individual
+from Population import Population
+from Individual import Individual
 
 class Mutation:
     def mutate(self, individual: Individual):
@@ -39,6 +39,7 @@ class IndividualSigma(Mutation):
             individual.sigmas[curr_sig] = individual.sigmas[curr_sig]*(
                                     np.exp(normal_matr+normal_matr_prime))
 
+            # Update individual's values
             sigma_noise = np.random.normal(0,individual.sigmas[curr_sig],1)
             individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
 
@@ -64,6 +65,7 @@ class CustomSigma(Mutation):
             individual.sigmas[curr_sig] = individual.sigmas[curr_sig]*(
                                     np.exp(normal_matr+normal_matr_prime))
 
+            # Update individual's values
             sigma_noise = np.random.normal(0,individual.sigmas[curr_sig],1)
             individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
 
