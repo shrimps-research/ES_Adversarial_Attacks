@@ -28,3 +28,8 @@ class Rastringin:
     def evaluate(self, x):
         y = self.a * len(x) + sum(map(lambda i: i**2 - self.a * np.cos(2*np.pi*i), x))
         return y
+
+
+class SimpleClassifierCrossentropy(Evaluate):
+    def __init__(self):
+        pass

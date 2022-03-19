@@ -1,3 +1,9 @@
+import sys
+# Setting paths to folders
+sys.path.insert(1, 'classes')
+sys.path.insert(1, 'tf_model')
+sys.path.insert(1, 'test_data')
+
 from classes.Individual import *
 from classes.Population import *
 from classes.Recombination import *

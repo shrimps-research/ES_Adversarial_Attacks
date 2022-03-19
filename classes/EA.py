@@ -1,9 +1,5 @@
-from tabnanny import verbose
-from Individual import Individual
 from Population import Population
-from Recombination import Intermediate
-from Mutation import CustomSigma
-from Selection import OneCommaL, OnePlusL
+
 
 import numpy as np
 
@@ -78,7 +74,7 @@ class EA:
                 # Increase used budget and control variables
                 curr_budget += self.offspring_size
                 curr_patience += self.offspring_size
-                if (verbose == 1) and (curr_budget/10000 > 1):
+                if (self.verbose == 1) and (curr_budget/10000 > 1):
                     print(f"current best {best_eval}, current budget: {curr_budget}/{self.budget}")
 
                 # Next generation parents selection with fallback

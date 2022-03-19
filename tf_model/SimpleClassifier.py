@@ -5,12 +5,16 @@ from tensorflow.keras.models import Sequential
 
 class SimpleClassifier:
 
-    def __init__(self,model_path):
+    def __init__(self,model_path, 
+                img_height=128, 
+                img_width=128,
+                batch_size=32
+                ):
 
         self.model_path = model_path
-        self.batch_size = 32
-        self.img_height = 180
-        self.img_width = 180
+        self.batch_size = batch_size
+        self.img_height = img_height
+        self.img_width = img_width
         class_names = ['daisy', 'dandelion', 'roses', 'sunflowers', 'tulips']
         self.num_classes = len(class_names)
 
@@ -23,7 +27,8 @@ class SimpleClassifier:
                                                     3
                                                 )
                                 ),
-                layers.RandomRotation(0.1),
+                layers.RandomFlip('horizontal'),
+                layers.RandomRotation(0.2),
                 layers.RandomZoom(0.1),
             ]
         )
