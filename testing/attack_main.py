@@ -45,6 +45,9 @@ def main():
     parser.add_argument('-vs', action='store', 
                         dest='value_size', type=int,
                         default=100)
+    parser.add_argument('-e', action='store', 
+                        dest='epsilon', type=float,
+                        default=0.05)
     parser.add_argument('-r', action='store', 
                         dest='recombination', type=str,
                         default='intermediate')
@@ -75,7 +78,10 @@ def main():
 
     eval_funs = {       'ackley': Ackley().evaluate,
                         'rastringin': Rastringin().evaluate,
-                        'classification_crossentropy': ClassifierCrossentropy('mnist_classifier', args.img, args.img_class).evaluate
+                        'classification_crossentropy': ClassifierCrossentropy(  'mnist_classifier', 
+                                                                                args.img, 
+                                                                                args.img_class,
+                                                                                epsilon=args.epsilon).evaluate
                 }
 
 
@@ -107,14 +113,18 @@ def main():
     noise.save('output/noise.png')
 
     # Save final image
-    combined_arr = original_img_arr + noise_arr*0.05
+    combined_arr = original_img_arr + noise_arr*args.epsilon
     combined_arr = combined_arr.clip(0,255).astype(uint8)
     combined_img = PIL.Image.fromarray(combined_arr)
     combined_img.save('output/final.png')
-    print(f"best eval: {best_eval}")
+    
     classifier = ClassifierCrossentropy('mnist_classifier', args.img, args.img_class)
-    preds = classifier.predict(combined_arr)
-    print(np.argmax(preds))
+    normal_preds = classifier.predict(original_img_arr)
+    noise_preds = classifier.predict(combined_arr)
+
+    print(f"best function evaluation: {best_eval}")
+    print(f'initial prediction: {np.argmax(normal_preds[0])} confidence: {np.max(normal_preds[0])}')
+    print(f'noised prediction: {np.argmax(noise_preds[0])} confidence: {np.max(noise_preds[0])}')
 
 if __name__ == "__main__":
     main()

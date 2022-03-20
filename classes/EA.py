@@ -10,7 +10,7 @@ class EA:
         - maximisation not yet implemented 
     
     """
-    def __init__(self,evaluation_function, is_minimization, budget,
+    def __init__(self, evaluation_function, is_minimization, budget,
                 parent_size, offspring_size, values_size,
                 recombination, mutation, selection,
                 fallback_patience, verbose) -> None:
