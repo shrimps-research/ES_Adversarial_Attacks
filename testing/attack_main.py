@@ -36,7 +36,7 @@ def main():
                         default='mnist_classifier')
     parser.add_argument('-img', action='store',
                         dest='img', type=str,
-                        default='../data/img_data/zero.png')
+                        default='../data/img_data/five.png')
     parser.add_argument('-img_class', action='store',
                         dest='img_class',
                         default=0)
