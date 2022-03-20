@@ -35,16 +35,12 @@ class Rastringin:
 
 class ClassifierCrossentropy(Evaluate):
 
-    models = { 'simple_classifier': FlowerClassifier(),
-                'mnist_classifier': MnistClassifier()
-            }
-
 
     def __init__(self, model, img_path, img_class, epsilon=0.05):
         
-        self.model = self.models[model]
+        self.model = model
         
-        # We open this image onece for performance, 
+        # We open this image onece for performance when we create the object, 
         # instead of doing it in the evaluation function
         img = PIL.Image.open(img_path)
         img = img.resize((self.model.img_width,self.model.img_height), resample=0)

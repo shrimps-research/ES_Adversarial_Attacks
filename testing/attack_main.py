@@ -76,12 +76,17 @@ def main():
     selections = {      'one_plus_l': OnePlusL(),
                         'one_comma_l': OneCommaL() }
 
+    models = {          'mnist_classifier' : FlowerClassifier(),
+                        'flower_classifier': MnistClassifier() }
+
     eval_funs = {       'ackley': Ackley().evaluate,
                         'rastringin': Rastringin().evaluate,
-                        'classification_crossentropy': ClassifierCrossentropy(  'mnist_classifier', 
-                                                                                args.img, 
-                                                                                args.img_class,
-                                                                                epsilon=args.epsilon).evaluate
+                        'classification_crossentropy': 
+                                ClassifierCrossentropy( models[args.model], 
+                                                        args.img, 
+                                                        args.img_class,
+                                                        epsilon=args.epsilon
+                                                      ).evaluate
                 }
 
 
@@ -106,7 +111,7 @@ def main():
     original_img.save('output/original.png')
     original_img_arr = np.array(original_img)
 
-    # Save noise image
+    # Save noisy image
     noise_arr = best_individual.values
     noise_arr = np.array(noise_arr*255,dtype=np.uint8).clip(0,255).reshape(original_img_arr.shape)
     noise = PIL.Image.fromarray(noise_arr)
@@ -117,11 +122,13 @@ def main():
     combined_arr = combined_arr.clip(0,255).astype(uint8)
     combined_img = PIL.Image.fromarray(combined_arr)
     combined_img.save('output/final.png')
-    
+
+    # Predict images
     classifier = ClassifierCrossentropy('mnist_classifier', args.img, args.img_class)
     normal_preds = classifier.predict(original_img_arr)
     noise_preds = classifier.predict(combined_arr)
 
+    # Print results
     print(f"best function evaluation: {best_eval}")
     print(f'initial prediction: {np.argmax(normal_preds[0])} confidence: {np.max(normal_preds[0])}')
     print(f'noised prediction: {np.argmax(noise_preds[0])} confidence: {np.max(noise_preds[0])}')
