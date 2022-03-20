@@ -1,24 +1,20 @@
 from classes.Population import Population
-
-
 import numpy as np
 
+
 class EA:
-    """
-    Current constraints: 
+    """ Current constraints: 
         - offspring population must be at least as big as parent population
         - maximisation not yet implemented 
-    
     """
-    def __init__(self, evaluation_function, is_minimization, budget,
-                parent_size, offspring_size, values_size,
+    def __init__(self, input_, evaluation_function, minimization, budget,
+                parents_size, offspring_size, values_size,
                 recombination, mutation, selection,
-                fallback_patience, verbose) -> None:
-
+                fallback_patience, verbose, downsample=False) -> None:
         self.evaluation_function = evaluation_function
-        self.is_minimization = is_minimization
+        self.minimization = minimization
         self.budget = budget
-        self.parent_size = parent_size
+        self.parents_size = parents_size
         self.offspring_size = offspring_size
         self.values_size = values_size
         self.recombination = recombination
@@ -26,62 +22,53 @@ class EA:
         self.selection = selection
         self.fallback_patience = fallback_patience
         self.verbose=verbose
-        self.parent = Population(self.parent_size, self.values_size)
-        self.offspring = Population(self.offspring_size, self.values_size)
-
+        self.downsample = downsample
+        self.parents = Population(input_, self.parents_size, self.values_size, downsample)
+        self.offspring = Population(input_, self.offspring_size, self.values_size, downsample)
 
     def run(self):
+        """ Main function to run the Evolutionary Strategy
         """
-        Main function to run the Evolutionary Strategy
-        """
-        if not self.is_minimization:
-            print(f'check if minimization is ok')
-            exit()
-
         # Initialize budget and best evaluation
         curr_budget = 0
         curr_patience = 0
-        best_eval = np.inf if self.is_minimization else np.NINF
+        best_eval = np.inf if self.minimization else -np.inf
 
         # Initial evaluation step
-        self.parent.evaluate_fitness(self.evaluation_function)
-        curr_budget += self.parent_size
+        self.parents.evaluate(self.evaluation_function)
+        curr_budget += self.parents_size
 
-        best_individual = self.parent.individuals[self.parent.best_fitness(True,True)]
+        best_eval, best_index = self.parents.best_fitness(self.minimization)
 
         while curr_budget < self.budget:
-
             # Temporary minimization handler
-            if self.is_minimization:
-
+            if self.minimization:
                 # Keep track of best fit individual and evaluation
-                curr_best_eval = self.parent.best_fitness(is_min=True)
+                curr_best_eval, curr_best_index = self.parents.best_fitness(self.minimization)
                 if curr_best_eval < best_eval:
                     best_eval = curr_best_eval
-                    best_individual = self.parent.individuals[self.parent.best_fitness(True,True)]
+                    best_index = curr_best_index
                     
-                    curr_patience = 0 # Reset patience since we found a new best
+                    curr_patience = 0  # Reset patience since we found a new best
                     if self.verbose > 1:
                         print(f"new best val: {best_eval}, used budget: {curr_budget}")
-
+                
                 # Recombination: creates new offspring
-                offspring = self.recombination.recombine(self.parent)
-
+                self.recombination(self.parents, self.offspring)
+                
                 # Mutation: mutate all individuals
-                self.mutation.mutate_population(offspring)
+                self.mutation(self.offspring)
 
                 # Evaluate offspring population
-                offspring.evaluate_fitness(self.evaluation_function)
+                self.offspring.evaluate(self.evaluation_function)
 
                 # Increase used budget and control variables
                 curr_budget += self.offspring_size
                 curr_patience += self.offspring_size
-                if (self.verbose == 1) and (curr_budget/10000 > 1):
+                if (self.verbose == 1) and (curr_budget%1000 == 0):
                     print(f"current best {best_eval}, current budget: {curr_budget}/{self.budget}")
 
                 # Next generation parents selection with fallback
-                self.parents = self.selection.select(self.parent, offspring)
+                self.selection(self.parents, self.offspring)
 
-        return best_individual, best_eval
-
-                
+        return self.parents, best_index

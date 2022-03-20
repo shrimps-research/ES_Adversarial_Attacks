@@ -1,22 +1,19 @@
-from pyexpat import model
 import sys
+import argparse
+from PIL import Image
 from numpy import uint8
 
 # Setting paths to folders
 sys.path.append('..')
 sys.path.append('../classes/')
-from classes.Individual import *
-from classes.Population import *
 
+from classes.Population import *
 from classes.Recombination import *
 from classes.Mutation import *
 from classes.Selection import *
-
 from classes.DNN_Models import *
 from classes.Evaluation import *
 from classes.EA import *
-
-import argparse
 
 def main():
     
@@ -34,12 +31,12 @@ def main():
     parser.add_argument('-model', action='store',
                         dest='model', type=str,
                         default='mnist_classifier')
-    parser.add_argument('-img', action='store',
-                        dest='img', type=str,
+    parser.add_argument('-in', action='store',
+                        dest='input_path', type=str,
                         default='../data/img_data/five.png')
-    parser.add_argument('-img_class', action='store',
-                        dest='img_class',
-                        default=0)
+    parser.add_argument('-tl', action='store',
+                        dest='true_label',
+                        default=0, type=int)
     parser.add_argument('-ps', action='store', 
                         dest='parent_size', type=int,
                         default=20)
@@ -48,7 +45,7 @@ def main():
                         default=140)
     parser.add_argument('-vs', action='store', 
                         dest='value_size', type=int,
-                        default=100)
+                        default=None)
     parser.add_argument('-e', action='store', 
                         dest='epsilon', type=float,
                         default=0.05)
@@ -77,64 +74,70 @@ def main():
     mutations = {       'individual_sigma': IndividualSigma(),
                         'correlated': Correlated() }
 
-    selections = {      'one_plus_l': OnePlusL(),
-                        'one_comma_l': OneCommaL() }
+    selections = {      'plus_selection': PlusSelection(),
+                        'comma_selection': CommaSelection() }
 
-    models = {          'mnist_classifier' : MnistClassifier(),
-                        'flower_classifier': FlowerClassifier() }
+    models = {          'mnist_classifier' : MnistClassifier,
+                        'flower_classifier': FlowerClassifier,
+                        'xception_classifier': XceptionClassifier }
 
     eval_funs = {       'ackley': Ackley().evaluate,
                         'rastringin': Rastringin().evaluate,
                         'classification_crossentropy': 
-                                ClassifierCrossentropy( models[args.model], 
-                                                        args.img, 
-                                                        args.img_class,
-                                                        epsilon=args.epsilon
-                                                      ).evaluate
-                }
+                                ClassifierCrossentropy( models[args.model](),
+                                                        args.true_label,
+                                                        targeted=False  # TODO args
+                                                      ).evaluate }
 
+    # Load original image
+    original_img = Image.open(args.input_path)
+    original_img = np.array(original_img) / 255.0
+    if args.value_size is None:
+        args.value_size = original_img.size
+    if len(original_img.shape) == 2:
+        original_img = np.expand_dims(original_img, axis=2)
     # Create evolutionary Algorithm
-    ea = EA(evaluation_function=eval_funs[args.eval_func],
-            is_minimization=args.is_min,
+    ea = EA(input_=original_img,
+            evaluation_function=eval_funs[args.eval_func],
+            minimization=args.is_min,
             budget=args.budget,
-            parent_size=args.parent_size,
+            parents_size=args.parent_size,
             offspring_size=args.offspring_size,
             values_size=args.value_size,
             recombination=recombinations[args.recombination],
             mutation=mutations[args.mutation],
             selection=selections[args.selection],
             fallback_patience=args.fallback_patience,
-            verbose=args.verbose)
+            verbose=args.verbose,
+            downsample=False)  # TODO args
             
-    best_individual, best_eval = ea.run()
-
-
-    # Save original image
-    original_img = PIL.Image.open(args.img)
-    original_img.save('output/original.png')
-    original_img_arr = np.array(original_img)
+    parents, best_index = ea.run()
 
     # Save noisy image
-    noise_arr = best_individual.values
-    noise_arr = np.array(noise_arr*255,dtype=np.uint8).clip(0,255).reshape(original_img_arr.shape)
-    noise = PIL.Image.fromarray(noise_arr)
-    noise.save('output/noise.png')
+    noise = parents.reshape_ind(parents.individuals[best_index])
+    noise = parents.upsample_ind(noise)
+    # clip image + noise in [0,1] then subtract input to obtain clipped noise
+    noise = (original_img + noise).clip(0, 1) - original_img
+    if noise.shape[2] == 1:
+        noise = np.squeeze(noise, axis=2)
+    Image.fromarray((noise * 255).astype(np.uint8)).save('../results/noise.png')
+    
 
     # Save final image
-    combined_arr = original_img_arr + noise_arr*args.epsilon
-    combined_arr = combined_arr.clip(0,255).astype(uint8)
-    combined_img = PIL.Image.fromarray(combined_arr)
-    combined_img.save('output/final.png')
+    if original_img.shape[2] == 1:
+        original_img = np.squeeze(original_img, axis=2)
+    noisy_input = ((original_img + noise) * 255).astype(np.uint8)
+    Image.fromarray(noisy_input).save('../results/noisy_input.png')
 
     # Predict images
-    evaluator = ClassifierCrossentropy(models[args.model], args.img, args.img_class)
-    normal_preds = evaluator.predict(original_img_arr)
-    noise_preds = evaluator.predict(combined_arr)
+    model = models[args.model]().model
+    noise_preds = model(np.expand_dims(noise+original_img, axis=0))
+    normal_preds = model(np.expand_dims(np.zeros(original_img.shape)+original_img, axis=0))
 
     # Print results
-    print(f"best function evaluation: {best_eval}")
-    print(f'initial prediction: {np.argmax(normal_preds[0])} confidence: {np.max(normal_preds[0])}')
-    print(f'noised prediction: {np.argmax(noise_preds[0])} confidence: {np.max(noise_preds[0])}')
+    print(f"Best function evaluation: {parents.fitnesses[best_index]}")
+    print(f'Initial prediction: {np.argmax(normal_preds)} - Confidence: {np.max(normal_preds)}')
+    print(f'Noised prediction: {np.argmax(noise_preds)} - Confidence: {np.max(noise_preds)}')
 
 if __name__ == "__main__":
     main()

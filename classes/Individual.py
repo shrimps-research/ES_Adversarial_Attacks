@@ -2,7 +2,6 @@ import numpy as np
 
 
 class Individual:
-
     def __init__(self, n_values, initial_fitness=np.inf):
         self.n_values = n_values
         self.values = np.random.uniform(-1,1,size=n_values)

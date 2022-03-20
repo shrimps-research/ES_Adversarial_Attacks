@@ -1,6 +1,5 @@
 import numpy as np
 import PIL
-from classes.DNN_Models import MnistClassifier, FlowerClassifier
 
 
 class Evaluate:
@@ -9,6 +8,8 @@ class Evaluate:
 
 
 class Ackley(Evaluate):
+    """ Evaluate a solution on Ackley problem
+    """
     def __init__(self, a = 20, b = 0.2, c = 2*np.pi):
         self.a = a
         self.b = b
@@ -24,6 +25,8 @@ class Ackley(Evaluate):
 
 
 class Rastringin:
+    """ Evaluate a solution on Rastringin problem
+    """
     def __init__(self, a = 10):
         self.a = a
         self.optimum = 0
@@ -34,39 +37,21 @@ class Rastringin:
 
 
 class ClassifierCrossentropy(Evaluate):
-
-
-    def __init__(self, model, img_path, img_class, epsilon=0.05):
-        
+    """ Generic image classifier evaluator using cross entropy
+    """
+    def __init__(self, model, true_label, targeted=False):
         self.model = model
-        
-        # We open this image onece for performance when we create the object, 
-        # instead of doing it in the evaluation function
-        img = PIL.Image.open(img_path)
-        img = img.resize((self.model.img_width,self.model.img_height), resample=0)
-        img_array = np.array(img)
-        self.img = np.expand_dims(img_array,axis=0)
-        self.img_class = img_class
-        self.classes = self.model.class_names
-        self.class_idx = self.classes.index(img_class)
-        self.epsilon = epsilon
+        self.true_label = int(true_label)
+        self.targeted = targeted
 
-
-    def evaluate(self,x):
-        processed_img = self.img + np.expand_dims(np.array(self.epsilon*x*255. ,dtype=np.uint8),axis=0).reshape(self.img.shape)
-        processed_img = processed_img.clip(0, 255)
-        preds = self.model.model(processed_img)[0]
-        eval = - np.log(preds[self.class_idx])
-        return eval
-
-    def predict(self,x):
-        processed_img = self.img + np.expand_dims(np.array(self.epsilon*x*255. ,dtype=np.uint8),axis=0).reshape(self.img.shape)
-        processed_img = processed_img.clip(0, 255)
-        preds = self.model.model(processed_img)
-        return preds
-
-    
-
-
-
-
+    def evaluate(self, noise, input_):
+        """ if targeted attack, use crossentropy (-log(pred)) on target
+            if untargeted attack, use negative crossentropy (log(pred)) on target
+        """
+        # feasible input space contraint
+        # if np.min(input_) < 0 or np.max(input_) > 1:
+        #     return np.inf if self.targeted else 0
+        # prediction
+        predictions = self.model.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
+        # return loss
+        return (-1 if self.targeted else 1) * np.log(predictions[self.true_label])

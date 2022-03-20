@@ -6,51 +6,41 @@ from classes.Individual import Individual
 
 
 class Mutation:
-    def mutate(self, individual: Individual):
-        """
-        Mutates a single individual
+    def mutate(self):
+        """ Mutates a single individual
         """
         pass
 
-    def mutate_population(self, population: Population):
+    def __call__(self, population: Population):
+        """ Mutates the whole population
         """
-        Mutates the whole population
-        """
-        for individual in population.individuals:
-            self.mutate(individual)
+        self.mutate(population)
 
 
 class IndividualSigma(Mutation):
+    """ Individual sigma method.
     """
-    Individual sigma method.
-    """
-
-    def mutate(self, individual: Individual):
+    def mutate(self, population: Population):
+        """ Mutates the population
         """
-        Mutates a single individual
-        """
-        lr = 1/np.sqrt(2*(np.sqrt(individual.n_values)))
-        lr_prime = 1/(np.sqrt(2*individual.n_values))
-
-        normal_matr_prime = np.random.normal(0,lr_prime,1)
-        for curr_sig in range(individual.n_values):
-            # Update current sigma
-            normal_matr = np.random.normal(0,lr,1)
-            individual.sigmas[curr_sig] = individual.sigmas[curr_sig]*(
-                                    np.exp(normal_matr+normal_matr_prime))
-
-            # Update individual's values
-            sigma_noise = np.random.normal(0,individual.sigmas[curr_sig],1)
-            individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
+        # transform sigmas
+        tau = 1 / np.sqrt(2 * np.sqrt(population.individuals.shape[1]))
+        tau_prime = 1 / np.sqrt(2 * population.individuals.shape[1])
+        # one draw from N(0, tau') per individual
+        tau_prime_drawns = np.random.normal(0, tau_prime, size=population.sigmas.shape[0]).reshape(-1, 1).repeat(population.individuals.shape[1], axis=1)
+        # one draw from N(0, tau) per sigma (individuals x components)
+        tau_drawns = np.random.normal(0, tau, size=population.sigmas.shape)
+        population.sigmas = population.sigmas * np.exp(tau_drawns + tau_prime_drawns)
+        # mutate components
+        variations = np.random.normal(0, population.sigmas)
+        population.individuals += variations
 
 
-
+# TODO fix the use of Individual class
 class CustomSigma(Mutation):
+    """ Custom sigma method, experiment with using random lr_prime for each sigma.
+        Not very efficient, advised not to use.
     """
-    Custom sigma method, experiment with using random lr_prime for each sigma.
-    Not very efficient, advised not to use.
-    """
-
     def mutate(self, individual: Individual):
         """
         Mutates a single individual
@@ -70,8 +60,8 @@ class CustomSigma(Mutation):
             individual.values[curr_sig] = individual.values[curr_sig] + sigma_noise
 
 
+# TODO fix the use of Individual class
 class Correlated(Mutation):
-
     def mutate(self, individual: Individual):
         lr = 1/np.sqrt(2*(np.sqrt(individual.n_values)))
         lr_prime = 1/(np.sqrt(2*individual.n_values))
