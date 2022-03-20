@@ -1,4 +1,5 @@
 To test:
+
     - in terminal go into 'testing' directory (it is important for rtelative
       paths)
       
