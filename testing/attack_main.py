@@ -107,14 +107,14 @@ def main():
     noise.save('output/noise.png')
 
     # Save final image
-    combined_arr = original_img_arr + noise_arr*0.2
+    combined_arr = original_img_arr + noise_arr*0.05
     combined_arr = combined_arr.clip(0,255).astype(uint8)
     combined_img = PIL.Image.fromarray(combined_arr)
     combined_img.save('output/final.png')
     print(f"best eval: {best_eval}")
     classifier = ClassifierCrossentropy('mnist_classifier', args.img, args.img_class)
-    preds = classifier.model.model.predict(np.expand_dims(combined_arr,axis=0))
-    print(preds)
+    preds = classifier.predict(combined_arr)
+    print(np.argmax(preds))
 
 if __name__ == "__main__":
     main()

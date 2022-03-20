@@ -40,7 +40,7 @@ class ClassifierCrossentropy(Evaluate):
             }
 
 
-    def __init__(self, model, img_path, img_class, epsilon=0.2):
+    def __init__(self, model, img_path, img_class, epsilon=0.05):
         
         self.model = self.models[model]
         
@@ -56,12 +56,18 @@ class ClassifierCrossentropy(Evaluate):
         self.epsilon = epsilon
 
 
-    def evaluate(self,x=0):
+    def evaluate(self,x):
         processed_img = self.img + np.expand_dims(np.array(self.epsilon*x*255. ,dtype=np.uint8),axis=0).reshape(self.img.shape)
         processed_img = processed_img.clip(0, 255)
         preds = self.model.model.predict(processed_img)[0]
         eval = -np.log(preds[self.class_idx])
         return eval
+
+    def predict(self,x):
+        processed_img = self.img + np.expand_dims(np.array(self.epsilon*x*255. ,dtype=np.uint8),axis=0).reshape(self.img.shape)
+        processed_img = processed_img.clip(0, 255)
+        preds = self.model.model.predict(processed_img)
+        return preds
 
     
 

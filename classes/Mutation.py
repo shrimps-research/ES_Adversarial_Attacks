@@ -48,7 +48,7 @@ class IndividualSigma(Mutation):
 class CustomSigma(Mutation):
     """
     Custom sigma method, experiment with using random lr_prime for each sigma.
-    Not very efficient..
+    Not very efficient, advised not to use.
     """
 
     def mutate(self, individual: Individual):
