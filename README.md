@@ -1,8 +1,9 @@
 To test:
-    - in terminal go into 'testing' directory (it is important for rtelative
-      paths)
-    
-    - run the command: bash test_script.py
+
+    - in terminal go into 'testing' directory (it is important for the relative
+      path imports)
+      
+    - run the following command:   bash test_script.py
 
 
 Pending:
