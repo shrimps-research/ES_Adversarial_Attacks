@@ -1,3 +1,4 @@
+from pyexpat import model
 import sys
 from numpy import uint8
 
@@ -30,6 +31,9 @@ def main():
     parser.add_argument('-b', action='store', 
                         dest='budget', type=int,
                         default=50000)
+    parser.add_argument('-model', action='store',
+                        dest='model', type=str,
+                        default='mnist_classifier')
     parser.add_argument('-img', action='store',
                         dest='img', type=str,
                         default='../data/img_data/zero.png')
@@ -76,8 +80,8 @@ def main():
     selections = {      'one_plus_l': OnePlusL(),
                         'one_comma_l': OneCommaL() }
 
-    models = {          'mnist_classifier' : FlowerClassifier(),
-                        'flower_classifier': MnistClassifier() }
+    models = {          'mnist_classifier' : MnistClassifier(),
+                        'flower_classifier': FlowerClassifier() }
 
     eval_funs = {       'ackley': Ackley().evaluate,
                         'rastringin': Rastringin().evaluate,
@@ -88,7 +92,6 @@ def main():
                                                         epsilon=args.epsilon
                                                       ).evaluate
                 }
-
 
     # Create evolutionary Algorithm
     ea = EA(evaluation_function=eval_funs[args.eval_func],
@@ -124,9 +127,9 @@ def main():
     combined_img.save('output/final.png')
 
     # Predict images
-    classifier = ClassifierCrossentropy('mnist_classifier', args.img, args.img_class)
-    normal_preds = classifier.predict(original_img_arr)
-    noise_preds = classifier.predict(combined_arr)
+    evaluator = ClassifierCrossentropy(models[args.model], args.img, args.img_class)
+    normal_preds = evaluator.predict(original_img_arr)
+    noise_preds = evaluator.predict(combined_arr)
 
     # Print results
     print(f"best function evaluation: {best_eval}")
