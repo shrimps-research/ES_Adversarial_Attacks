@@ -1,4 +1,5 @@
 import sys
+from numpy import uint8
 
 # Setting paths to folders
 sys.path.append('..')
@@ -91,23 +92,29 @@ def main():
             fallback_patience=args.fallback_patience,
             verbose=args.verbose)
             
-
     best_individual, best_eval = ea.run()
 
-    noise_vals = best_individual.values
-    noise_vals = np.array(noise_vals*255*0.2,dtype=np.uint8).clip(0,255).reshape((28,28))
-    noise = PIL.Image.fromarray(noise_vals)
-    noise.save('test.png')
 
-    img = PIL.Image.open(args.img)
-    img.save('original.png')
-    img_arr = np.array(img)
-    tot = img_arr + noise
-    tot = tot.clip(0,255)
-    tot = PIL.Image.fromarray(tot)
-    tot.save('final.png')
+    # Save original image
+    original_img = PIL.Image.open(args.img)
+    original_img.save('output/original.png')
+    original_img_arr = np.array(original_img)
+
+    # Save noise image
+    noise_arr = best_individual.values
+    noise_arr = np.array(noise_arr*255,dtype=np.uint8).clip(0,255).reshape(original_img_arr.shape)
+    noise = PIL.Image.fromarray(noise_arr)
+    noise.save('output/noise.png')
+
+    # Save final image
+    combined_arr = original_img_arr + noise_arr*0.2
+    combined_arr = combined_arr.clip(0,255).astype(uint8)
+    combined_img = PIL.Image.fromarray(combined_arr)
+    combined_img.save('output/final.png')
     print(f"best eval: {best_eval}")
-    
+    classifier = ClassifierCrossentropy('mnist_classifier', args.img, args.img_class)
+    preds = classifier.model.model.predict(np.expand_dims(combined_arr,axis=0))
+    print(preds)
 
 if __name__ == "__main__":
     main()
