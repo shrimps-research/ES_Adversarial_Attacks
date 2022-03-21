@@ -23,13 +23,13 @@ class IndividualSigma(Mutation):
     def mutate(self, population: Population):
         """ Mutates the population
         """
-        # transform sigmas
         tau = 1 / np.sqrt(2 * np.sqrt(population.individuals.shape[1]))
         tau_prime = 1 / np.sqrt(2 * population.individuals.shape[1])
         # one draw from N(0, tau') per individual
-        tau_prime_drawns = np.random.normal(0, tau_prime, size=population.sigmas.shape[0]).reshape(-1, 1).repeat(population.individuals.shape[1], axis=1)
+        tau_prime_drawns = np.random.normal(0, tau_prime, size=population.sigmas.shape[0]).reshape(-1, 1).repeat(population.sigmas.shape[1], axis=1)
         # one draw from N(0, tau) per sigma (individuals x components)
         tau_drawns = np.random.normal(0, tau, size=population.sigmas.shape)
+        # mutate sigmas
         population.sigmas = population.sigmas * np.exp(tau_drawns + tau_prime_drawns)
         # mutate components
         variations = np.random.normal(0, population.sigmas)

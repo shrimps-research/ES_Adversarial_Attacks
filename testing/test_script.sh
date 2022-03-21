@@ -1,1 +1,1 @@
-python attack_main.py -func classification_crossentropy -tl 5 -min True -b 100 -ps 4 -os 12 -vs 784 -e 0.04 -r intermediate -m individual_sigma -s one_comma_l -fp 10000000 -v 2
+python attack_main.py -eval classification_crossentropy -tl 5 -min True -b 100 -ps 4 -os 12 -vs 784 -e 0.04 -r intermediate -m individual_sigma -s one_comma_l -fp 10000000 -v 2

@@ -8,18 +8,20 @@ class Population:
 
         individual's fitness is initialized to np.inf
     """
-    def __init__(self, input_, pop_size, ind_dim, one_sigma=False, epsilon=0.05, downsample=False):
+    def __init__(self, input_, pop_size, one_sigma, epsilon, downsample):
         self.epsilon = epsilon
         self.downsample = downsample
         self.one_sigma = one_sigma
         self.input_ = input_
         self.pop_size = pop_size
         if downsample is None:
-            self.input_dim = ind_dim
+            ind_dim = input_.size
         else:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
             self.ind_side_len = int(input_.shape[0] * downsample)
-            self.input_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
+            ind_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
+        # initialize individuals
         self.individuals = np.random.uniform(0, 1, size=(pop_size, ind_dim))
+        # initialize sigmas
         if one_sigma:
             self.sigmas = np.random.uniform(np.min(self.individuals)/6, np.max(self.individuals)/6, size=pop_size)
         else:
@@ -29,10 +31,10 @@ class Population:
     def reshape_ind(self, individual):
         """ reshape a single individual
         """
-        if self.downsample is None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
-            return individual.reshape((self.ind_side_len, self.ind_side_len, self.input_.shape[2]))
-        else:
+        if self.downsample is None:
             return individual.reshape(self.input_.shape)
+        else:   # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
+            return individual.reshape((self.ind_side_len, self.ind_side_len, self.input_.shape[2]))
 
     def upsample_ind(self, individual):
         return np.dstack([nn_interpolate(individual[:,:,i], self.input_.shape[:2]) for i in range(self.input_.shape[2])])
@@ -49,20 +51,19 @@ class Population:
         """
         return np.min(self.fitnesses), np.argmin(self.fitnesses)
         
-    def best_fitness(self, minimization=True):
+    def best_fitness(self, minimize=True):
         """ Calculates the best fitness based on the problem.
             Return the best its fitness and index
 
-            is_min: True if it is a minimisation problem
-            get_index: returns the index of the best fitted individual
+            minimize: True if it is a minimization problem, False if maximization
         """
-        if minimization:
+        if minimize:
             best_fitness, best_index = self.min_fitness()
         else:
             best_fitness, best_index = self.max_fitness()
         return best_fitness, best_index
 
-    def evaluate(self, evaluation_function):
+    def evaluate(self, evaluation):
         self.fitnesses = []
         if self.epsilon is not None:
             self.individuals = self.individuals.clip(-self.epsilon, self.epsilon)
@@ -73,4 +74,4 @@ class Population:
             if self.downsample is not None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
                 individual = self.upsample_ind(individual)
             # evaluate input + noiose
-            self.fitnesses.append(evaluation_function(individual, self.input_))
+            self.fitnesses.append(evaluation(individual, self.input_))

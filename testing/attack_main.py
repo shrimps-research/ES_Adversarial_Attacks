@@ -16,15 +16,20 @@ from classes.Evaluation import *
 from classes.EA import *
 
 def main():
-    
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-func', action='store', 
-                        dest='eval_func', type=str,
+    parser.add_argument('-eval', action='store', 
+                        dest='evaluation', type=str,
                         default='ackley')
     parser.add_argument('-min', action='store', 
-                        dest='is_min', type=bool,
+                        dest='minimize', type=bool,
                         default=True)
+    parser.add_argument('-t', action='store', 
+                        dest='targeted', type=bool,
+                        default=False)
+    parser.add_argument('-ds', action='store',
+                        dest='downsample', type=float,
+                        default=None)
     parser.add_argument('-b', action='store', 
                         dest='budget', type=int,
                         default=50000)
@@ -43,9 +48,6 @@ def main():
     parser.add_argument('-os', action='store', 
                         dest='offspring_size', type=int,
                         default=140)
-    parser.add_argument('-vs', action='store', 
-                        dest='value_size', type=int,
-                        default=None)
     parser.add_argument('-e', action='store', 
                         dest='epsilon', type=float,
                         default=0.05)
@@ -81,35 +83,34 @@ def main():
                         'flower_classifier': FlowerClassifier,
                         'xception_classifier': XceptionClassifier }
 
-    eval_funs = {       'ackley': Ackley().evaluate,
-                        'rastringin': Rastringin().evaluate,
+    evaluations = {       'ackley': Ackley(),
+                        'rastringin': Rastringin(),
                         'classification_crossentropy': 
                                 ClassifierCrossentropy( models[args.model](),
                                                         args.true_label,
-                                                        targeted=False  # TODO args
-                                                      ).evaluate }
+                                                        minimize=args.minimize,
+                                                        targeted=args.targeted
+                                                      ) }
 
     # Load original image
     original_img = Image.open(args.input_path)
     original_img = np.array(original_img) / 255.0
-    if args.value_size is None:
-        args.value_size = original_img.size
     if len(original_img.shape) == 2:
         original_img = np.expand_dims(original_img, axis=2)
+
     # Create evolutionary Algorithm
     ea = EA(input_=original_img,
-            evaluation_function=eval_funs[args.eval_func],
-            minimization=args.is_min,
+            evaluation=evaluations[args.evaluation],
+            minimize=args.minimize,
             budget=args.budget,
             parents_size=args.parent_size,
             offspring_size=args.offspring_size,
-            values_size=args.value_size,
             recombination=recombinations[args.recombination],
             mutation=mutations[args.mutation],
             selection=selections[args.selection],
             fallback_patience=args.fallback_patience,
             verbose=args.verbose,
-            downsample=False)  # TODO args
+            downsample=args.downsample)  # TODO add args
             
     parents, best_index = ea.run()
 
@@ -121,7 +122,6 @@ def main():
     if noise.shape[2] == 1:
         noise = np.squeeze(noise, axis=2)
     Image.fromarray((noise * 255).astype(np.uint8)).save('../results/noise.png')
-    
 
     # Save final image
     if original_img.shape[2] == 1:

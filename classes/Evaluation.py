@@ -1,8 +1,13 @@
 import numpy as np
-import PIL
 
 
 class Evaluate:
+    def worst_eval(self, minimize=True):
+        """ Return worst possible evaluation
+            That will be the initial value of the best evaluation in the ES
+        """
+        return np.inf if minimize else -np.inf
+
     def evaluate(self):
         pass
 
@@ -10,7 +15,7 @@ class Evaluate:
 class Ackley(Evaluate):
     """ Evaluate a solution on Ackley problem
     """
-    def __init__(self, a = 20, b = 0.2, c = 2*np.pi):
+    def __init__(self, a = 20, b = 0.2, c = 2*np.pi, minimize=True):
         self.a = a
         self.b = b
         self.c = c
@@ -27,7 +32,7 @@ class Ackley(Evaluate):
 class Rastringin:
     """ Evaluate a solution on Rastringin problem
     """
-    def __init__(self, a = 10):
+    def __init__(self, a = 10, minimize=True):
         self.a = a
         self.optimum = 0
         
@@ -39,14 +44,22 @@ class Rastringin:
 class ClassifierCrossentropy(Evaluate):
     """ Generic image classifier evaluator using cross entropy
     """
-    def __init__(self, model, true_label, targeted=False):
+    def __init__(self, model, true_label, minimize=True, targeted=False):
         self.model = model
         self.true_label = int(true_label)
+        self.minimize = minimize
         self.targeted = targeted
+
+    def worst_eval(self):
+        if not self.targeted:
+            return 0
+        else:
+            return np.inf if self.minimize else -np.inf
 
     def evaluate(self, noise, input_):
         """ if targeted attack, use crossentropy (-log(pred)) on target
             if untargeted attack, use negative crossentropy (log(pred)) on target
+            opposite of above if minimize is False
         """
         # feasible input space contraint
         # if np.min(input_) < 0 or np.max(input_) > 1:
@@ -54,4 +67,8 @@ class ClassifierCrossentropy(Evaluate):
         # prediction
         predictions = self.model.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
         # return loss
-        return (-1 if self.targeted else 1) * np.log(predictions[self.true_label])
+        if self.minimize:
+            loss_sign = (-1 if self.targeted else 1)
+        else:
+            loss_sign = (1 if self.targeted else -1)
+        return loss_sign * np.log(predictions[self.true_label])
