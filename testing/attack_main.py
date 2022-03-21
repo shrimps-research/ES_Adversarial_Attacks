@@ -108,6 +108,7 @@ def main():
             selection=selections[args.selection],
             fallback_patience=args.fallback_patience,
             verbose=args.verbose,
+            epsilon=args.epsilon,
             downsample=args.downsample)  # TODO add args
             
     parents, best_index = ea.run()
