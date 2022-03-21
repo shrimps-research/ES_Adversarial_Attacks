@@ -5,9 +5,9 @@ python attack_main.py ^
 -tl 0 ^
 -min ^
 -b 1000 ^
--ps 2 -os 2 ^
--d 0.1 ^
--e 0.2 ^
+-ps 2 -os 20 ^
+-d 0.15 ^
+-e 0.1 ^
 -r intermediate ^
 -m individual_sigma ^
 -s plus_selection ^

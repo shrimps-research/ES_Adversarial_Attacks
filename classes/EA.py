@@ -39,6 +39,20 @@ class EA:
         curr_budget += self.parents_size
 
         while curr_budget < self.budget:
+            # Recombination: creates new offspring
+            self.recombination(self.parents, self.offspring)
+            
+            # Mutation: mutate all individuals
+            self.mutation(self.offspring)
+
+            # Evaluate offspring population
+            self.offspring.evaluate(self.evaluation.evaluate)
+            curr_budget += self.offspring_size
+            curr_patience += self.offspring_size  # TODO patience
+
+            # Next generation parents selection with fallback
+            self.selection(self.parents, self.offspring)
+
             # Evaluate parent population
             self.parents.evaluate(self.evaluation.evaluate)
             curr_budget += self.parents_size
@@ -59,19 +73,5 @@ class EA:
                     best_index = curr_best_index
                     if self.verbose > 1:
                         print(f"[{curr_budget}/{self.budget}] New best value: {best_eval}")
-
-            # Recombination: creates new offspring
-            self.recombination(self.parents, self.offspring)
-            
-            # Mutation: mutate all individuals
-            self.mutation(self.offspring)
-
-            # Evaluate offspring population
-            self.offspring.evaluate(self.evaluation.evaluate)
-            curr_budget += self.offspring_size
-            curr_patience += self.offspring_size  # TODO patience
-
-            # Next generation parents selection with fallback
-            self.selection(self.parents, self.offspring)
 
         return self.parents, best_index
