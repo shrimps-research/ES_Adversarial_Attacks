@@ -38,7 +38,6 @@ class EA:
         best_eval, best_index = self.parents.best_fitness(self.minimize)
         curr_budget += self.parents_size
 
-        print(best_eval)
         while curr_budget < self.budget:
             # Evaluate parent population
             self.parents.evaluate(self.evaluation.evaluate)

@@ -3,10 +3,10 @@ python attack_main.py ^
 -eval classification_crossentropy ^
 -in ../data/img_data/tench.png ^
 -tl 0 ^
--min True ^
+-min ^
 -b 1000 ^
 -ps 2 -os 2 ^
--d 0.2 ^
+-d 0.1 ^
 -e 0.2 ^
 -r intermediate ^
 -m individual_sigma ^

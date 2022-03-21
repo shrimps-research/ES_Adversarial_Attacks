@@ -21,12 +21,10 @@ def main():
     parser.add_argument('-eval', action='store', 
                         dest='evaluation', type=str,
                         default='ackley')
-    parser.add_argument('-min', action='store', 
-                        dest='minimize', type=bool,
-                        default=True)
-    parser.add_argument('-t', action='store', 
-                        dest='targeted', type=bool,
-                        default=False)
+    parser.add_argument('-min', action='store_true', 
+                        dest='minimize')
+    parser.add_argument('-t', action='store_true', 
+                        dest='targeted')
     parser.add_argument('-ds', action='store',
                         dest='downsample', type=float,
                         default=None)
@@ -69,7 +67,7 @@ def main():
     args = parser.parse_args()
     if args.verbose:
         print("arguments passed:",args)
-    
+
     # Dictionaries to keep all our Classes
     recombinations = {  'intermediate': Intermediate(args.offspring_size) }
 
