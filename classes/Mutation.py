@@ -7,26 +7,23 @@ from classes.Individual import Individual
 
 class Mutation:
     def mutate(self):
-        """ Mutates a single individual
+        """ Mutate the whole population
         """
         pass
 
-    def __call__(self, population: Population):
-        """ Mutates the whole population
-        """
-        self.mutate(population)
+    def __call__(self, *args):
+        self.mutate(*args)
 
 
 class IndividualSigma(Mutation):
     """ Individual sigma method.
     """
-    def mutate(self, population: Population):
-        """ Mutates the population
-        """
+    def mutate(self, population: Population, *_):
         tau = 1 / np.sqrt(2 * np.sqrt(population.individuals.shape[1]))
         tau_prime = 1 / np.sqrt(2 * population.individuals.shape[1])
         # one draw from N(0, tau') per individual
-        tau_prime_drawns = np.random.normal(0, tau_prime, size=population.sigmas.shape[0]).reshape(-1, 1).repeat(population.sigmas.shape[1], axis=1)
+        tau_prime_drawns = np.random.normal(0, tau_prime, size=population.sigmas.shape[0])
+        tau_prime_drawns = tau_prime_drawns.reshape(-1, 1).repeat(population.sigmas.shape[1], axis=1)
         # one draw from N(0, tau) per sigma (individuals x components)
         tau_drawns = np.random.normal(0, tau, size=population.sigmas.shape)
         # mutate sigmas
@@ -36,15 +33,50 @@ class IndividualSigma(Mutation):
         population.individuals += variations
 
 
+# TODO add support for one-sigma
+class OneFifth(Mutation):
+    """ 1/5 success rule method.
+    """
+    def __init__(self, alt=False):
+        if alt:
+            self.mutate = self.mutate_alt
+
+    def mutate(self, population: Population, gen_succ: int, gen_tot: int, *_):
+        c = 0.99
+        k = 70  # sigmas reset patience
+        # reset sigmas
+        if gen_tot % k == 0:
+            population.init_sigmas()
+        # increare sigmas (explore more)
+        elif gen_succ/gen_tot > 0.5:
+            population.sigmas /= c
+        # decrease sigmas (exploit more)
+        elif gen_succ/gen_tot < 0.5:
+            population.sigmas *= c
+        # mutate components
+        variations = np.random.normal(0, population.sigmas)
+        population.individuals += variations
+
+    # TODO fix
+    def mutate_alt(self, population: Population, gen_succ: int, gen_tot: int):
+        tau = 1 / np.sqrt(2 * np.sqrt(population.individuals.shape[1]))
+        tau_prime = 1 / np.sqrt(2 * population.individuals.shape[1])
+        # one draw from N(0, tau') per individual
+        tau_prime_drawns = np.random.normal(0, tau_prime, size=population.sigmas.shape[0])
+        tau_prime_drawns = tau_prime_drawns.reshape(-1, 1).repeat(population.sigmas.shape[1], axis=1)
+        # one draw from N(0, tau) per sigma (individuals x components)
+        tau_drawns = np.random.normal(0, tau, size=population.sigmas.shape)
+        # mutate sigmas
+        population.sigmas = population.sigmas * np.exp(tau_drawns + tau_prime_drawns)
+        self.mutate(population, gen_succ, gen_tot)
+
+
 # TODO fix the use of Individual class
 class CustomSigma(Mutation):
     """ Custom sigma method, experiment with using random lr_prime for each sigma.
         Not very efficient, advised not to use.
     """
-    def mutate(self, individual: Individual):
-        """
-        Mutates a single individual
-        """
+    def mutate(self, individual: Individual, *_):
         lr = 1/np.sqrt(2*(np.sqrt(individual.n_values)))
         lr_prime = 1/(np.sqrt(2*individual.n_values))
 
@@ -62,7 +94,7 @@ class CustomSigma(Mutation):
 
 # TODO fix the use of Individual class
 class Correlated(Mutation):
-    def mutate(self, individual: Individual):
+    def mutate(self, individual: Individual, *_):
         lr = 1/np.sqrt(2*(np.sqrt(individual.n_values)))
         lr_prime = 1/(np.sqrt(2*individual.n_values))
         beta = math.pi/36

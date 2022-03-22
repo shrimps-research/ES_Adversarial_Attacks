@@ -10,7 +10,7 @@ class EA:
     def __init__(self, input_, evaluation, minimize, budget,
                 parents_size, offspring_size,
                 recombination, mutation, selection,
-                fallback_patience, verbose, epsilon=0.05, downsample=None) -> None:
+                fallback_patience, verbose, epsilon=0.05, downsample=None, one_fifth=False) -> None:
         self.evaluation = evaluation
         self.minimize = minimize
         self.budget = budget
@@ -19,9 +19,10 @@ class EA:
         self.recombination = recombination
         self.mutation = mutation
         self.selection = selection
+        self.one_fifth = one_fifth
         self.fallback_patience = fallback_patience
         self.verbose=verbose
-        one_sigma = False if mutation.__class__.__name__ == "IndividualSigma" else True
+        one_sigma = True if mutation.__class__.__name__ == "OneSigma" else False
         self.parents = Population(input_, self.parents_size, one_sigma, epsilon, downsample)
         self.offspring = Population(input_, self.offspring_size, one_sigma, epsilon, downsample)
 
@@ -33,45 +34,55 @@ class EA:
         curr_patience = 0
         best_eval = self.evaluation.worst_eval()
 
-        # Initial evaluation step
+        # Initialize (generation-wise) success probability params
+        # Success means finding a new best individual in a given gen. of offspring
+        # gen_tot=num. of offspring gen., gen_succ=num. of successfull gen.
+        gen_tot = 0
+        gen_succ = 0
+
+        # Initial parents evaluation step
         self.parents.evaluate(self.evaluation.evaluate)
         best_eval, best_index = self.parents.best_fitness(self.minimize)
         curr_budget += self.parents_size
 
         while curr_budget < self.budget:
+            gen_tot += 1
+
             # Recombination: creates new offspring
-            self.recombination(self.parents, self.offspring)
+            if self.recombination is not None:
+                self.recombination(self.parents, self.offspring)
             
-            # Mutation: mutate all individuals
-            self.mutation(self.offspring)
+            # Mutation: mutate individuals (offspring)
+            self.mutation(self.offspring, gen_succ, gen_tot)
 
             # Evaluate offspring population
             self.offspring.evaluate(self.evaluation.evaluate)
             curr_budget += self.offspring_size
             curr_patience += self.offspring_size  # TODO patience
 
-            # Next generation parents selection with fallback
+            # Next generation parents selection
             self.selection(self.parents, self.offspring)
 
-            # Evaluate parent population
+            # Evaluate new parent population
             self.parents.evaluate(self.evaluation.evaluate)
             curr_budget += self.parents_size
 
-            # Keep track of best fit individual and evaluation
+            # Update the best individual in case of success
             curr_best_eval, curr_best_index = self.parents.best_fitness(self.minimize)
-            # TODO do this minimiz/maximiz part better
+            success = False
             if self.minimize:
                 if curr_best_eval < best_eval:
-                    best_eval = curr_best_eval
-                    best_index = curr_best_index
-                    curr_patience = 0  # Reset patience since we found a new best
-                    if self.verbose > 1:
-                        print(f"[{curr_budget}/{self.budget}] New best value: {best_eval}")
+                    success = True
             else:
                 if curr_best_eval > best_eval:
-                    best_eval = curr_best_eval
-                    best_index = curr_best_index
-                    if self.verbose > 1:
-                        print(f"[{curr_budget}/{self.budget}] New best value: {best_eval}")
+                    success = True
+            if success:
+                gen_succ += 1
+                best_eval = curr_best_eval
+                best_index = curr_best_index
+                curr_patience = 0  # Reset patience since we found a new best
+                if self.verbose > 1:
+                    print(f"[{curr_budget}/{self.budget}] New best eval: {best_eval}" + \
+                        f" (P_succ: {round(gen_succ/gen_tot, 2)})")
 
         return self.parents, best_index

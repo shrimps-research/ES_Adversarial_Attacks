@@ -51,7 +51,7 @@ def main():
                         default=0.05)
     parser.add_argument('-r', action='store', 
                         dest='recombination', type=str,
-                        default='intermediate')
+                        default=None)
     parser.add_argument('-m', action='store', 
                         dest='mutation', type=str,
                         default='individual_sigma')
@@ -69,9 +69,11 @@ def main():
         print("arguments passed:",args)
 
     # Dictionaries to keep all our Classes
-    recombinations = {  'intermediate': Intermediate(args.offspring_size) }
+    recombinations = {  'intermediate': Intermediate(args.offspring_size),
+                        None: None }
 
-    mutations = {       'individual_sigma': IndividualSigma(),
+    mutations = {       'individual': IndividualSigma(),
+                        'one_fifth': OneFifth(),
                         'correlated': Correlated() }
 
     selections = {      'plus_selection': PlusSelection(),
@@ -81,14 +83,13 @@ def main():
                         'flower_classifier': FlowerClassifier,
                         'xception_classifier': XceptionClassifier }
 
-    evaluations = {       'ackley': Ackley(),
+    evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),
                         'classification_crossentropy': 
                                 ClassifierCrossentropy( models[args.model](),
                                                         args.true_label,
                                                         minimize=args.minimize,
-                                                        targeted=args.targeted
-                                                      ) }
+                                                        targeted=args.targeted) }
 
     # Load original image
     original_img = Image.open(args.input_path)
@@ -135,8 +136,8 @@ def main():
 
     # Print results
     print(f"Best function evaluation: {parents.fitnesses[best_index]}")
-    print(f'Initial prediction: {np.argmax(normal_preds)} - Confidence: {np.max(normal_preds)}')
-    print(f'Noised prediction: {np.argmax(noise_preds)} - Confidence: {np.max(noise_preds)}')
+    print(f'Original prediction: {np.max(normal_preds)} on class {np.argmax(normal_preds)}')
+    print(f'Noised prediction: {np.max(noise_preds)} on class {np.argmax(noise_preds)}')
 
 if __name__ == "__main__":
     main()

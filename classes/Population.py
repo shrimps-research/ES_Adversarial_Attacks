@@ -15,18 +15,21 @@ class Population:
         self.input_ = input_
         self.pop_size = pop_size
         if downsample is None:
-            ind_dim = input_.size
+            self.ind_dim = input_.size
         else:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
             self.ind_side_len = int(input_.shape[0] * downsample)
-            ind_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
+            self.ind_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
         # initialize individuals
-        self.individuals = np.random.uniform(0, 1, size=(pop_size, ind_dim))
+        self.individuals = np.random.uniform(0, 1, size=(self.pop_size, self.ind_dim))
         # initialize sigmas
-        if one_sigma:
-            self.sigmas = np.random.uniform(np.min(self.individuals)/6, np.max(self.individuals)/6, size=pop_size)
-        else:
-            self.sigmas = np.random.uniform(np.min(self.individuals)/6, np.max(self.individuals)/6, size=(pop_size, ind_dim))
+        self.init_sigmas()
         # self.alphas = np.deg2rad(np.random.uniform(0,360, size=(pop_size, int((ind_dim*(ind_dim-1))/2))))
+
+    def init_sigmas(self):
+        if self.one_sigma:
+            self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), np.max(self.individuals)/6, size=self.pop_size)
+        else:
+            self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), np.max(self.individuals)/6, size=(self.pop_size, self.ind_dim))
 
     def reshape_ind(self, individual):
         """ reshape a single individual

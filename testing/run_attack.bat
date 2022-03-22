@@ -4,11 +4,11 @@ python attack_main.py ^
 -in ../data/img_data/tench.png ^
 -tl 0 ^
 -min ^
--b 1000 ^
--ps 2 -os 20 ^
--d 0.15 ^
--e 0.1 ^
+-b 3000 ^
+-ps 2 -os 2 ^
+-d 0.2 ^
+-e 0.05 ^
 -r intermediate ^
--m individual_sigma ^
+-m one_fifth ^
 -s plus_selection ^
 -v 2
