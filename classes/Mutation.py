@@ -48,10 +48,10 @@ class OneFifth(Mutation):
         if gen_tot % k == 0:
             population.init_sigmas()
         # increare sigmas (explore more)
-        elif gen_succ/gen_tot > 0.5:
+        elif gen_succ/gen_tot > 0.20:
             population.sigmas /= c
         # decrease sigmas (exploit more)
-        elif gen_succ/gen_tot < 0.5:
+        elif gen_succ/gen_tot < 0.20:
             population.sigmas *= c
         # mutate components
         variations = np.random.normal(0, population.sigmas)
