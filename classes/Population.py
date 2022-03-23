@@ -8,7 +8,7 @@ class Population:
 
         individual's fitness is initialized to np.inf
     """
-    def __init__(self, input_, pop_size, one_sigma, epsilon, downsample):
+    def __init__(self, input_, pop_size, one_sigma, epsilon, downsample, start_noise):
         self.epsilon = epsilon
         self.downsample = downsample
         self.one_sigma = one_sigma
@@ -20,7 +20,10 @@ class Population:
             self.ind_side_len = int(input_.shape[0] * downsample)
             self.ind_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
         # initialize individuals
-        self.individuals = np.random.uniform(0, 1, size=(self.pop_size, self.ind_dim))
+        if start_noise is None:
+            self.individuals = np.random.uniform(0, 1, size=(self.pop_size, self.ind_dim))
+        else:
+            self.individuals = start_noise.reshape(1, -1).repeat(self.pop_size, axis=0)
         # initialize sigmas
         self.init_sigmas()
         # self.alphas = np.deg2rad(np.random.uniform(0,360, size=(pop_size, int((ind_dim*(ind_dim-1))/2))))

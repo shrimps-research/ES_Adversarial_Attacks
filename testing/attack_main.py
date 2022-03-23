@@ -1,7 +1,7 @@
 import sys
 import argparse
 from PIL import Image
-from numpy import uint8
+import skimage
 
 # Setting paths to folders
 sys.path.append('..')
@@ -61,6 +61,9 @@ def main():
     parser.add_argument('-fp', action='store', 
                         dest='fallback_patience', type=int,
                         default=1000000)
+    parser.add_argument('-sn', action='store',
+                        dest='start_noise', type=str,
+                        default=None)
     parser.add_argument('-v', action='store', 
                         dest='verbose', type=int,
                         default=1)
@@ -97,6 +100,18 @@ def main():
     if len(original_img.shape) == 2:
         original_img = np.expand_dims(original_img, axis=2)
 
+    # Load starting noise
+    if args.start_noise is None:
+        start_noise = None
+    else:
+        start_noise = Image.open(args.start_noise)
+        start_noise = np.array(start_noise) / 255.0
+        if len(start_noise.shape) == 2:
+            start_noise = np.expand_dims(original_img, axis=2)
+        start_noise -=  - original_img
+        start_noise = [skimage.measure.block_reduce((i+1)*start_noise[:,:,i], (2,2), np.max) for i in range(start_noise.shape[2])]
+        start_noise = np.dstack(start_noise)
+
     # Create evolutionary Algorithm
     ea = EA(input_=original_img,
             evaluation=evaluations[args.evaluation],
@@ -110,7 +125,8 @@ def main():
             fallback_patience=args.fallback_patience,
             verbose=args.verbose,
             epsilon=args.epsilon,
-            downsample=args.downsample)  # TODO add args
+            downsample=args.downsample,
+            start_noise=start_noise)
             
     parents, best_index = ea.run()
 

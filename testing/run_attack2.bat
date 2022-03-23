@@ -5,11 +5,10 @@ python attack_main.py ^
 -tl 0 ^
 -min ^
 -b 100000 ^
--ps 2 -os 4 ^
--d 0.502 ^
--e 0.03 ^
+-ps 2 -os 2 ^
+-d 0.4 ^
+-e 0.05 ^
 -r intermediate ^
 -m one_fifth ^
 -s plus_selection ^
--sn ../results/tench_noisy_0.05e_0.4d_onefifth.png ^
 -v 2

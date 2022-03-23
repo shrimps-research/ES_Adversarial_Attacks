@@ -42,8 +42,8 @@ class OneFifth(Mutation):
             self.mutate = self.mutate_alt
 
     def mutate(self, population: Population, gen_succ: int, gen_tot: int, *_):
-        c = 0.99
-        k = 70  # sigmas reset patience
+        c = 0.95
+        k = 40  # sigmas reset patience
         # reset sigmas
         if gen_tot % k == 0:
             population.init_sigmas()
