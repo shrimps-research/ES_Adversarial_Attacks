@@ -151,7 +151,7 @@ def main():
     normal_preds = model(np.expand_dims(np.zeros(original_img.shape)+original_img, axis=0))
 
     # Print results
-    print(f"Best function evaluation: {parents.fitnesses[best_index]}")
+    print(f"Best function evaluation: {round(parents.fitnesses[best_index])}")
     print(f'Original prediction: {np.max(normal_preds)} on class {np.argmax(normal_preds)}')
     print(f'Noised prediction: {np.max(noise_preds)} on class {np.argmax(noise_preds)}')
 

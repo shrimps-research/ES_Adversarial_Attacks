@@ -84,6 +84,6 @@ class EA:
                 curr_patience = 0  # Reset patience since we found a new best
                 if self.verbose > 1:
                     print(f"[{curr_budget}/{self.budget}] New best eval: {round(best_eval, 2)}" + \
-                    f"- Pred: {np.abs(np.exp(best_eval))} - P_succ: {round(gen_succ/gen_tot, 2)})")
+                    f" | Pred: {round(np.abs(np.exp(best_eval)),2)} | P_succ: {round(gen_succ/gen_tot, 2)})")
 
         return self.parents, best_index
