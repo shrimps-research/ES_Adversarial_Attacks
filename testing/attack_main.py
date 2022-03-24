@@ -77,6 +77,7 @@ def main():
 
     mutations = {       'individual': IndividualSigma(),
                         'one_fifth': OneFifth(),
+                        'one_fifth_alt': OneFifth(alt=True),
                         'correlated': Correlated() }
 
     selections = {      'plus_selection': PlusSelection(),

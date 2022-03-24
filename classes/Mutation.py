@@ -58,7 +58,7 @@ class OneFifth(Mutation):
         population.individuals += variations
 
     # TODO fix
-    def mutate_alt(self, population: Population, gen_succ: int, gen_tot: int):
+    def mutate_alt(self, population: Population, gen_succ: int, gen_tot: int, *_):
         tau = 1 / np.sqrt(2 * np.sqrt(population.individuals.shape[1]))
         tau_prime = 1 / np.sqrt(2 * population.individuals.shape[1])
         # one draw from N(0, tau') per individual
@@ -68,8 +68,23 @@ class OneFifth(Mutation):
         tau_drawns = np.random.normal(0, tau, size=population.sigmas.shape)
         # mutate sigmas
         population.sigmas = population.sigmas * np.exp(tau_drawns + tau_prime_drawns)
-        self.mutate(population, gen_succ, gen_tot)
+        # scale sigmas and mutate individuals
+        # self.mutate(population, gen_succ, gen_tot)
 
+        c = 0.95
+        k = 40  # sigmas reset patience
+        # reset sigmas
+        if gen_tot % k == 0:
+            population.init_sigmas()
+        # increare sigmas (explore more)
+        elif gen_succ/gen_tot > 0.20:
+            population.sigmas /= c
+        # decrease sigmas (exploit more)
+        elif gen_succ/gen_tot < 0.20:
+            population.sigmas *= c
+        # mutate components
+        variations = np.random.normal(0, population.sigmas)
+        population.individuals += variations
 
 # TODO fix the use of Individual class
 class CustomSigma(Mutation):

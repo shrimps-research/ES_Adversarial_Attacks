@@ -4,7 +4,7 @@ python attack_main.py ^
 -in ../data/img_data/tench.png ^
 -tl 0 ^
 -min ^
--b 100000 ^
+-b 20000 ^
 -ps 2 -os 2 ^
 -d 0.4 ^
 -e 0.05 ^

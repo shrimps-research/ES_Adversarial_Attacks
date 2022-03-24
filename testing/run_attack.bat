@@ -4,12 +4,11 @@ python attack_main.py ^
 -in ../data/img_data/tench.png ^
 -tl 0 ^
 -min ^
--b 100000 ^
+-b 10000 ^
 -ps 2 -os 4 ^
--d 0.502 ^
--e 0.03 ^
+-d 0.6 ^
+-e 0.025 ^
 -r intermediate ^
--m one_fifth ^
+-m one_fifth_alt ^
 -s plus_selection ^
--sn ../results/tench_noisy_0.05e_0.4d_onefifth.png ^
 -v 2
