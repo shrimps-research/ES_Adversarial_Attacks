@@ -3,9 +3,7 @@ import numpy as np
 
 
 class EA:
-    """ Current constraints: 
-        - offspring population must be at least as big as parent population
-        - maximisation not completely implemented 
+    """ Main Evolutionary Strategy class
     """
     def __init__(self, input_, evaluation, minimize, budget,
                 parents_size, offspring_size,

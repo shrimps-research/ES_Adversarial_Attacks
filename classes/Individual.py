@@ -2,6 +2,9 @@ import numpy as np
 
 
 class Individual:
+    """ Old class representing an individual of the population.
+        It was discontinued for computational efficiency.
+    """
     def __init__(self, n_values, initial_fitness=np.inf):
         self.n_values = n_values
         self.values = np.random.uniform(-1,1,size=n_values)
