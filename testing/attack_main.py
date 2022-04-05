@@ -85,7 +85,8 @@ def main():
 
     models = {          'mnist_classifier' : MnistClassifier,
                         'flower_classifier': FlowerClassifier,
-                        'xception_classifier': XceptionClassifier }
+                        'xception_classifier': XceptionClassifier,
+                        'vit_classifier': ViTClassifier }
 
     evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),

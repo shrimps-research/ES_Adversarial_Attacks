@@ -1,4 +1,6 @@
 import tensorflow as tf
+import numpy as np
+import torch
 
 
 class FlowerClassifier:
@@ -11,7 +13,7 @@ class FlowerClassifier:
         self.model = tf.keras.models.load_model('../data/dnn_models/flower_classifier')
 
     def __call__(self, x):
-        self.model(x)[0]
+        return self.model(x)[0]
 
 
 class MnistClassifier:
@@ -40,11 +42,32 @@ class MnistClassifier:
         return model
 
     def __call__(self, x):
-        self.model(x)[0]
+        return self.model(x)[0]
+
 
 class XceptionClassifier:
     def __init__(self):
         self.model = tf.keras.applications.Xception(weights='imagenet', include_top=True, input_shape=(299,299,3))
 
     def __call__(self, x):
-        self.model(x)[0].numpy()
+        return self.model(x)[0].numpy()
+
+
+class ViTClassifier:
+    def __init__(self):
+        from pytorch_pretrained_vit import ViT
+        self.model = ViT('B_16_imagenet1k', pretrained=True).double()
+        self.model.eval()
+
+    def __call__(self, x):
+        if len(x.shape) == 3:
+            # transpose dims from HxWxC to CxHxW
+            x = np.transpose(x, (2, 0, 1))
+            # add batch dim
+            x = np.expand_dims(x, axis=0)
+        elif len(x.shape) == 4:
+            # transpose dims from BxHxWxC to BxCxHxW
+            x = np.transpose(x, (0, 3, 1, 2))
+
+        with torch.no_grad():
+            return self.model(torch.tensor(x, dtype=torch.float64))

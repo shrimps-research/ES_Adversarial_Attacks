@@ -1,7 +1,7 @@
 python attack_main.py ^
--model xception_classifier ^
+-model vit_classifier ^
 -eval classification_crossentropy ^
--in ../data/img_data/tench.png ^
+-in ../data/img_data/traffic_light_384.png ^
 -tl 0 ^
 -min ^
 -b 10000 ^
