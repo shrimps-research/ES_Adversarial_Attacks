@@ -7,7 +7,7 @@ sys.path.append('..')
 from classes import DNN_Models
 
 # load original image
-original_img = Image.open("../data/img_data/traffic_light_384.png")
+original_img = Image.open("../data/img_data/apple_224.png")
 
 # resize (vit test)
 # from torchvision import transforms
@@ -18,9 +18,10 @@ if len(original_img.shape) == 2:
     original_img = np.expand_dims(original_img, axis=2)
 
 # load model
-model = DNN_Models.ViTClassifier()
+model = DNN_Models.PerceiverClassifier()
 
 # eval input
-pred = model(original_img)[0]
-print(np.argmax(pred))
-print(pred[0])
+pred = model(original_img)[0].detach().numpy()
+pred_ind = np.argmax(pred)
+print(pred_ind)
+print(pred[pred_ind])

@@ -50,13 +50,13 @@ class XceptionClassifier:
         self.model = tf.keras.applications.Xception(weights='imagenet', include_top=True, input_shape=(299,299,3))
 
     def __call__(self, x):
-        return self.model(x)[0].numpy()
+        return self.model(x)[0]
 
 
 class ViTClassifier:
     def __init__(self):
         from pytorch_pretrained_vit import ViT
-        self.model = ViT('B_16_imagenet1k', pretrained=True).double()
+        self.model = ViT('B_32_imagenet1k', pretrained=True).double()
         self.model.eval()
 
     def __call__(self, x):
@@ -70,4 +70,19 @@ class ViTClassifier:
             x = np.transpose(x, (0, 3, 1, 2))
 
         with torch.no_grad():
-            return self.model(torch.tensor(x, dtype=torch.float64))
+            return self.model(torch.tensor(x, dtype=torch.float64))[0]
+
+
+class PerceiverClassifier:
+    def __init__(self):
+        from transformers import PerceiverFeatureExtractor, PerceiverForImageClassificationLearned
+        self.feature_extractor = PerceiverFeatureExtractor.from_pretrained("deepmind/vision-perceiver-learned")
+        self.model = PerceiverForImageClassificationLearned.from_pretrained("deepmind/vision-perceiver-learned")
+    
+    def __call__(self, x):
+        # prepare input
+        encoding = self.feature_extractor(x, return_tensors="pt")
+        inputs = encoding.pixel_values
+        # forward pass
+        outputs = self.model(inputs)
+        return outputs.logits

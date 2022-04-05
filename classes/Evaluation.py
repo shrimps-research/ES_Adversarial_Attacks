@@ -65,7 +65,7 @@ class ClassifierCrossentropy(Evaluate):
         # if np.min(input_) < 0 or np.max(input_) > 1:
         #     return np.inf if self.targeted else 0
         # prediction
-        predictions = self.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
+        predictions = self.model(np.expand_dims(noise + input_, axis=0)).numpy()
         # return loss
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)
