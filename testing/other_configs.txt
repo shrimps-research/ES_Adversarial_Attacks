@@ -1,5 +1,0 @@
-# Mnist config, remember to chage model in crossentropy function and image
-python attack_main.py -func 'classification_crossentropy' -min True -b 100 -ps 2 -os 6 -vs 784 -e 0.05 -r 'intermediate' -m 'individual_sigma' -s 'one_comma_l' -fp 10000000 -v 2
-
-# Unsuccesful 3 channel img
-python attack_main.py -func 'classification_crossentropy' -min True -b 100 -ps 20 -os 180 -vs 49152-e 0.3 -r 'intermediate' -m 'individual_sigma' -s 'one_comma_l' -fp 10000000 -v 2
