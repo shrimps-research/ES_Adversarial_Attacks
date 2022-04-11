@@ -46,9 +46,6 @@ def main():
     parser.add_argument('-os', action='store', 
                         dest='offspring_size', type=int,
                         default=140)
-    parser.add_argument('-e', action='store', 
-                        dest='epsilon', type=float,
-                        default=0.05)
     parser.add_argument('-r', action='store', 
                         dest='recombination', type=str,
                         default=None)
@@ -58,6 +55,9 @@ def main():
     parser.add_argument('-s', action='store', 
                         dest='selection', type=str,
                         default='one_comma_l')
+    parser.add_argument('-e', action='store', 
+                        dest='epsilon', type=float,
+                        default=0.05)
     parser.add_argument('-fp', action='store', 
                         dest='fallback_patience', type=int,
                         default=1000000)
