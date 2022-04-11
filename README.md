@@ -48,7 +48,7 @@ In order to customize the evaluation you need to modify the script. A CLI will p
 <img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/mnist_example.png" width="70%" />
 
 ### Attack on Xception trained on ImageNet (mutation: intermediate)
-<img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/xception_int_example.png" width="70%" />
+<img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/xception_ind_example.png" width="70%" />
 
 ### Attack on Xception trained on ImageNet (mutation: 1/5 success rule)
 <img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/xception_onefifth_example.png" width="70%" />
