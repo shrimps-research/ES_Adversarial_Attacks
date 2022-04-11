@@ -86,7 +86,8 @@ def main():
     models = {          'mnist_classifier' : MnistClassifier,
                         'flower_classifier': FlowerClassifier,
                         'xception_classifier': XceptionClassifier,
-                        'vit_classifier': ViTClassifier }
+                        'vit_classifier': ViTClassifier,
+                        'perceiver_classifier': PerceiverClassifier }
 
     evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),
@@ -98,6 +99,8 @@ def main():
 
     # Load original image
     original_img = Image.open(args.input_path)
+    if args.model != "mnist_classifier":
+        original_img = original_img.convert("RGB")
     original_img = np.array(original_img) / 255.0
     if len(original_img.shape) == 2:
         original_img = np.expand_dims(original_img, axis=2)
@@ -148,14 +151,16 @@ def main():
     Image.fromarray(noisy_input).save('../results/noisy_input.png')
 
     # Predict images
-    model = models[args.model]().model
+    model = models[args.model]()
     noise_preds = model(np.expand_dims(noise+original_img, axis=0))
     normal_preds = model(np.expand_dims(np.zeros(original_img.shape)+original_img, axis=0))
 
     # Print results
+    print(noise_preds.shape)
     print(f"Best function evaluation: {round(parents.fitnesses[best_index])}")
     print(f'Original prediction: {np.max(normal_preds)} on class {np.argmax(normal_preds)}')
     print(f'Noised prediction: {np.max(noise_preds)} on class {np.argmax(noise_preds)}')
+    print(f'Noised prediction: {noise_preds[0, args.true_label]} on original class {args.true_label}')
 
 if __name__ == "__main__":
     main()

@@ -1,14 +1,14 @@
 python attack_main.py ^
--model perceiver_classifier ^
+-model mnist_classifier ^
 -eval classification_crossentropy ^
--in ../data/img_data/perc_224/tench.png ^
+-in ../data/img_data/mnist/zero.png ^
 -tl 0 ^
 -min ^
--b 20000 ^
+-b 10000 ^
 -ps 2 -os 2 ^
--d 0.4 ^
+-d 1 ^
 -e 0.2 ^
+-m individual ^
 -r intermediate ^
--m one_fifth ^
 -s plus_selection ^
 -v 2

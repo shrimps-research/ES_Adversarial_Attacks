@@ -93,4 +93,25 @@ class Population:
             if self.downsample is not None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
                 individual = self.upsample_ind(individual)
             # evaluate input + noiose
-            self.fitnesses.append(evaluation(individual, self.input_))
+            self.fitnesses.append(evaluation(individual, self.input_)) 
+
+    def evaluate_batch(self, evaluation):
+        """ Evaluate each individuals's fitness.
+        """
+        self.fitnesses = []
+        if self.epsilon is not None:
+            self.individuals = self.individuals.clip(-self.epsilon, self.epsilon)
+        batch = []
+        for individual in self.individuals:
+            # reshape noise (individual) to input shape
+            individual = self.reshape_ind(individual)
+            # upscale to input shape
+            if self.downsample is not None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
+                individual = self.upsample_ind(individual)
+            # add original input and append to batch list
+            batch.append(individual + self.input_)
+        # stack batch as BxHxWxC
+        batch = np.stack(batch)
+        # evaluate batch
+        batch_evals = evaluation(batch)
+        self.fitnesses += list(batch_evals)

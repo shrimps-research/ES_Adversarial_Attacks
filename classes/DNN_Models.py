@@ -42,6 +42,9 @@ class MnistClassifier:
         return model
 
     def __call__(self, x):
+        if len(x.shape) == 2:
+            # add batch dim
+            x = np.expand_dims(x, axis=0)
         return self.model(x)[0]
 
 
@@ -50,6 +53,9 @@ class XceptionClassifier:
         self.model = tf.keras.applications.Xception(weights='imagenet', include_top=True, input_shape=(299,299,3))
 
     def __call__(self, x):
+        if len(x.shape) == 3:
+            # add batch dim
+            x = np.expand_dims(x, axis=0)
         return self.model(x)[0]
 
 
@@ -78,11 +84,22 @@ class PerceiverClassifier:
         from transformers import PerceiverFeatureExtractor, PerceiverForImageClassificationLearned
         self.feature_extractor = PerceiverFeatureExtractor.from_pretrained("deepmind/vision-perceiver-learned")
         self.model = PerceiverForImageClassificationLearned.from_pretrained("deepmind/vision-perceiver-learned")
+        self.model.eval()
     
     def __call__(self, x):
+        if len(x.shape) == 3:
+            # transpose dims from HxWxC to CxHxW
+            x = np.transpose(x, (2, 0, 1))
+            # add batch dim
+            x = np.expand_dims(x, axis=0)
+        elif len(x.shape) == 4:
+            # transpose dims from BxHxWxC to BxCxHxW
+            x = np.transpose(x, (0, 3, 1, 2))
+
         # prepare input
-        encoding = self.feature_extractor(x, return_tensors="pt")
+        encoding = self.feature_extractor(list(x), return_tensors="pt")
         inputs = encoding.pixel_values
         # forward pass
-        outputs = self.model(inputs)
-        return outputs.logits
+        with torch.no_grad():
+            outputs = self.model(inputs)
+            return torch.nn.Softmax(dim=1)(outputs.logits).detach()[0]
