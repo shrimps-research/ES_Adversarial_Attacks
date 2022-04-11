@@ -56,7 +56,7 @@ class ClassifierCrossentropy(Evaluate):
         else:
             return np.inf if self.minimize else -np.inf
 
-    def evaluate(self, noise, input_):
+    def evaluate_ind(self, noise, input_):
         """ if targeted attack, use crossentropy (-log(pred)) on target
             if untargeted attack, use negative crossentropy (log(pred)) on target
             opposite of above if minimize is False
@@ -65,7 +65,7 @@ class ClassifierCrossentropy(Evaluate):
         # if np.min(input_) < 0 or np.max(input_) > 1:
         #     return np.inf if self.targeted else 0
         # prediction
-        predictions = self.model(np.expand_dims(noise + input_, axis=0)).numpy()
+        predictions = self.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
         # return loss
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)
@@ -73,7 +73,7 @@ class ClassifierCrossentropy(Evaluate):
             loss_sign = (1 if self.targeted else -1)
         return loss_sign * np.log(predictions[self.true_label])
 
-    def evaluate_batch(self, batch):
+    def evaluate(self, batch):
         """ if targeted attack, use crossentropy (-log(pred)) on target
             if untargeted attack, use negative crossentropy (log(pred)) on target
             opposite of above if minimize is False
@@ -82,14 +82,10 @@ class ClassifierCrossentropy(Evaluate):
         # if np.min(input_) < 0 or np.max(input_) > 1:
         #     return np.inf if self.targeted else 0
         # prediction
-        print(batch.shape)
         predictions = self.model(batch).numpy()
-        # TODO fix (preds have shape (1000,) instead of (batch_size, 1000,) for some reason)
-        print(predictions.shape)
-        exit()
         # return loss
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)
         else:
             loss_sign = (1 if self.targeted else -1)
-        return loss_sign * np.log(predictions[self.true_label])
+        return loss_sign * np.log(predictions[:, self.true_label])

@@ -42,6 +42,7 @@ class EA:
         # Initial parents evaluation step
         self.parents.evaluate(self.evaluation.evaluate)
         best_eval, best_index = self.parents.best_fitness(self.minimize)
+        best_indiv = self.parents.individuals[best_index]
         curr_budget += self.parents_size
 
         while curr_budget < self.budget:
@@ -68,6 +69,7 @@ class EA:
 
             # Update the best individual in case of success
             curr_best_eval, curr_best_index = self.parents.best_fitness(self.minimize)
+            current_best_indiv = self.parents.individuals[curr_best_index]
             success = False
             if self.minimize:
                 if curr_best_eval < best_eval:
@@ -77,11 +79,11 @@ class EA:
                     success = True
             if success:
                 gen_succ += 1
+                best_indiv = current_best_indiv
                 best_eval = curr_best_eval
-                best_index = curr_best_index
                 curr_patience = 0  # Reset patience since we found a new best
                 if self.verbose > 1:
                     print(f"[{curr_budget}/{self.budget}] New best eval: {round(best_eval, 2)}" + \
                     f" | Pred: {round(np.abs(np.exp(best_eval)),2)} | P_succ: {round(gen_succ/gen_tot, 2)}")
 
-        return self.parents, best_index
+        return self.parents, best_indiv, best_eval

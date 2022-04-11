@@ -80,8 +80,9 @@ class Population:
             best_fitness, best_index = self.max_fitness()
         return best_fitness, best_index
 
-    def evaluate(self, evaluation):
-        """ Evaluate each individuals's fitness.
+    def evaluate_(self, evaluation):
+        """ Deprecated. Use evaluate instead.
+            Evaluate the whole batch with single individual forward passes
         """
         self.fitnesses = []
         if self.epsilon is not None:
@@ -95,10 +96,9 @@ class Population:
             # evaluate input + noiose
             self.fitnesses.append(evaluation(individual, self.input_)) 
 
-    def evaluate_batch(self, evaluation):
-        """ Evaluate each individuals's fitness.
+    def evaluate(self, evaluation):
+        """ Evaluate the fitness of the whole batch in a single forward pass
         """
-        self.fitnesses = []
         if self.epsilon is not None:
             self.individuals = self.individuals.clip(-self.epsilon, self.epsilon)
         batch = []
@@ -114,4 +114,4 @@ class Population:
         batch = np.stack(batch)
         # evaluate batch
         batch_evals = evaluation(batch)
-        self.fitnesses += list(batch_evals)
+        self.fitnesses = list(batch_evals)

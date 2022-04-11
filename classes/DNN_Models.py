@@ -13,7 +13,7 @@ class FlowerClassifier:
         self.model = tf.keras.models.load_model('../data/dnn_models/flower_classifier')
 
     def __call__(self, x):
-        return self.model(x)[0]
+        return self.model(x)
 
 
 class MnistClassifier:
@@ -45,7 +45,7 @@ class MnistClassifier:
         if len(x.shape) == 2:
             # add batch dim
             x = np.expand_dims(x, axis=0)
-        return self.model(x)[0]
+        return self.model(x)
 
 
 class XceptionClassifier:
@@ -56,7 +56,7 @@ class XceptionClassifier:
         if len(x.shape) == 3:
             # add batch dim
             x = np.expand_dims(x, axis=0)
-        return self.model(x)[0]
+        return self.model(x)
 
 
 class ViTClassifier:
@@ -76,7 +76,7 @@ class ViTClassifier:
             x = np.transpose(x, (0, 3, 1, 2))
 
         with torch.no_grad():
-            return self.model(torch.tensor(x, dtype=torch.float64))[0]
+            return self.model(torch.tensor(x, dtype=torch.float64))
 
 
 class PerceiverClassifier:
@@ -102,4 +102,4 @@ class PerceiverClassifier:
         # forward pass
         with torch.no_grad():
             outputs = self.model(inputs)
-            return torch.nn.Softmax(dim=1)(outputs.logits).detach()[0]
+            return torch.nn.Softmax(dim=1)(outputs.logits).detach()

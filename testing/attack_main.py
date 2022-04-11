@@ -133,10 +133,10 @@ def main():
             downsample=args.downsample,
             start_noise=start_noise)
             
-    parents, best_index = ea.run()
+    parents, best_indiv, best_eval = ea.run()
 
     # Save noisy image
-    noise = parents.reshape_ind(parents.individuals[best_index])
+    noise = parents.reshape_ind(best_indiv)
     noise = parents.upsample_ind(noise)
     # clip image + noise in [0,1] then subtract input to obtain clipped noise
     noise = (original_img + noise).clip(0, 1) - original_img
@@ -157,7 +157,7 @@ def main():
 
     # Print results
     print(noise_preds.shape)
-    print(f"Best function evaluation: {round(parents.fitnesses[best_index])}")
+    print(f"Best function evaluation: {round(best_eval)}")
     print(f'Original prediction: {np.max(normal_preds)} on class {np.argmax(normal_preds)}')
     print(f'Noised prediction: {np.max(noise_preds)} on class {np.argmax(noise_preds)}')
     print(f'Noised prediction: {noise_preds[0, args.true_label]} on original class {args.true_label}')

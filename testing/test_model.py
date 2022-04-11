@@ -22,7 +22,7 @@ if len(original_img.shape) == 2:
 model = DNN_Models.PerceiverClassifier()
 
 # eval input
-pred = model(original_img).numpy()
+pred = model(original_img)[0].numpy()
 pred_ind = np.argmax(pred)
 print(f"Prediction: {pred[pred_ind]} on class {pred_ind}")
 print(f"Prediction: {pred[0]} on class {0}")
