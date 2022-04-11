@@ -8,7 +8,7 @@ This repository contains a framework for applying arbitrary evolutionary strateg
 ## Run ES for Adversarial Attacks
 In this section we describe how to launch an ES for adversarial attacks, using the `attack_main.py` script. Using our script as a reference you can create your own script to apply ES on a problem of your preference.
 
-In order to launch the ES execute the following command from the main directory:
+In order to launch the ES execute the following commands from the main directory:
 ```
 cd testing
 python attack_main.py [-args]  
@@ -30,6 +30,18 @@ The following arguments can be used:
 - `-e` :  defines the epsilon used when clipping the noise. The noise is then constrained in [-e,e]
 - `-sn` : to be used if you want to initialize the parent population with a single predefined noise. Set this argument to the path of the noise in the form of a numpy array.
 - `-v` : verbose intensity parameter. Set to a value between 0 and 2, with 2 as the most intense.
+
+## Run evaluation
+In this section we describe how to launch an evaluation on a chosen model and image (with both noise or not), using the `evaluate.py` script.
+
+In order to launch the evaluation execute the following commands from the main directory:
+```
+cd testing
+python evaluate.py
+```
+
+In order to customize the evaluation you need to modify the script. A CLI will probably be provided in the future.
+
 
 ## Examples
 ### Attack on a simple MLP trained on MNIST
