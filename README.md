@@ -43,7 +43,7 @@ python evaluate.py
 In order to customize the evaluation you need to modify the script. A CLI will probably be provided in the future.
 
 
-## Examples
+## Results (so far)
 ### Attack on a simple MLP trained on MNIST
 <img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/mnist_example.png" width="70%" />
 
