@@ -1,4 +1,4 @@
-# Evolutionary Strategies based Adversarial Attacks (under construction) a
+# Evolutionary Strategies based Adversarial Attacks (under construction)
 This repository contains a framework for applying arbitrary evolutionary strategies (ES) on a generic problem. Our specific use-case is the application of ES for adversarial attacks on deep neural networks. The experiments conducted are only oriented to images, specifically we search for otimal noises which, combined to an original image, are able to fool a network (e.g. misclassification).  Given that we deal with very high-dimensional search spaces, we implemented different methods for limiting the problem.
 
 
