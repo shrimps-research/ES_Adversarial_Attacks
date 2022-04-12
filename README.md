@@ -1,6 +1,5 @@
 # Evolutionary-driven Adversarial Attacks (under construction)
-This repository contains a framework for applying evolutionary strategies (ES) on arbitrary optimization problems. In the specific scope of our project, we applied ES for adversarial attacks on deep neural networks. The experiments conducted are only image oriented. Specifically, we search for otimal *noises*, which, combined to an original image, are able to fool a network (e.g. misclassification).  Given that we deal with very high-dimensional search spaces, we implemented different methods to deal with the curse of dimensionality.
-
+This repository contains a framework for applying evolutionary strategies (ES) on arbitrary optimization problems. In the specific scope of our project, we applied ES for adversarial attacks on deep neural networks. The experiments conducted are only image oriented. Specifically, we search for otimal *noises*, which, combined to an original image, are able to fool a network (e.g. misclassification).  Given that we deal with very high-dimensional search spaces, we implemented different methods to efficiently tackle the problem.
 
 ## Authors
 <a href="https://github.com/OhGreat">Dimitrios Ierinomakys</a>, <a href="https://github.com/riccardomajellaro">Riccardo Majellaro</a>, <a href="https://github.com/doctorblinch">Ivan Horokhovskyi</a>, <a href="https://github.com/pavlosZakkas">Pavlos Zakkas</a>, <a href="https://www.linkedin.com/in/andreas-paraskeva-2053141a3/">Andreas Paraskeva</a>
