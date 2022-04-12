@@ -1,12 +1,12 @@
 # Evolutionary Strategies based Adversarial Attacks (under construction)
-This repository contains a framework for applying arbitrary evolutionary strategies (ES) on generic majorization-minimization (MM) problems. Our specific use-case is the application of ES for adversarial attacks on deep neural networks. The experiments conducted are only oriented to images, specifically we search for otimal noises which, combined to an original image, are able to fool a network (e.g. misclassification).  Given that we deal with very high-dimensional search spaces, we implemented different methods for limiting the problem.
+This repository contains a framework for applying arbitrary evolutionary strategies (ES) on generic majorization-minimization (MM) problems. In the specific scope of our project, we applied ES for adversarial attacks on deep neural networks. The experiments conducted are only image oriented. Specifically, we search for otimal *noises*, which, combined to an original image, are able to fool a network (e.g. misclassification).  Given that we deal with very high-dimensional search spaces, we implemented different methods to deal with the curse of dimensionality.
 
 
 ## Authors
 <a href="https://github.com/OhGreat">Dimitrios Ierinomakys</a>, <a href="https://github.com/riccardomajellaro">Riccardo Majellaro</a>, <a href="https://github.com/doctorblinch">Ivan Horokhovskyi</a>, <a href="https://github.com/pavlosZakkas">Pavlos Zakkas</a>, <a href="https://www.linkedin.com/in/andreas-paraskeva-2053141a3/">Andreas Paraskeva</a>
 
 ## Run ES for Adversarial Attacks
-In this section we describe how to launch an ES for adversarial attacks, using the `attack_main.py` script. Using our script as a reference you can create your own script to apply ES on a problem of your preference.
+In this section we describe how to launch an ES for adversarial attacks, using the `attack_main.py` script. Using our script as a reference it is possible to create personalized scripts to apply ES on arbitrary problems.
 
 In order to launch the ES execute the following commands from the main directory:
 ```
