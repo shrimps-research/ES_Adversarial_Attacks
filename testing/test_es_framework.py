@@ -21,7 +21,7 @@ def main():
     recomb = Intermediate(24)
     mutation = IndividualSigma()
     selection = PlusSelection()
-    evaluation = Rastringin()
+    evaluation = Ackley()
 
     repetitions = 100
 
@@ -45,7 +45,7 @@ def main():
         best_budgets.append(best_budget)
     end_time = time.time()
     print(f"Run time: {np.round(end_time - start_time, 3)}")
-    print(f"mean best eval: {np.mean(best_evals)}, mean budget: {np.mean(best_budgets)}, in {repetitions} repetitions")
+    print(f"mean best eval: {np.round(np.mean(best_evals),4)}, mean budget: {np.mean(best_budgets)}, in {repetitions} repetitions")
 
 
 if __name__ == "__main__":
