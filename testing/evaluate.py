@@ -4,7 +4,7 @@ import numpy as np
 
 # setting paths to folders
 sys.path.append('..')
-from classes import DNN_Models
+from ES_adversarial_attacks import DNN_Models
 
 # load original image
 # original_img = Image.open("../data/img_data/perc_224/tench.png").convert("RGB")

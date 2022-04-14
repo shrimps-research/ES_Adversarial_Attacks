@@ -2,18 +2,19 @@ import sys
 import argparse
 from PIL import Image
 import skimage
+import time
 
 # Setting paths to folders
 sys.path.append('..')
-sys.path.append('../classes/')
+sys.path.append('../ES_adversarial_attacks/')
 
-from classes.Population import *
-from classes.Recombination import *
-from classes.Mutation import *
-from classes.Selection import *
-from classes.DNN_Models import *
-from classes.Evaluation import *
-from classes.EA import *
+from ES_adversarial_attacks.Population import *
+from ES_adversarial_attacks.Recombination import *
+from ES_adversarial_attacks.Mutation import *
+from ES_adversarial_attacks.Selection import *
+from ES_adversarial_attacks.DNN_Models import *
+from ES_adversarial_attacks.Evaluation import *
+from ES_adversarial_attacks.EA import *
 
 def main():
     # Command line arguments
@@ -132,8 +133,12 @@ def main():
             epsilon=args.epsilon,
             downsample=args.downsample,
             start_noise=start_noise)
-            
+    
+    start_time = time.time()
     parents, best_indiv, best_eval = ea.run()
+    end_time = time.time()
+    es_run_time = np.round(end_time - start_time, 2)
+    print(f'Total es run time: {es_run_time}')
 
     # Save noisy image
     noise = parents.reshape_ind(best_indiv)

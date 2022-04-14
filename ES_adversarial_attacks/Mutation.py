@@ -1,8 +1,8 @@
 import numpy as np
 import random
 import math
-from classes.Population import Population
-from classes.Individual import Individual
+from ES_adversarial_attacks.Population import Population
+from ES_adversarial_attacks.Individual import Individual
 
 
 class Mutation:

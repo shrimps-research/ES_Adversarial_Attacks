@@ -1,4 +1,4 @@
-from classes.Population import Population
+from ES_base_framework.Population import *
 import numpy as np
 import random
 
@@ -24,14 +24,17 @@ class Intermediate(Recombination):
             s1, s2 = parents.sigmas[i1], parents.sigmas[i2]
             # recombinate components and sigmas
             offspring.individuals.append(np.array([(x1_i + x2_i) / 2 for x1_i, x2_i in zip(x1, x2)]))
-            if not parents.one_sigma:
+            if not parents.mutation.__class__.__name__ == "OneSigma":
                 # select the sigma of each component as the mean of the sigmas of the two components
                 offspring.sigmas.append(np.array([(s1_i + s2_i) / 2 for s1_i, s2_i in zip(s1, s2)]))
             else:
                 # sigma is the mean of the two sigmas
                 offspring.sigmas.append((s1 + s2) / 2)
         offspring.individuals = np.vstack(offspring.individuals)
-        if not parents.one_sigma:
+        if not parents.mutation.__class__.__name__ == "OneSigma":
             offspring.sigmas = np.vstack(offspring.sigmas)
+        elif parents.mutation.__class__.__name__ == "Coorelated":
+            offspring.sigmas = np.vstack(offspring.sigmas)
+            offspring.alphas = np.vstack(offspring.alphas)
         else:
             offspring.sigmas = np.array(offspring.sigmas)
