@@ -33,7 +33,6 @@ class EA:
         """
         # Initialize budget and best evaluation (as worst possible)
         curr_budget = 0
-        best_budget = curr_budget
         best_eval = self.evaluation.worst_eval()
 
         # Initialize (generation-wise) success probability params
@@ -78,9 +77,8 @@ class EA:
                 gen_succ += 1
                 best_indiv = self.parents.individuals[0]
                 best_eval = curr_best_eval
-                best_budget = curr_budget
                 if self.verbose > 1:
                     print(f"[{curr_budget}/{self.budget}] New best eval: {round(best_eval, 2)}" + \
                     f" | Pred: {round(np.abs(np.exp(best_eval)),2)} | P_succ: {round(gen_succ/gen_tot, 2)}")
 
-        return best_indiv, best_eval, best_budget
+        return best_indiv, best_eval

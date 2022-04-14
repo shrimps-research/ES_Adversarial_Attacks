@@ -11,9 +11,6 @@ from ES_base_framework.Selection import *
 from ES_base_framework.Evaluation import *
 from ES_base_framework.EA import *
 
-
-
-
 def main():
     random.seed(0)
     np.random.seed(0)
@@ -23,7 +20,7 @@ def main():
     selection = PlusSelection()
     evaluation = Ackley()
 
-    repetitions = 100
+    repetitions = 1000
 
     ea = EA(minimize=True,
             budget=10000,
@@ -46,7 +43,6 @@ def main():
     end_time = time.time()
     print(f"Run time: {np.round(end_time - start_time, 3)}")
     print(f"mean best eval: {np.round(np.mean(best_evals),4)}, mean budget: {np.mean(best_budgets)}, in {repetitions} repetitions")
-
 
 if __name__ == "__main__":
     main()
