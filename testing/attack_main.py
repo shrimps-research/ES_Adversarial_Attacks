@@ -74,6 +74,7 @@ def main():
 
     # Dictionaries to keep all our Classes
     recombinations = {  'intermediate': Intermediate(args.offspring_size),
+                        'discrete': Discrete(),
                         None: None }
 
     mutations = {       'individual': IndividualSigma(),

@@ -17,7 +17,7 @@ class PlusSelection(Selection):
             sorted_ind = np.argsort(np.hstack([parents.fitnesses, offspring.fitnesses]))[::-1][:parents.pop_size]
         parents.individuals = np.vstack([parents.individuals, offspring.individuals])[sorted_ind]
         parents.fitnesses = list(np.hstack([parents.fitnesses, offspring.fitnesses])[sorted_ind])
-        if not parents.one_sigma:
+        if not parents.mutation.__class__.__name__ == "OneSigma":
             parents.sigmas = np.vstack([parents.sigmas, offspring.sigmas])[sorted_ind]
         else:
             parents.sigmas = np.hstack([parents.sigmas, offspring.sigmas])[sorted_ind]

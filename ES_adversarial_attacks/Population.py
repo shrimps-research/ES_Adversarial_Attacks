@@ -7,13 +7,13 @@ class Population:
             - pop_size : size of population
             - input_ : path specifing the location of the input image
             - epsilon : maximum possible noise as a value between [0,1]
-            - one_sigma : required in order to control alpha initialization based on mutation
+            - mutation : required in order to control alpha initialization based on mutation
             - downsample : value between [0,1] that scales the size of the image
     """
-    def __init__(self, input_, pop_size, one_sigma, epsilon, downsample, start_noise):
+    def __init__(self, input_, pop_size, mutation, epsilon, downsample, start_noise):
         self.epsilon = epsilon
         self.downsample = downsample
-        self.one_sigma = one_sigma
+        self.mutation = mutation
         self.input_ = input_
         self.pop_size = pop_size
         if downsample is None:
@@ -33,7 +33,7 @@ class Population:
     def init_sigmas(self):
         """ Initialize sigma values depending on the mutation method of choice.
         """
-        if self.one_sigma:
+        if self.mutation.__class__.__name__ == "OneSigma":
             self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), np.max(self.individuals)/6, size=self.pop_size)
         else:
             self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), np.max(self.individuals)/6, size=(self.pop_size, self.ind_dim))

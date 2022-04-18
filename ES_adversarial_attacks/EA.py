@@ -22,8 +22,8 @@ class EA:
         self.fallback_patience = fallback_patience
         self.verbose=verbose
         one_sigma = True if mutation.__class__.__name__ == "OneSigma" else False
-        self.parents = Population(input_, self.parents_size, one_sigma, epsilon, downsample, start_noise)
-        self.offspring = Population(input_, self.offspring_size, one_sigma, epsilon, downsample, start_noise)
+        self.parents = Population(input_, self.parents_size, mutation, epsilon, downsample, start_noise)
+        self.offspring = Population(input_, self.offspring_size, mutation, epsilon, downsample, start_noise)
 
     def run(self):
         """ Main function to run the Evolutionary Strategy

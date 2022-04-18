@@ -8,9 +8,9 @@ python attack_main.py \
 -min \
 -b 10000 \
 -ps 4 -os 24 \
--d 0.6 \
--e 0.06 \
--r intermediate \
--m one_fifth \
+-d 0.4 \
+-e 0.05 \
+-r discrete \
+-m individual \
 -s plus_selection \
 -v 2
