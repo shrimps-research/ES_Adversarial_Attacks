@@ -11,13 +11,10 @@ class Recombination:
 class Intermediate(Recombination):
     """ Creates offspring by taking the average values of the parents
     """
-    def __init__(self, offspring_size):
-        self.offspring_size = offspring_size
-    
-    def __call__(self, parents: Population, offspring: Population) -> Population:
+    def __call__(self, parents: Population, offspring: Population):
         offspring.individuals = []
         offspring.sigmas = []
-        for _ in range(self.offspring_size):
+        for _ in range(offspring.pop_size):
             # get pair
             i1, i2 = random.sample(range(parents.individuals.shape[0]), k=2)
             x1, x2 = parents.individuals[i1], parents.individuals[i2]

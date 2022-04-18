@@ -12,15 +12,15 @@ from ES_base_framework.Evaluation import *
 from ES_base_framework.EA import *
 
 def main():
-    random.seed(0)
-    np.random.seed(0)
+    #random.seed(0)
+    #np.random.seed(0)
 
-    recomb = Intermediate(24)
-    mutation = IndividualSigma()
+    recomb = Intermediate()
+    mutation = OneFifth()
     selection = PlusSelection()
-    evaluation = Ackley()
+    evaluation = Rastringin()
 
-    repetitions = 1000
+    repetitions = 20
 
     ea = EA(minimize=True,
             budget=10000,

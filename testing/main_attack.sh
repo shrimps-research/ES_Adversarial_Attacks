@@ -7,10 +7,10 @@ python attack_main.py \
 -tl 0 \
 -min \
 -b 10000 \
--ps 2 -os 4 \
--d 0.4 \
--e 0.05 \
+-ps 4 -os 24 \
+-d 0.6 \
+-e 0.06 \
 -r intermediate \
--m individual \
+-m one_fifth \
 -s plus_selection \
 -v 2

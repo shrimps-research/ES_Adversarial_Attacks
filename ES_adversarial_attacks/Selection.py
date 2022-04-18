@@ -33,4 +33,4 @@ class CommaSelection(Selection):
             sorted_ind = np.argsort(offspring.fitnesses)[::-1][:parents.pop_size]
         parents.individuals = offspring.individuals[sorted_ind]
         parents.sigmas = offspring.sigmas[sorted_ind]
-        parents.fitnesses = offspring.fitnesses[sorted_ind]
+        parents.fitnesses = list(np.array(offspring.fitnesses)[sorted_ind])

@@ -49,7 +49,7 @@ class EA:
             gen_tot += 1
 
             # Recombination: creates new offspring
-            if self.recombination is not None:
+            if self.recombination is not None and self.parents_size > 1:
                 self.recombination(self.parents, self.offspring)
             
             # Mutation: mutate individuals (offspring)
