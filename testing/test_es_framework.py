@@ -12,21 +12,21 @@ from ES_base_framework.Evaluation import *
 from ES_base_framework.EA import *
 
 def main():
-    #random.seed(0)
-    #np.random.seed(0)
+    random.seed(0)
+    np.random.seed(0)
 
-    recomb = Intermediate()
+    recomb = None
     mutation = OneFifth()
     selection = PlusSelection()
     evaluation = Rastringin()
 
-    repetitions = 20
+    repetitions = 200
 
     ea = EA(minimize=True,
             budget=10000,
-            parents_size=4,
-            offspring_size=24,
-            individual_size=5,
+            parents_size=6,
+            offspring_size=30,
+            individual_size=100,
             recombination=recomb,
             mutation=mutation,
             selection=selection,

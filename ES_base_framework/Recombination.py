@@ -35,3 +35,23 @@ class Intermediate(Recombination):
             offspring.alphas = np.vstack(offspring.alphas)
         else:
             offspring.sigmas = np.array(offspring.sigmas)
+
+
+class Discrete(Recombination):
+    """ Creates discrete recombined offsprings.
+    """
+    def __call__(self, parents: Population, offspring: Population):
+        # range of parent indexes to sample from 
+        idxes = range(parents.pop_size)
+
+        for i in range(offspring.pop_size):
+            # pick two parents at random
+            p1, p2 = random.sample(idxes, k=2)
+            # create offspring
+            offspring.individuals[i] = np.array([np.random.permutation(x) 
+                                        for x in np.vstack((parents.individuals[p1],parents.individuals[p2])).T]).T[0]
+            offspring.sigmas[i] =  np.array([np.random.permutation(x) 
+                                        for x in np.vstack((parents.sigmas[p1],parents.sigmas[p2])).T]).T[0]
+            if parents.mutation.__class__.__name__ == "Correlated":
+                offspring.alphas[i] =  np.array([np.random.permutation(x) 
+                                        for x in np.vstack((parents.alphas[p1],parents.alphas[p2])).T]).T[0]
