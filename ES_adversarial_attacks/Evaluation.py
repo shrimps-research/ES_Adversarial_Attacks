@@ -1,3 +1,4 @@
+from PIL import Image
 import numpy as np
 
 
@@ -72,6 +73,56 @@ class ClassifierCrossentropy(Evaluate):
         else:
             loss_sign = (1 if self.targeted else -1)
         return loss_sign * np.log(predictions[self.true_label])
+
+    def evaluate(self, batch):
+        """ if targeted attack, use crossentropy (-log(pred)) on target
+            if untargeted attack, use negative crossentropy (log(pred)) on target
+            opposite of above if minimize is False
+        """
+        # feasible input space contraint
+        # if np.min(input_) < 0 or np.max(input_) > 1:
+        #     return np.inf if self.targeted else 0
+        # prediction
+        predictions = self.model(batch).numpy()
+        # return loss
+        if self.minimize:
+            loss_sign = (-1 if self.targeted else 1)
+        else:
+            loss_sign = (1 if self.targeted else -1)
+        return loss_sign * np.log(predictions[:, self.true_label])
+
+
+class CrossentropySimilarity(Evaluate):
+    """ Generic image classifier evaluator using cross entropy
+    """
+    def __init__(self, model, true_label, minimize=True, targeted=False):
+        self.model = model
+        self.true_label = int(true_label)
+        self.minimize = minimize
+        self.targeted = targeted
+
+    def worst_eval(self):
+        if not self.targeted:
+            return 0
+        else:
+            return np.inf if self.minimize else -np.inf
+
+    def evaluate_ind(self, noise, input_):
+        """ if targeted attack, use crossentropy (-log(pred)) on target
+            if untargeted attack, use negative crossentropy (log(pred)) on target
+            opposite of above if minimize is False
+        """
+        # feasible input space contraint
+        # if np.min(input_) < 0 or np.max(input_) > 1:
+        #     return np.inf if self.targeted else 0
+        # prediction
+        predictions = self.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
+        # return loss
+        if self.minimize:
+            loss_sign = (-1 if self.targeted else 1)
+        else:
+            loss_sign = (1 if self.targeted else -1)
+        return loss_sign * (np.log(predictions[self.true_label]) + noise.sum())
 
     def evaluate(self, batch):
         """ if targeted attack, use crossentropy (-log(pred)) on target

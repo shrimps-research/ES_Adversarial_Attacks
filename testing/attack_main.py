@@ -61,7 +61,7 @@ def main():
                         default=0.05)
     parser.add_argument('-fp', action='store', 
                         dest='fallback_patience', type=int,
-                        default=1000000)
+                        default=None)
     parser.add_argument('-sn', action='store',
                         dest='start_noise', type=str,
                         default=None)
@@ -94,6 +94,11 @@ def main():
                         'rastringin': Rastringin(),
                         'classification_crossentropy': 
                                 ClassifierCrossentropy( models[args.model](),
+                                                        args.true_label,
+                                                        minimize=args.minimize,
+                                                        targeted=args.targeted),
+                        'crossentropy_similarity': 
+                                CrossentropySimilarity( models[args.model](),
                                                         args.true_label,
                                                         minimize=args.minimize,
                                                         targeted=args.targeted) }
