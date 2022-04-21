@@ -113,5 +113,5 @@ class Population:
         # stack batch as BxHxWxC
         batch = np.stack(batch)
         # evaluate batch
-        batch_evals = evaluation(batch)
+        batch_evals = evaluation(batch, self.individuals)
         self.fitnesses = list(batch_evals)

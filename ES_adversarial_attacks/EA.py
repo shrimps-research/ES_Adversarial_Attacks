@@ -78,10 +78,19 @@ class EA:
                 best_eval = curr_best_eval
                 curr_patience = 0  # Reset patience since we found a new best
                 if self.verbose > 1:
-                    print(f"[{curr_budget}/{self.budget}] New best eval: {round(best_eval, 2)}" + \
-                    f" | Pred: {round(np.abs(np.exp(best_eval)),2)} | P_succ: {round(gen_succ/gen_tot, 2)}")
+                    if self.evaluation.__class__.__name__ == "CrossentropySimilarity":
+                        print(f"[{curr_budget}/{self.budget}] New best eval: {round(best_eval, 4)}" + \
+                        f" | Pred: {np.exp(best_eval - 0.01*np.log(np.sum(self.parents.individuals[0])/self.parents.individuals[0].max()))}" + \
+                        f" | P_succ: {round(gen_succ/gen_tot, 2)}")
+                    else:
+                        print(f"[{curr_budget}/{self.budget}] New best eval: {round(best_eval, 4)}" + \
+                        f" | Pred: {round(np.abs(np.exp(best_eval)),2)} | P_succ: {round(gen_succ/gen_tot, 2)}")
             else:
                 curr_patience += 1
+                if self.verbose > 1:
+                    print(f"Gen {gen_tot}, no best found")
+
+            # Reset sigmas if patience expired
             if self.fallback_patience != None and curr_patience >= self.fallback_patience:
                 self.parents.init_sigmas()
 

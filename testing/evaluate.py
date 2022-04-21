@@ -9,7 +9,7 @@ from ES_adversarial_attacks import DNN_Models
 # load original image
 # original_img = Image.open("../data/img_data/perc_224/tench.png").convert("RGB")
 # original_img = Image.open("../data/img_data/xcept_299/tench.png").convert("RGB")
-original_img = Image.open("../results/tench_noisy_0.05e_0.7d_indiv_patience.png").convert("RGB")
+original_img = Image.open("../results/tench_noisy_0.02e_1d_indiv_patience.png").convert("RGB")
 
 # resize (vit test)
 # from torchvision import transforms

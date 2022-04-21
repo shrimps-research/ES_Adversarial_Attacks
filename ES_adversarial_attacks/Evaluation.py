@@ -74,7 +74,7 @@ class ClassifierCrossentropy(Evaluate):
             loss_sign = (1 if self.targeted else -1)
         return loss_sign * np.log(predictions[self.true_label])
 
-    def evaluate(self, batch):
+    def evaluate(self, batch, *_):
         """ if targeted attack, use crossentropy (-log(pred)) on target
             if untargeted attack, use negative crossentropy (log(pred)) on target
             opposite of above if minimize is False
@@ -112,10 +112,6 @@ class CrossentropySimilarity(Evaluate):
             if untargeted attack, use negative crossentropy (log(pred)) on target
             opposite of above if minimize is False
         """
-        # feasible input space contraint
-        # if np.min(input_) < 0 or np.max(input_) > 1:
-        #     return np.inf if self.targeted else 0
-        # prediction
         predictions = self.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
         # return loss
         if self.minimize:
@@ -124,7 +120,7 @@ class CrossentropySimilarity(Evaluate):
             loss_sign = (1 if self.targeted else -1)
         return loss_sign * (np.log(predictions[self.true_label]) + noise.sum())
 
-    def evaluate(self, batch):
+    def evaluate(self, batch, individuals):
         """ if targeted attack, use crossentropy (-log(pred)) on target
             if untargeted attack, use negative crossentropy (log(pred)) on target
             opposite of above if minimize is False
@@ -139,4 +135,9 @@ class CrossentropySimilarity(Evaluate):
             loss_sign = (-1 if self.targeted else 1)
         else:
             loss_sign = (1 if self.targeted else -1)
-        return loss_sign * np.log(predictions[:, self.true_label])
+
+        # calculate loss contributions
+        pred_contrib = np.log(predictions[:, self.true_label])
+        noise_contrib = np.log(np.sum(individuals, axis=1)/individuals.max(axis=1))
+        
+        return loss_sign * ( pred_contrib + 0.01*noise_contrib )

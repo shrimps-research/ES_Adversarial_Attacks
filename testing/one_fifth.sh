@@ -6,10 +6,10 @@ python attack_main.py \
 -in ../data/img_data/xcept_299/tench.png \
 -tl 0 \
 -min \
--b 5000 \
--ps 4 -os 24 \
--d 0.7 \
--e 0.04 \
+-b 10000 \
+-ps 6 -os 36 \
+-d 1 \
+-e 0.02 \
 -r discrete \
 -m one_fifth \
 -s plus_selection \
