@@ -89,10 +89,14 @@ class Crossentropy(Evaluate):
             loss_sign = (-1 if self.targeted else 1)
         else:
             loss_sign = (1 if self.targeted else -1)
-        batch_loss = loss_sign * np.log(predictions[:, self.true_label])
-        # divide batch of losses in groups associated to the individuals
-        # and compute the mean loss for each of these groups as the indiv loss
-        return batch_loss.reshape((pop_size, int(batch_loss.shape[0]/pop_size))).mean(axis=1)
+        # batch_loss = loss_sign * np.log(predictions[:, self.true_label])
+        predictions = predictions[:, self.true_label]
+        # divide batch of predictions in groups associated to the individuals
+        # and compute the mean prediction for each of these groups
+        predictions = predictions.reshape((pop_size, int(predictions.shape[0]/pop_size))).mean(axis=1)
+        # compute crossentropy loss for each ind mean prediction
+        return loss_sign * np.log(predictions)
+
 
 
 class CrossentropySimilarity(Evaluate):

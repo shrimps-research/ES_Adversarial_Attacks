@@ -4,11 +4,10 @@ python attack_main.py ^
 -in ../data/img_data/xcept_299/ ^
 -tl 0 ^
 -min ^
--b 1000 ^
--ps 2 -os 12 ^
--d 0.3 ^
--e 0.02 ^
--fp 5 ^
+-b 100 ^
+-ps 2 -os 4 ^
+-d 1 ^
+-e 0.06 ^
 -r discrete ^
 -m individual ^
 -s plus_selection ^

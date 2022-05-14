@@ -149,12 +149,14 @@ def main():
     es_run_time = np.round(end_time - start_time, 2)
     print(f'Total es run time: {es_run_time}')
 
-    # save best noise
-    Image.fromarray((best_indiv * 255).astype(np.uint8)).save('../results/noise.png')
-
-    # save final image
+    # reshape and upsample the best noise
     noise = parents.reshape_ind(best_indiv)
     noise = parents.upsample_ind(noise)
+
+    # save best noise
+    Image.fromarray((noise * 255).astype(np.uint8)).save('../results/tench/noise.png')
+
+    # save final image
     noisy_batch = (noise + og_img_batch).clip(0, 1)
     for i, img in enumerate(og_img_batch):
         noisy_img = (img + noise).clip(0, 1)
@@ -171,7 +173,7 @@ def main():
     normal_acc = np.where(normal_preds.argmax(axis=1)==args.true_label)[0].size/normal_preds.shape[0]
 
     # print results
-    print(f"Best function evaluation: {round(best_eval)}")
+    print(f"Best function evaluation: {round(best_eval, 2)}")
     print(f'Original prediction: {normal_acc} on class {args.true_label}')
     print(f'Noised prediction: {noise_acc} on class {args.true_label}')
 

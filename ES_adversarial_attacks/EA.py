@@ -64,7 +64,8 @@ class EA:
             self.selection(self.parents, self.offspring, self.minimize)
             
             # Update the best individual in case of success
-            curr_best_eval= self.parents.fitnesses[0]
+            curr_best_eval = self.parents.fitnesses[0]
+            
             success = False
             if self.minimize:
                 if curr_best_eval < best_eval:
@@ -87,7 +88,7 @@ class EA:
                         f" | Pred: {round(np.abs(np.exp(best_eval)),2)} | P_succ: {round(gen_succ/gen_tot, 2)}")
             else:
                 curr_patience += 1
-                if self.verbose > 1:
+                if self.verbose > 2:
                     print(f"Gen {gen_tot}, no best found")
 
             # Reset sigmas if patience expired
