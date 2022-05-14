@@ -1,10 +1,10 @@
 python attack_main.py ^
 -model xception_classifier ^
 -eval classification_crossentropy ^
--in ../data/img_data/xcept_299/tench.png ^
+-in ../data/img_data/xcept_299/ ^
 -tl 0 ^
 -min ^
--b 10000 ^
+-b 1000 ^
 -ps 6 -os 36 ^
 -d 0.6 ^
 -e 0.02 ^

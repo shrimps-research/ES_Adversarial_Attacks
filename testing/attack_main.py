@@ -1,4 +1,5 @@
 import sys
+import os
 import argparse
 from PIL import Image
 import skimage
@@ -17,7 +18,7 @@ from ES_adversarial_attacks.Evaluation import *
 from ES_adversarial_attacks.EA import *
 
 def main():
-    # Command line arguments
+    # command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-eval', action='store', 
                         dest='evaluation', type=str,
@@ -72,7 +73,7 @@ def main():
     if args.verbose:
         print("arguments passed:",args)
 
-    # Dictionaries to keep all our Classes
+    # dictionaries to keep all our Classes
     recombinations = {  'intermediate': Intermediate(),
                         'discrete': Discrete(),
                         None: None }
@@ -93,7 +94,7 @@ def main():
     evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),
                         'classification_crossentropy': 
-                                ClassifierCrossentropy( models[args.model](),
+                                Crossentropy( models[args.model](),
                                                         args.true_label,
                                                         minimize=args.minimize,
                                                         targeted=args.targeted),
@@ -103,16 +104,17 @@ def main():
                                                         minimize=args.minimize,
                                                         targeted=args.targeted) }
 
-    # Load original image
-    original_img = Image.open(args.input_path)
-    if args.model != "mnist_classifier":
-        original_img = original_img.convert("RGB")
-    original_img = np.array(original_img) / 255.0
-    if len(original_img.shape) == 2:
-        original_img = np.expand_dims(original_img, axis=2)
-    original_img = np.expand_dims(original_img, axis=0)
+    # load original image
+    og_img_batch = []
+    for img_name in os.listdir(args.input_path):
+        img = Image.open(args.input_path + img_name)
+        img = np.array(img) / 255.0
+        if len(img.shape) == 2:
+            img = np.expand_dims(img, axis=2)
+        og_img_batch.append(img)
+    og_img_batch = np.stack(og_img_batch)
 
-    # Load starting noise
+    # load starting noise
     if args.start_noise is None:
         start_noise = None
     else:
@@ -125,7 +127,7 @@ def main():
         start_noise = np.dstack(start_noise)
 
     # Create evolutionary Algorithm
-    ea = EA(input_=original_img,
+    ea = EA(input_=og_img_batch,
             evaluation=evaluations[args.evaluation],
             minimize=args.minimize,
             budget=args.budget,
@@ -146,32 +148,31 @@ def main():
     es_run_time = np.round(end_time - start_time, 2)
     print(f'Total es run time: {es_run_time}')
 
-    # Save noisy image
+    # save best noise
+    Image.fromarray((best_indiv * 255).astype(np.uint8)).save('../results/noise.png')
+
+    # save final image
     noise = parents.reshape_ind(best_indiv)
     noise = parents.upsample_ind(noise)
-    # clip image + noise in [0,1] then subtract input to obtain clipped noise
-    noise = (original_img + noise).clip(0, 1) - original_img
-    if noise.shape[2] == 1:
-        noise = np.squeeze(noise, axis=2)
-    Image.fromarray((noise * 255).astype(np.uint8)).save('../results/noise.png')
+    noisy_batch = (noise + og_img_batch).clip(0, 1)
+    for i, img in enumerate(og_img_batch):
+        noisy_img = (img + noise).clip(0, 1)
+        if noisy_img.shape[-1] == 1:
+            noisy_img = np.squeeze(noisy_img, axis=2)
+        noisy_img = (noisy_img * 255).astype(np.uint8)
+        Image.fromarray(noisy_img).save(f'../results/tench/noisy_input_{i}.png')
 
-    # Save final image
-    if original_img.shape[2] == 1:
-        original_img = np.squeeze(original_img, axis=2)
-    noisy_input = ((original_img + noise) * 255).astype(np.uint8)
-    Image.fromarray(noisy_input).save('../results/noisy_input.png')
-
-    # Predict images
+    # predict images
     model = models[args.model]()
-    noise_preds = model(np.expand_dims(noise+original_img, axis=0))
-    normal_preds = model(np.expand_dims(np.zeros(original_img.shape)+original_img, axis=0))
+    noise_preds = model(noisy_batch).numpy()
+    noise_acc = np.where(noise_preds.argmax(axis=1)==args.true_label)[0].size/noise_preds.shape[0]
+    normal_preds = model(og_img_batch).numpy()
+    normal_acc = np.where(normal_preds.argmax(axis=1)==args.true_label)[0].size/normal_preds.shape[0]
 
-    # Print results
-    print(noise_preds.shape)
+    # print results
     print(f"Best function evaluation: {round(best_eval)}")
-    print(f'Original prediction: {np.max(normal_preds)} on class {np.argmax(normal_preds)}')
-    print(f'Noised prediction: {np.max(noise_preds)} on class {np.argmax(noise_preds)}')
-    print(f'Noised prediction: {noise_preds[0, args.true_label]} on original class {args.true_label}')
+    print(f'Original prediction: {normal_acc} on class {args.true_label}')
+    print(f'Noised prediction: {noise_acc} on class {args.true_label}')
 
 if __name__ == "__main__":
     main()

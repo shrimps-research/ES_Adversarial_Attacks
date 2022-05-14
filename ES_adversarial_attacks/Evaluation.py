@@ -42,7 +42,7 @@ class Rastringin:
         return y
 
 
-class ClassifierCrossentropy(Evaluate):
+class Crossentropy(Evaluate):
     """ Generic image classifier evaluator using cross entropy
     """
     def __init__(self, model, true_label, minimize=True, targeted=False):
