@@ -5,11 +5,11 @@ python attack_main.py ^
 -tl 0 ^
 -min ^
 -b 1000 ^
--ps 6 -os 36 ^
--d 0.6 ^
+-ps 2 -os 12 ^
+-d 0.3 ^
 -e 0.02 ^
 -fp 5 ^
 -r discrete ^
 -m individual ^
--s comma_selection ^
+-s plus_selection ^
 -v 2

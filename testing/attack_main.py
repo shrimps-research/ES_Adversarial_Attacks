@@ -115,15 +115,16 @@ def main():
     og_img_batch = np.stack(og_img_batch)
 
     # load starting noise
+    # TODO fix for batches
     if args.start_noise is None:
         start_noise = None
     else:
         start_noise = Image.open(args.start_noise)
         start_noise = np.array(start_noise) / 255.0
         if len(start_noise.shape) == 2:
-            start_noise = np.expand_dims(original_img, axis=2)
-        start_noise -=  - original_img
-        start_noise = [skimage.measure.block_reduce((i+1)*start_noise[:,:,i], (2,2), np.max) for i in range(start_noise.shape[2])]
+            start_noise = np.expand_dims(img, axis=2)
+        start_noise -= img
+        start_noise = [skimage.measure.block_reduce((i+1)*start_noise[:,:,i], (2,2), np.max) for i in range(start_noise.shape[-1])]
         start_noise = np.dstack(start_noise)
 
     # Create evolutionary Algorithm
