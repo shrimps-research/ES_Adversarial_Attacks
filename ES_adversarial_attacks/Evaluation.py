@@ -74,7 +74,7 @@ class ClassifierCrossentropy(Evaluate):
             loss_sign = (1 if self.targeted else -1)
         return loss_sign * np.log(predictions[self.true_label])
 
-    def evaluate(self, batch, *_):
+    def evaluate(self, batch, pop_size):
         """ if targeted attack, use crossentropy (-log(pred)) on target
             if untargeted attack, use negative crossentropy (log(pred)) on target
             opposite of above if minimize is False
@@ -84,12 +84,15 @@ class ClassifierCrossentropy(Evaluate):
         #     return np.inf if self.targeted else 0
         # prediction
         predictions = self.model(batch).numpy()
-        # return loss
+        # compute loss for the entire batch
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)
         else:
             loss_sign = (1 if self.targeted else -1)
-        return loss_sign * np.log(predictions[:, self.true_label])
+        batch_loss = loss_sign * np.log(predictions[:, self.true_label])
+        # divide batch of losses in groups associated to the individuals
+        # and compute the mean loss for each of these groups as the indiv loss
+        return batch_loss.reshape((pop_size, int(batch_loss.shape[0]/pop_size))).mean(axis=1)
 
 
 class CrossentropySimilarity(Evaluate):

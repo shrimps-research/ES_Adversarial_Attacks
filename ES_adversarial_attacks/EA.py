@@ -54,15 +54,15 @@ class EA:
             
             # Mutation: mutate individuals (offspring)
             self.mutation(self.offspring, gen_succ, gen_tot)
-
+            
             # Evaluate offspring population
             self.offspring.evaluate(self.evaluation.evaluate)
             curr_budget += self.offspring_size
             curr_patience += self.offspring_size  # TODO patience
-
+            
             # Next generation parents selection
             self.selection(self.parents, self.offspring, self.minimize)
-
+            
             # Update the best individual in case of success
             curr_best_eval= self.parents.fitnesses[0]
             success = False

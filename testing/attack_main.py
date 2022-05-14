@@ -73,7 +73,7 @@ def main():
         print("arguments passed:",args)
 
     # Dictionaries to keep all our Classes
-    recombinations = {  'intermediate': Intermediate(args.offspring_size),
+    recombinations = {  'intermediate': Intermediate(),
                         'discrete': Discrete(),
                         None: None }
 
@@ -110,6 +110,7 @@ def main():
     original_img = np.array(original_img) / 255.0
     if len(original_img.shape) == 2:
         original_img = np.expand_dims(original_img, axis=2)
+    original_img = np.expand_dims(original_img, axis=0)
 
     # Load starting noise
     if args.start_noise is None:

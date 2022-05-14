@@ -17,9 +17,9 @@ class Population:
         self.input_ = input_
         self.pop_size = pop_size
         if downsample is None:
-            self.ind_dim = input_.size
+            self.ind_dim = input_[0, :].size
         else:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
-            self.ind_side_len = int(input_.shape[0] * downsample)
+            self.ind_side_len = int(input_.shape[1] * downsample)
             self.ind_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
         # initialize individuals
         if start_noise is None:
@@ -42,14 +42,14 @@ class Population:
         """ Reshape a single individual
         """
         if self.downsample is None:
-            return individual.reshape(self.input_.shape)
+            return individual.reshape(self.input_.shape[1:])
         else:   # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
-            return individual.reshape((self.ind_side_len, self.ind_side_len, self.input_.shape[2]))
+            return individual.reshape((self.ind_side_len, self.ind_side_len, self.input_.shape[-1]))
 
     def upsample_ind(self, individual):
         """ Upsample individual back to the original size of the image by interpolation.
         """
-        return np.dstack([nn_interpolate(individual[:,:,i], self.input_.shape[:2]) for i in range(self.input_.shape[2])])
+        return np.dstack([nn_interpolate(individual[:,:,i], self.input_.shape[1:-1]) for i in range(self.input_.shape[-1])])
 
     def upsample_general(self,individual, shape):
         """ Upsample individual to size of the image by interpolation.
@@ -94,7 +94,7 @@ class Population:
             if self.downsample is not None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
                 individual = self.upsample_ind(individual)
             # evaluate input + noiose
-            self.fitnesses.append(evaluation(individual, self.input_)) 
+            self.fitnesses.append(evaluation(individual, self.input_))
 
     def evaluate(self, evaluation):
         """ Evaluate the fitness of the whole batch in a single forward pass
@@ -111,7 +111,7 @@ class Population:
             # add original input and append to batch list
             batch.append(individual + self.input_)
         # stack batch as BxHxWxC
-        batch = np.stack(batch)
+        batch = np.vstack(batch)
         # evaluate batch
-        batch_evals = evaluation(batch, self.individuals)
+        batch_evals = evaluation(batch, self.pop_size)
         self.fitnesses = list(batch_evals)
