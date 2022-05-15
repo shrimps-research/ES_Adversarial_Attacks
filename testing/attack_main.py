@@ -93,7 +93,7 @@ def main():
 
     evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),
-                        'classification_crossentropy': 
+                        'crossentropy': 
                                 Crossentropy( models[args.model](),
                                                         args.true_label,
                                                         minimize=args.minimize,

@@ -89,13 +89,16 @@ class Crossentropy(Evaluate):
             loss_sign = (-1 if self.targeted else 1)
         else:
             loss_sign = (1 if self.targeted else -1)
+        # calculate accuracy
+        acc = np.where(predictions.argmax(axis=1)==self.true_label)[0].size/predictions.shape[0]
+        print(acc)
         # batch_loss = loss_sign * np.log(predictions[:, self.true_label])
         predictions = predictions[:, self.true_label]
         # divide batch of predictions in groups associated to the individuals
         # and compute the mean prediction for each of these groups
         predictions = predictions.reshape((pop_size, int(predictions.shape[0]/pop_size))).mean(axis=1)
         # compute crossentropy loss for each ind mean prediction
-        return loss_sign * np.log(predictions)
+        return loss_sign * np.log(predictions) * (1 + acc)
 
 
 

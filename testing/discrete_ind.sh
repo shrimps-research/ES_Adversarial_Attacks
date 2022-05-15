@@ -2,14 +2,14 @@
 
 python attack_main.py \
 -model xception_classifier \
--eval  crossentropy_similarity \
--in ../data/img_data/xcept_299/tench.png \
+-eval  crossentropy \
+-in ../data/img_data/xcept_299/ \
 -tl 0 \
 -min \
 -b 10000 \
--ps 6 -os 36 \
+-ps 2 -os 4 \
 -d 1 \
--e 0.02 \
+-e 0.2 \
 -r discrete \
 -m individual \
 -fp 5 \
