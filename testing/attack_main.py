@@ -168,9 +168,9 @@ def main():
     # predict images
     model = models[args.model]()
     noise_preds = model(noisy_batch).numpy()
-    noise_acc = np.where(noise_preds.argmax(axis=1)==args.true_label)[0].size/noise_preds.shape[0]
+    noise_acc = (noise_preds.argmax(axis=1)==args.true_label).size/noise_preds.shape[0]
     normal_preds = model(og_img_batch).numpy()
-    normal_acc = np.where(normal_preds.argmax(axis=1)==args.true_label)[0].size/normal_preds.shape[0]
+    normal_acc = (normal_preds.argmax(axis=1)==args.true_label).size/normal_preds.shape[0]
 
     # print results
     print(f"Best function evaluation: {round(best_eval, 2)}")

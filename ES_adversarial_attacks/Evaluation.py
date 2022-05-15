@@ -90,9 +90,10 @@ class Crossentropy(Evaluate):
         else:
             loss_sign = (1 if self.targeted else -1)
         # calculate accuracy
-        acc = np.where(predictions.argmax(axis=1)==self.true_label)[0].size/predictions.shape[0]
-        print(acc)
+        pred_groups = predictions.argmax(axis=1).reshape((pop_size, int(predictions.shape[0]/pop_size)))
+        acc = (pred_groups==self.true_label).sum(axis=1)/pred_groups.shape[1]
         # batch_loss = loss_sign * np.log(predictions[:, self.true_label])
+        # get pred at target label
         predictions = predictions[:, self.true_label]
         # divide batch of predictions in groups associated to the individuals
         # and compute the mean prediction for each of these groups
