@@ -83,7 +83,9 @@ class Crossentropy(Evaluate):
         # if np.min(input_) < 0 or np.max(input_) > 1:
         #     return np.inf if self.targeted else 0
         # prediction
-        predictions = self.model(batch).numpy()
+        batch_size = min(32, batch.shape[0])
+        predictions = [self.model(b).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
+        predictions = np.vstack(predictions)
         # compute loss for the entire batch
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)
