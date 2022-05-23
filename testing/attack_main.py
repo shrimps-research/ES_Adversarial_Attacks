@@ -102,6 +102,11 @@ def main():
                                 CrossentropySimilarity( models[args.model](),
                                                         args.true_label,
                                                         minimize=args.minimize,
+                                                        targeted=args.targeted),
+                        'blind_evaluation': 
+                                BlindEvaluation( models[args.model](),
+                                                        args.true_label,
+                                                        minimize=args.minimize,
                                                         targeted=args.targeted) }
 
     # load original image

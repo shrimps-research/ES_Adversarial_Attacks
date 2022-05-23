@@ -2,7 +2,7 @@
 
 python attack_main.py \
 -model xception_classifier \
--eval  crossentropy \
+-eval  blind_evaluation \
 -in ../data/img_data/xcept_299/ \
 -tl 0 \
 -min \

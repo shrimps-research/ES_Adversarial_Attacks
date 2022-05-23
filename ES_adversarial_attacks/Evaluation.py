@@ -104,6 +104,43 @@ class Crossentropy(Evaluate):
         return loss_sign * np.log(predictions) * (1 + acc)
 
 
+class BlindEvaluation(Evaluate):
+    """ Generic image classifier evaluator using cross entropy
+    """
+    def __init__(self, model, true_label, minimize=True, targeted=False):
+        self.model = model
+        self.true_label = int(true_label)
+        self.minimize = minimize
+        self.targeted = targeted
+
+    def worst_eval(self):
+        if not self.targeted:
+            return 0
+        else:
+            return np.inf if self.minimize else -np.inf
+
+    def evaluate(self, batch, pop_size):
+        """ if targeted attack, use crossentropy (-log(pred)) on target
+            if untargeted attack, use negative crossentropy (log(pred)) on target
+            opposite of above if minimize is False
+        """
+        # feasible input space contraint
+        # if np.min(input_) < 0 or np.max(input_) > 1:
+        #     return np.inf if self.targeted else 0
+        # prediction
+        batch_size = min(32, batch.shape[0])
+        predictions = [self.model(b).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
+        predictions = np.vstack(predictions)
+        # compute loss for the entire batch
+        if self.minimize:
+            loss_sign = (-1 if self.targeted else 1)
+        else:
+            loss_sign = (1 if self.targeted else -1)
+        # calculate accuracy
+        pred_groups = predictions.argmax(axis=1).reshape((pop_size, int(predictions.shape[0]/pop_size)))
+        acc = (pred_groups==self.true_label).sum(axis=1)/pred_groups.shape[1]
+
+        return loss_sign * acc
 
 class CrossentropySimilarity(Evaluate):
     """ Generic image classifier evaluator using cross entropy
