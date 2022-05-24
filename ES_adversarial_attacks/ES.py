@@ -45,35 +45,8 @@ class ES:
         best_indiv = self.parents.individuals[best_index]
         curr_budget += self.parents_size
 
-        annealing_step = -1  # test
         while curr_budget < self.budget:
-            gen_tot += 1
-            
-            if curr_budget/self.budget > 0.5:
-                if annealing_step < 3:
-                    annealing_step = 3
-                    self.parents.epsilon = 0.02
-                    self.offspring.epsilon = self.parents.epsilon
-                    best_eval = self.evaluation.worst_eval()
-                    self.parents.evaluate(self.evaluation.evaluate)
-            elif curr_budget/self.budget > 0.25:
-                if annealing_step < 2:
-                    annealing_step = 2
-                    self.parents.epsilon = 0.05
-                    self.offspring.epsilon = self.parents.epsilon
-                    best_eval = self.evaluation.worst_eval()
-                    self.parents.evaluate(self.evaluation.evaluate)
-            elif curr_budget/self.budget > 0.1:
-                if annealing_step < 1:
-                    annealing_step = 1
-                    self.parents.epsilon = 0.1
-                    self.offspring.epsilon = self.parents.epsilon
-                    best_eval = self.evaluation.worst_eval()
-                    self.parents.evaluate(self.evaluation.evaluate)
-            elif annealing_step < 0:
-                annealing_step = 0
-                self.parents.epsilon = 0.2
-                self.offspring.epsilon = self.parents.epsilon
+            gen_tot += 1            
 
             # Recombination: creates new offspring
             if self.recombination is not None and self.parents_size > 1:
@@ -123,3 +96,35 @@ class ES:
                 self.parents.init_sigmas()
 
         return self.parents, best_indiv, best_eval
+
+    def epsilon_annealing(self, curr_budget):
+        """ Testing implementation of the epsilon annealing
+        """
+        if curr_budget/self.budget > 0.5:
+            if annealing_step < 3:
+                annealing_step = 3
+                self.parents.epsilon = 0.02
+                self.offspring.epsilon = self.parents.epsilon
+                best_eval = self.evaluation.worst_eval()
+                self.parents.evaluate(self.evaluation.evaluate)
+                return  best_eval
+        elif curr_budget/self.budget > 0.25:
+            if annealing_step < 2:
+                annealing_step = 2
+                self.parents.epsilon = 0.05
+                self.offspring.epsilon = self.parents.epsilon
+                best_eval = self.evaluation.worst_eval()
+                self.parents.evaluate(self.evaluation.evaluate)
+                return  best_eval
+        elif curr_budget/self.budget > 0.1:
+            if annealing_step < 1:
+                annealing_step = 1
+                self.parents.epsilon = 0.1
+                self.offspring.epsilon = self.parents.epsilon
+                best_eval = self.evaluation.worst_eval()
+                self.parents.evaluate(self.evaluation.evaluate)
+                return  best_eval
+        elif annealing_step < 0:
+            annealing_step = 0
+            self.parents.epsilon = 0.2
+            self.offspring.epsilon = self.parents.epsilon

@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 
 
-class Evaluate:
+class Evaluation:
     def worst_eval(self, minimize=True):
         """ Return worst possible evaluation
             That will be the initial value of the best evaluation in the ES
@@ -13,7 +13,7 @@ class Evaluate:
         pass
 
 
-class Ackley(Evaluate):
+class Ackley(Evaluation):
     """ Evaluate a solution on Ackley problem
     """
     def __init__(self, a = 20, b = 0.2, c = 2*np.pi, minimize=True):
@@ -42,8 +42,8 @@ class Rastringin:
         return y
 
 
-class Crossentropy(Evaluate):
-    """ Generic image classifier evaluator using cross entropy
+class Crossentropy(Evaluation):
+    """ Classic crossentropy evaluation.
     """
     def __init__(self, model, true_label, minimize=True, targeted=False):
         self.model = model
@@ -52,15 +52,18 @@ class Crossentropy(Evaluate):
         self.targeted = targeted
 
     def worst_eval(self):
+        """ Return worst evaluation possible for the current problem configutation.
+        """
         if not self.targeted:
             return 0
         else:
             return np.inf if self.minimize else -np.inf
 
     def evaluate_ind(self, noise, input_):
-        """ if targeted attack, use crossentropy (-log(pred)) on target
-            if untargeted attack, use negative crossentropy (log(pred)) on target
-            opposite of above if minimize is False
+        """ Deprecated.
+            If targeted attack, use crossentropy (-log(pred)) on target.
+            If untargeted attack, use negative crossentropy (log(pred)) on target.
+            Opposite of above if minimize is False.
         """
         # feasible input space contraint
         # if np.min(input_) < 0 or np.max(input_) > 1:
@@ -75,9 +78,10 @@ class Crossentropy(Evaluate):
         return loss_sign * np.log(predictions[self.true_label])
 
     def evaluate(self, batch, pop_size):
-        """ if targeted attack, use crossentropy (-log(pred)) on target
-            if untargeted attack, use negative crossentropy (log(pred)) on target
-            opposite of above if minimize is False
+        """ If targeted attack, use crossentropy (-log(pred)) on target.
+            If untargeted attack, use negative crossentropy (log(pred)) on target.
+            Opposite of above if minimize is False.
+            This evaluation function work on batches of individuals and images.
         """
         # feasible input space contraint
         # if np.min(input_) < 0 or np.max(input_) > 1:
@@ -104,8 +108,9 @@ class Crossentropy(Evaluate):
         return loss_sign * np.log(predictions) * (1 + acc)
 
 
-class BlindEvaluation(Evaluate):
-    """ Generic image classifier evaluator using cross entropy
+class BlindEvaluation(Evaluation):
+    """ Evaluation in blind mode of a batch of input samples:
+        the output of the model is only used to extract the batch accuracy information.
     """
     def __init__(self, model, true_label, minimize=True, targeted=False):
         self.model = model
@@ -115,14 +120,14 @@ class BlindEvaluation(Evaluate):
 
     def worst_eval(self):
         if not self.targeted:
-            return 0
+            return 1 if self.minimize else 0
         else:
-            return np.inf if self.minimize else -np.inf
+            return 1 if self.minimize else 0
 
     def evaluate(self, batch, pop_size):
-        """ if targeted attack, use crossentropy (-log(pred)) on target
-            if untargeted attack, use negative crossentropy (log(pred)) on target
-            opposite of above if minimize is False
+        """ If targeted attack, use crossentropy (-log(pred)) on target.
+            If untargeted attack, use negative crossentropy (log(pred)) on target.
+            Opposite of above if minimize is False.
         """
         # feasible input space contraint
         # if np.min(input_) < 0 or np.max(input_) > 1:
@@ -139,55 +144,8 @@ class BlindEvaluation(Evaluate):
         # calculate accuracy
         pred_groups = predictions.argmax(axis=1).reshape((pop_size, int(predictions.shape[0]/pop_size)))
         acc = (pred_groups==self.true_label).sum(axis=1)/pred_groups.shape[1]
+        
+        if (self.targeted and self.minimize) or (not self.targeted and not self.minimize):
+            acc = 1 - acc
 
         return loss_sign * acc
-
-class CrossentropySimilarity(Evaluate):
-    """ Generic image classifier evaluator using cross entropy
-    """
-    def __init__(self, model, true_label, minimize=True, targeted=False):
-        self.model = model
-        self.true_label = int(true_label)
-        self.minimize = minimize
-        self.targeted = targeted
-
-    def worst_eval(self):
-        if not self.targeted:
-            return 0
-        else:
-            return np.inf if self.minimize else -np.inf
-
-    def evaluate_ind(self, noise, input_):
-        """ if targeted attack, use crossentropy (-log(pred)) on target
-            if untargeted attack, use negative crossentropy (log(pred)) on target
-            opposite of above if minimize is False
-        """
-        predictions = self.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
-        # return loss
-        if self.minimize:
-            loss_sign = (-1 if self.targeted else 1)
-        else:
-            loss_sign = (1 if self.targeted else -1)
-        return loss_sign * (np.log(predictions[self.true_label]) + noise.sum())
-
-    def evaluate(self, batch, individuals):
-        """ if targeted attack, use crossentropy (-log(pred)) on target
-            if untargeted attack, use negative crossentropy (log(pred)) on target
-            opposite of above if minimize is False
-        """
-        # feasible input space contraint
-        # if np.min(input_) < 0 or np.max(input_) > 1:
-        #     return np.inf if self.targeted else 0
-        # prediction
-        predictions = self.model(batch).numpy()
-        # return loss
-        if self.minimize:
-            loss_sign = (-1 if self.targeted else 1)
-        else:
-            loss_sign = (1 if self.targeted else -1)
-
-        # calculate loss contributions
-        pred_contrib = np.log(predictions[:, self.true_label])
-        noise_contrib = np.log(np.sum(individuals, axis=1)/individuals.max(axis=1))
-        
-        return loss_sign * ( pred_contrib + 0.01*noise_contrib )

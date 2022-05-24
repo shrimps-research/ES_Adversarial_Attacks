@@ -3,7 +3,8 @@ from utilities import nn_interpolate
 
 
 class Population:
-    """ Attributes:
+    """ Class containing a population of an ES, including all the related information.
+        Attributes:
             - pop_size : size of population
             - input_ : path specifing the location of the input image
             - epsilon : maximum possible noise as a value between [0,1]
