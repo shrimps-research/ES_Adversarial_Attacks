@@ -119,6 +119,13 @@ def main():
         og_img_batch.append(img)
     og_img_batch = np.stack(og_img_batch)
 
+    # initial image prediction
+    model = models[args.model]()
+    normal_preds = model(og_img_batch).numpy()
+    normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
+    print()
+    print(f'Original prediction: {normal_acc} on class {args.true_label}')
+
     # load starting noise
     # TODO fix for batches
     if args.start_noise is None:
