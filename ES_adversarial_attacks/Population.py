@@ -100,6 +100,7 @@ class Population:
         """ Evaluate the fitness of the whole batch in a single forward pass
         """
         if self.epsilon is not None:
+            print(self.epsilon)
             self.individuals = self.individuals.clip(-self.epsilon, self.epsilon)
         batch = []
         for individual in self.individuals:
@@ -109,7 +110,7 @@ class Population:
             if self.downsample is not None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
                 individual = self.upsample_ind(individual)
             # add original input and append to batch list
-            batch.append(individual + self.input_)
+            batch.append((individual + self.input_).clip(0, 1))
         # stack batch as BxHxWxC
         batch = np.vstack(batch)
         # evaluate batch

@@ -15,7 +15,7 @@ from ES_adversarial_attacks.Mutation import *
 from ES_adversarial_attacks.Selection import *
 from ES_adversarial_attacks.DNN_Models import *
 from ES_adversarial_attacks.Evaluation import *
-from ES_adversarial_attacks.EA import *
+from ES_adversarial_attacks.ES import *
 
 def main():
     # command line arguments
@@ -140,7 +140,7 @@ def main():
         start_noise = np.dstack(start_noise)
 
     # Create evolutionary Algorithm
-    ea = EA(input_=og_img_batch,
+    es = ES(input_=og_img_batch,
             evaluation=evaluations[args.evaluation],
             minimize=args.minimize,
             budget=args.budget,
@@ -156,7 +156,7 @@ def main():
             start_noise=start_noise)
     
     start_time = time.time()
-    parents, best_indiv, best_eval = ea.run()
+    parents, best_indiv, best_eval = es.run()
     end_time = time.time()
     es_run_time = np.round(end_time - start_time, 2)
     print(f'Total es run time: {es_run_time}')

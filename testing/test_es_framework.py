@@ -9,7 +9,7 @@ from ES_base_framework.Recombination import *
 from ES_base_framework.Mutation import *
 from ES_base_framework.Selection import *
 from ES_base_framework.Evaluation import *
-from ES_base_framework.EA import *
+from ES_base_framework.ES import *
 
 def main():
     #random.seed(0)
@@ -22,7 +22,7 @@ def main():
 
     repetitions = 100
 
-    ea = EA(minimize=True,
+    es = ES(minimize=True,
             budget=10000,
             parents_size=6,
             offspring_size=36,
@@ -37,7 +37,7 @@ def main():
     best_budgets = []
     start_time = time.time()
     for _ in range(repetitions):
-        _, best_eval, best_budget = ea.run()
+        _, best_eval, best_budget = es.run()
         best_evals.append(best_eval)
         best_budgets.append(best_budget)
     end_time = time.time()

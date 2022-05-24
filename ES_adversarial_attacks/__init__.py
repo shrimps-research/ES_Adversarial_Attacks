@@ -1,4 +1,4 @@
-from .EA import *
+from .ES import *
 from .Population import *
 from .Evaluation import *
 from .Mutation import *
