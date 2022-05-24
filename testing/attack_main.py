@@ -98,11 +98,6 @@ def main():
                                                         args.true_label,
                                                         minimize=args.minimize,
                                                         targeted=args.targeted),
-                        'crossentropy_similarity': 
-                                CrossentropySimilarity( models[args.model](),
-                                                        args.true_label,
-                                                        minimize=args.minimize,
-                                                        targeted=args.targeted),
                         'blind_evaluation': 
                                 BlindEvaluation( models[args.model](),
                                                         args.true_label,
