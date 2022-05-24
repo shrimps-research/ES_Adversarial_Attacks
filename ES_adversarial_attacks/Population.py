@@ -101,7 +101,6 @@ class Population:
         """ Evaluate the fitness of the whole batch in a single forward pass
         """
         if self.epsilon is not None:
-            print(self.epsilon)
             self.individuals = self.individuals.clip(-self.epsilon, self.epsilon)
         batch = []
         for individual in self.individuals:
