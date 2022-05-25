@@ -76,6 +76,7 @@ def main():
     # dictionaries to keep all our Classes
     recombinations = {  'intermediate': Intermediate(),
                         'discrete': Discrete(),
+                        'global_discrete': GlobalDiscrete(),
                         None: None }
 
     mutations = {       'individual': IndividualSigma(),
