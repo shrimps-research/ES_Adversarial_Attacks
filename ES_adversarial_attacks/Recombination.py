@@ -60,3 +60,28 @@ class Discrete(Recombination):
             offspring.sigmas = np.vstack(offspring.sigmas)
         else:
             offspring.sigmas = np.array(offspring.sigmas)
+
+
+class GlobalDiscrete(Recombination):
+    """ Creates discrete recombined offsprings.
+    """
+    def __call__(self, parents: Population, offspring: Population):
+        # rng
+        parent_choices = np.random.choice(range(parents.pop_size), size=(offspring.pop_size, offspring.ind_dim))
+        # reset offspring
+        offspring.individuals = []
+        offspring.sigmas = []
+        for i in range(offspring.pop_size):
+            # create new offspring
+            offspring.individuals.append([curr_par[curr_choice] 
+                                            for curr_par, curr_choice in 
+                                            zip(parents.individuals.T, 
+                                                parent_choices[i])])
+            # create offspring's sigmas
+            offspring.sigmas.append([curr_par[curr_choice] 
+                                            for curr_par, curr_choice in 
+                                            zip(parents.sigmas.T, 
+                                                parent_choices[i])])
+        # revert arrays to numpy
+        offspring.individuals = np.array(offspring.individuals)
+        offspring.sigmas = np.array(offspring.sigmas)
