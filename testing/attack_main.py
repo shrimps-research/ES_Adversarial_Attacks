@@ -27,7 +27,7 @@ def main():
                         dest='minimize')
     parser.add_argument('-t', action='store_true', 
                         dest='targeted')
-    parser.add_argument('-ds', action='store',
+    parser.add_argument('-d', action='store',
                         dest='downsample', type=float,
                         default=None)
     parser.add_argument('-b', action='store', 
@@ -116,11 +116,10 @@ def main():
     og_img_batch = np.stack(og_img_batch)
 
     # initial image prediction
-    model = models[args.model]()
-    normal_preds = model(og_img_batch).numpy()
-    normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
-    print()
-    print(f'Original prediction: {normal_acc} on class {args.true_label}')
+    # model = models[args.model]()
+    # normal_preds = model(og_img_batch).numpy()
+    # normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
+    # print(f'\nOriginal prediction: {normal_acc} on class {args.true_label}')
 
     # load starting noise
     # TODO fix for batches
@@ -182,8 +181,8 @@ def main():
 
     # print results
     print(f"Best function evaluation: {round(best_eval, 2)}")
-    print(f'Original prediction: {normal_acc} on class {args.true_label}')
-    print(f'Noised prediction: {noise_acc} on class {args.true_label}')
+    print(f'[Original] correct predictions on class {args.true_label}: {normal_acc*100}%')
+    print(f'[Noised] correct predictions on class {args.true_label}: {noise_acc*100}%')
 
 if __name__ == "__main__":
     main()

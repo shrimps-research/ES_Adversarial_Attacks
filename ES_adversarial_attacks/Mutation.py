@@ -38,14 +38,16 @@ class OneFifth(Mutation):
     def __init__(self, alt=False):
         if alt:
             self.mutate = self.mutate_alt
+        else:
+            self.mutate = self.mutate_
 
-    def mutate(self, population: Population, gen_succ: int, gen_tot: int, *_):
+    def mutate_(self, population: Population, gen_succ: int, gen_tot: int, *_):
         c = 0.95
         k = 40  # sigmas reset patience
         # reset sigmas
         if gen_tot % k == 0:
             population.init_sigmas()
-        # increare sigmas (explore more)
+        # increase sigmas (explore more)
         elif gen_succ/gen_tot > 0.20:
             population.sigmas /= c
         # decrease sigmas (exploit more)
@@ -55,8 +57,9 @@ class OneFifth(Mutation):
         variations = np.random.normal(0, population.sigmas)
         population.individuals += variations
 
-    # TODO fix
     def mutate_alt(self, population: Population, gen_succ: int, gen_tot: int, *_):
+        """ Individual sigma + OneFifth
+        """
         tau = 1 / np.sqrt(2 * np.sqrt(population.individuals.shape[1]))
         tau_prime = 1 / np.sqrt(2 * population.individuals.shape[1])
         # one draw from N(0, tau') per individual
@@ -67,19 +70,4 @@ class OneFifth(Mutation):
         # mutate sigmas
         population.sigmas = population.sigmas * np.exp(tau_drawns + tau_prime_drawns)
         # scale sigmas and mutate individuals
-        # self.mutate(population, gen_succ, gen_tot)
-
-        c = 0.95
-        k = 40  # sigmas reset patience
-        # reset sigmas
-        if gen_tot % k == 0:
-            population.init_sigmas()
-        # increare sigmas (explore more)
-        elif gen_succ/gen_tot > 0.20:
-            population.sigmas /= c
-        # decrease sigmas (exploit more)
-        elif gen_succ/gen_tot < 0.20:
-            population.sigmas *= c
-        # mutate components
-        variations = np.random.normal(0, population.sigmas)
-        population.individuals += variations
+        self.mutate_(population, gen_succ, gen_tot)

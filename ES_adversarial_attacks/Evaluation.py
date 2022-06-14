@@ -1,3 +1,4 @@
+from scipy.stats import entropy
 from PIL import Image
 import numpy as np
 
@@ -30,7 +31,7 @@ class Ackley(Evaluation):
         return (term1 + term2 + self.a + np.exp(1))
 
 
-class Rastringin:
+class Rastringin(Evaluation):
     """ Evaluate a solution on Rastringin problem
     """
     def __init__(self, a = 10, minimize=True):
@@ -97,15 +98,15 @@ class Crossentropy(Evaluation):
             loss_sign = (1 if self.targeted else -1)
         # calculate accuracy
         pred_groups = predictions.argmax(axis=1).reshape((pop_size, int(predictions.shape[0]/pop_size)))
-        acc = (pred_groups==self.true_label).sum(axis=1)/pred_groups.shape[1]
-        # batch_loss = loss_sign * np.log(predictions[:, self.true_label])
+        # acc = (pred_groups==self.true_label).sum(axis=1)/pred_groups.shape[1]
         # get pred at target label
         predictions = predictions[:, self.true_label]
         # divide batch of predictions in groups associated to the individuals
         # and compute the mean prediction for each of these groups
-        predictions = predictions.reshape((pop_size, int(predictions.shape[0]/pop_size))).mean(axis=1)
+        pred_groups = predictions.reshape((pop_size, int(predictions.shape[0]/pop_size)))
+        predictions = pred_groups.mean(axis=1)
         # compute crossentropy loss for each ind mean prediction
-        return loss_sign * np.log(predictions) * (1 + acc)
+        return loss_sign * np.log(predictions)  # - 0.1*entropy(pred_groups, axis=1) # * (1 + acc)
 
 
 class BlindEvaluation(Evaluation):

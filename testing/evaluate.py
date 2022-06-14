@@ -9,7 +9,7 @@ from ES_adversarial_attacks import DNN_Models
 # load original image
 # original_img = Image.open("../data/img_data/perc_224/tench.png").convert("RGB")
 # original_img = Image.open("../data/img_data/xcept_299/tench.png").convert("RGB")
-original_img = Image.open("../results/tench_noisy_0.02e_1d_indiv_patience.png").convert("RGB")
+original_img = Image.open("../results/tench/noisy_input_0.png").convert("RGB")
 
 # resize (vit test)
 # from torchvision import transforms
@@ -25,4 +25,4 @@ model = DNN_Models.XceptionClassifier()
 pred = model(original_img)[0].numpy()
 pred_ind = np.argmax(pred)
 print(f"Prediction: {pred[pred_ind]} on class {pred_ind}")
-print(f"Prediction: {pred[0]} on class {0}")
+print(f"Prediction: {pred[4]} on class {4}")

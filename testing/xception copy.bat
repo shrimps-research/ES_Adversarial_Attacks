@@ -1,15 +1,15 @@
 python attack_main.py ^
 -model xception_classifier ^
 -eval crossentropy ^
--in ../data/img_data/xcept_299/ ^
--tl 0 ^
+-in ../data/img_data/testxcept/ ^
+-tl 4 ^
 -min ^
--b 10000 ^
--ps 12 -os 50 ^
--d 0.3 ^
+-b 1000 ^
+-ps 4 -os 4 ^
+-d 0.9 ^
 -e 0.02 ^
 -r global_discrete ^
--m individual ^
--s comma_selection ^
+-m one_fifth_alt ^
+-s plus_selection ^
 -fp 5 ^
 -v 2
