@@ -90,7 +90,7 @@ def main():
 
     # define cuda device if specified
     if args.device is not None:
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = torch.device(args.device if torch.cuda.is_available() else "cpu")
         print("running on", device)
 
     # dictionaries to keep all our Classes
