@@ -17,11 +17,15 @@ class Population:
         self.mutation = mutation
         self.input_ = input_
         self.pop_size = pop_size
+        if input_.__class__.__name__ != "DataLoader":
+            self.input_shape = input_.shape
+        else:
+            self.input_shape = next(iter(input_))[0].shape
         if downsample is None:
             self.ind_dim = input_[0, :].size
         else:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
-            self.ind_side_len = int(input_.shape[1] * downsample)
-            self.ind_dim = self.ind_side_len * self.ind_side_len * self.input_.shape[-1]
+            self.ind_side_len = int(self.input_shape[1] * downsample)
+            self.ind_dim = self.ind_side_len * self.ind_side_len * self.input_shape[-1]
         # initialize individuals
         if start_noise is None:
             self.individuals = np.random.uniform(0, 1, size=(self.pop_size, self.ind_dim))
@@ -43,14 +47,14 @@ class Population:
         """ Reshape a single individual
         """
         if self.downsample is None:
-            return individual.reshape(self.input_.shape[1:])
+            return individual.reshape(self.input_shape[1:])
         else:   # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
-            return individual.reshape((self.ind_side_len, self.ind_side_len, self.input_.shape[-1]))
+            return individual.reshape((self.ind_side_len, self.ind_side_len, self.input_shape[-1]))
 
     def upsample_ind(self, individual):
         """ Upsample individual back to the original size of the image by interpolation.
         """
-        return np.dstack([nn_interpolate(individual[:,:,i], self.input_.shape[1:-1]) for i in range(self.input_.shape[-1])])
+        return np.dstack([nn_interpolate(individual[:,:,i], self.input_shape[1:-1]) for i in range(self.input_shape[-1])])
 
     def upsample_general(self,individual, shape):
         """ Upsample individual to size of the image by interpolation.
@@ -110,9 +114,18 @@ class Population:
             if self.downsample is not None:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
                 individual = self.upsample_ind(individual)
             # add original input and append to batch list
-            batch.append((individual + self.input_).clip(0, 1))
-        # stack batch as BxHxWxC
-        batch = np.vstack(batch)
+            if self.input_.__class__.__name__ != "DataLoader":
+                batch.append((individual + self.input_).clip(0, 1))
+            else:
+                batch.append(individual)
         # evaluate batch
-        batch_evals = evaluation(batch, self.pop_size)
+        if self.input_.__class__.__name__ != "DataLoader":
+            dataloader = None
+            # stack batch as BxHxWxC
+            batch = np.vstack(batch)
+        else:
+            dataloader = self.input_
+            # stack batch as BxHxWxC
+            batch = np.stack(batch)
+        batch_evals = evaluation(batch, self.pop_size, dataloader)
         self.fitnesses = list(batch_evals)

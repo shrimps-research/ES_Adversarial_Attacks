@@ -78,7 +78,11 @@ class Crossentropy(Evaluation):
             loss_sign = (1 if self.targeted else -1)
         return loss_sign * np.log(predictions[self.true_label])
 
-    def evaluate(self, batch, pop_size):
+    def predict(self, batch):
+        batch_size = min(32, batch.shape[0])
+        return [self.model(b).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
+
+    def evaluate(self, batch, pop_size, dataloader=False):
         """ If targeted attack, use crossentropy (-log(pred)) on target.
             If untargeted attack, use negative crossentropy (log(pred)) on target.
             Opposite of above if minimize is False.
@@ -87,10 +91,18 @@ class Crossentropy(Evaluation):
         # feasible input space contraint
         # if np.min(input_) < 0 or np.max(input_) > 1:
         #     return np.inf if self.targeted else 0
-        # prediction
-        batch_size = min(32, batch.shape[0])
-        predictions = [self.model(b).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
-        predictions = np.vstack(predictions)
+        # compute model predictions
+        if dataloader is None:  # batch contains all the noised images
+            predictions = np.vstack(self.predict(batch))
+        else:  # in this case batch contains only the noises
+            predictions = []
+            for og_batch in dataloader:
+                og_batch = og_batch[0].numpy()
+                noisy_batch = []
+                for noise in batch:
+                    noisy_batch.append((noise + og_batch).clip(0, 1))
+                predictions += self.predict(np.vstack(noisy_batch))
+            predictions = np.vstack(predictions)
         # compute loss for the entire batch
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)

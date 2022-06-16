@@ -1,12 +1,13 @@
 python attack_main.py ^
 -model xception_classifier ^
 -eval crossentropy ^
--in ../data/img_data/xcept_299/ ^
--tl 0 ^
+-dataloader ^
+-in ../data/img_data/imagenet/ ^
+-tl 48 ^
 -min ^
--b 10000 ^
+-b 100 ^
 -ps 12 -os 50 ^
--d 0.3 ^
+-d 0.9 ^
 -e 0.02 ^
 -r global_discrete ^
 -m individual ^
