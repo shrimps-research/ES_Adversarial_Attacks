@@ -1,11 +1,12 @@
 python attack_main.py ^
 -model xception_classifier ^
+-device cuda ^
 -eval crossentropy ^
 -dataloader ^
 -in ../data/img_data/imagenet/ ^
 -tl 48 ^
 -min ^
--b 100 ^
+-b 10000 ^
 -ps 12 -os 50 ^
 -d 0.9 ^
 -e 0.02 ^

@@ -46,9 +46,10 @@ class Rastringin(Evaluation):
 class Crossentropy(Evaluation):
     """ Classic crossentropy evaluation.
     """
-    def __init__(self, model, true_label, minimize=True, targeted=False):
+    def __init__(self, model, true_label, device, minimize=True, targeted=False):
         self.model = model
         self.true_label = int(true_label)
+        self.device = device
         self.minimize = minimize
         self.targeted = targeted
 
@@ -80,7 +81,7 @@ class Crossentropy(Evaluation):
 
     def predict(self, batch):
         batch_size = min(32, batch.shape[0])
-        return [self.model(b).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
+        return [self.model(b, self.device).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
 
     def evaluate(self, batch, pop_size, dataloader=False):
         """ If targeted attack, use crossentropy (-log(pred)) on target.

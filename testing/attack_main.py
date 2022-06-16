@@ -81,9 +81,17 @@ def main():
     parser.add_argument('-v', action='store', 
                         dest='verbose', type=int,
                         default=1)
+    parser.add_argument('-device', action='store', 
+                        dest='device', type=str,
+                        default="cpu")
     args = parser.parse_args()
     if args.verbose:
         print("arguments passed:",args)
+
+    # define cuda device if specified
+    if args.device is not None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("running on", device)
 
     # dictionaries to keep all our Classes
     recombinations = {  'intermediate': Intermediate(),
@@ -103,19 +111,24 @@ def main():
                         'xception_classifier': XceptionClassifier,
                         'vit_classifier': ViTClassifier,
                         'perceiver_classifier': PerceiverClassifier }
+    model = models[args.model]()
+    model.model = model.model.to(device)
 
     evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),
                         'crossentropy': 
-                                Crossentropy( models[args.model](),
-                                                        args.true_label,
-                                                        minimize=args.minimize,
-                                                        targeted=args.targeted),
+                                Crossentropy(
+                                    model,
+                                    args.true_label,
+                                    device=device,
+                                    minimize=args.minimize,
+                                    targeted=args.targeted),
                         'blind_evaluation': 
-                                BlindEvaluation( models[args.model](),
-                                                        args.true_label,
-                                                        minimize=args.minimize,
-                                                        targeted=args.targeted) }
+                                BlindEvaluation(
+                                    model,
+                                    args.true_label,
+                                    minimize=args.minimize,
+                                    targeted=args.targeted) }
 
     # load original image
     if args.dataloader:

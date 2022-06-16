@@ -65,7 +65,7 @@ class XceptionClassifier:
         self.model = timm.create_model('xception', pretrained=True).double()
         self.model.eval()
     
-    def __call__(self, x):
+    def __call__(self, x, device):
         if len(x.shape) == 3:
             # transpose dims from HxWxC to CxHxW
             x = np.transpose(x, (2, 0, 1))
@@ -76,7 +76,7 @@ class XceptionClassifier:
             x = np.transpose(x, (0, 3, 1, 2))
         
         with torch.no_grad():
-            logits = self.model(torch.tensor(x, dtype=torch.float64))
+            logits = self.model(torch.tensor(x, dtype=torch.float64).to(device))
             return torch.nn.functional.softmax(logits, dim=1)
 
 class ViTClassifier:
@@ -85,7 +85,7 @@ class ViTClassifier:
         self.model = ViT('B_32_imagenet1k', pretrained=True).double()
         self.model.eval()
 
-    def __call__(self, x):
+    def __call__(self, x, device):
         if len(x.shape) == 3:
             # transpose dims from HxWxC to CxHxW
             x = np.transpose(x, (2, 0, 1))
@@ -96,7 +96,7 @@ class ViTClassifier:
             x = np.transpose(x, (0, 3, 1, 2))
 
         with torch.no_grad():
-            return self.model(torch.tensor(x, dtype=torch.float64))
+            return self.model(torch.tensor(x, dtype=torch.float64).to(device))
 
 
 class PerceiverClassifier:
@@ -106,7 +106,7 @@ class PerceiverClassifier:
         self.model = PerceiverForImageClassificationLearned.from_pretrained("deepmind/vision-perceiver-learned")
         self.model.eval()
     
-    def __call__(self, x):
+    def __call__(self, x, device):
         if len(x.shape) == 3:
             # transpose dims from HxWxC to CxHxW
             x = np.transpose(x, (2, 0, 1))
@@ -121,5 +121,5 @@ class PerceiverClassifier:
         inputs = encoding.pixel_values
         # forward pass
         with torch.no_grad():
-            outputs = self.model(inputs)
+            outputs = self.model(inputs.to(device))
             return torch.nn.Softmax(dim=1)(outputs.logits).detach()
