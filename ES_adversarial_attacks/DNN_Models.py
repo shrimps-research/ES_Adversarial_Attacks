@@ -62,7 +62,7 @@ class XceptionClassifier:
 class XceptionClassifier:
     def __init__(self):
         import timm
-        self.model = timm.create_model('xception', pretrained=True).double()
+        self.model = timm.create_model('xception', pretrained=True).float()
         self.model.eval()
     
     def __call__(self, x, device):
@@ -76,13 +76,13 @@ class XceptionClassifier:
             x = np.transpose(x, (0, 3, 1, 2))
         
         with torch.no_grad():
-            logits = self.model(torch.tensor(x, dtype=torch.float64).to(device))
+            logits = self.model(torch.tensor(x, dtype=torch.float32).to(device))
             return torch.nn.functional.softmax(logits, dim=1)
 
 class ViTClassifier:
     def __init__(self):
         from pytorch_pretrained_vit import ViT
-        self.model = ViT('B_32_imagenet1k', pretrained=True).double()
+        self.model = ViT('B_32_imagenet1k', pretrained=True).float()
         self.model.eval()
 
     def __call__(self, x, device):
@@ -96,7 +96,7 @@ class ViTClassifier:
             x = np.transpose(x, (0, 3, 1, 2))
 
         with torch.no_grad():
-            return self.model(torch.tensor(x, dtype=torch.float64).to(device))
+            return self.model(torch.tensor(x, dtype=torch.float32).to(device))
 
 
 class PerceiverClassifier:

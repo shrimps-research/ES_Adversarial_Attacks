@@ -3,7 +3,7 @@ python attack_main.py ^
 -device cuda ^
 -eval crossentropy ^
 -dataloader ^
--in ../data/img_data/imagenet/ ^
+-in ../data/img_data/aa/ ^
 -tl 48 ^
 -min ^
 -b 10000 ^

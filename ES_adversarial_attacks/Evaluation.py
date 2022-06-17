@@ -80,8 +80,8 @@ class Crossentropy(Evaluation):
         return loss_sign * np.log(predictions[self.true_label])
 
     def predict(self, batch):
-        batch_size = min(32, batch.shape[0])
-        return [self.model(b, self.device).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
+        batch_size = min(64, batch.shape[0])
+        return [self.model(b, self.device).cpu().numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
 
     def evaluate(self, batch, pop_size, dataloader=False):
         """ If targeted attack, use crossentropy (-log(pred)) on target.
@@ -98,10 +98,10 @@ class Crossentropy(Evaluation):
         else:  # in this case batch contains only the noises
             predictions = []
             for og_batch in dataloader:
-                og_batch = og_batch[0].numpy()
+                og_batch = og_batch[0].numpy().astype(np.float32)
                 noisy_batch = []
                 for noise in batch:
-                    noisy_batch.append((noise + og_batch).clip(0, 1))
+                    noisy_batch.append((noise.astype(np.float32) + og_batch).clip(0, 1))
                 predictions += self.predict(np.vstack(noisy_batch))
             predictions = np.vstack(predictions)
         # compute loss for the entire batch
