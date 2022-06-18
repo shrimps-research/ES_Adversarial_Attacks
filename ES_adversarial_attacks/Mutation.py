@@ -31,7 +31,6 @@ class IndividualSigma(Mutation):
         population.individuals += variations
 
 
-# TODO add support for one-sigma
 class OneFifth(Mutation):
     """ 1/5 success rule method.
     """

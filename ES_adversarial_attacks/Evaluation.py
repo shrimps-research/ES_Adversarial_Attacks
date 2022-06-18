@@ -119,7 +119,7 @@ class Crossentropy(Evaluation):
         pred_groups = predictions.reshape((pop_size, int(predictions.shape[0]/pop_size)))
         predictions = pred_groups.mean(axis=1)
         # compute crossentropy loss for each ind mean prediction
-        return loss_sign * np.log(predictions)  # - 0.1*entropy(pred_groups, axis=1) # * (1 + acc)
+        return loss_sign * np.log(predictions)  # - 0.1*entropy(pred_groups, axis=1) # * (1 + (1-acc))
 
 
 class BlindEvaluation(Evaluation):
