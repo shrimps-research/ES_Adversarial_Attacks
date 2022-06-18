@@ -20,13 +20,6 @@ from ES_adversarial_attacks.DNN_Models import *
 from ES_adversarial_attacks.Evaluation import *
 from ES_adversarial_attacks.ES import *
 
-def crop_img(img, size):
-    cent_x, cent_y = img.shape[0]//2, img.shape[1]//2
-    half_crop_x, half_crop_y = size[0]//2, size[1]//2
-    start_x, end_x = cent_x-half_crop_x, cent_x+half_crop_x+(size[0]%2!=0)
-    start_y, end_y = cent_y-half_crop_y, cent_y+half_crop_y+(size[1]%2!=0)
-    return img[start_x:end_x, start_y:end_y, :]
-
 def main():
     # command line arguments
     parser = argparse.ArgumentParser()
@@ -131,20 +124,20 @@ def main():
                                     targeted=args.targeted) }
 
     # load original image
+    transform = T.Compose([
+        T.RandomResizedCrop(224),
+        T.RandomHorizontalFlip(),
+        T.ToTensor(),
+        lambda x: torch.permute(x, (1, 2, 0))
+    ])
     if args.dataloader:
-        transform = T.Compose([
-            T.RandomResizedCrop(224),
-            T.RandomHorizontalFlip(),
-            T.ToTensor(),
-            lambda x: torch.permute(x, (1, 2, 0))
-        ])
         og_data = datasets.ImageFolder(args.input_path, transform=transform)
         og_data = DataLoader(og_data, batch_size=256, shuffle=True)
     else:
         og_data = []
         for img_name in os.listdir(args.input_path):
             img = Image.open(args.input_path + img_name)
-            img = np.array(img) / 255.0
+            img = np.array(transform(img))
             if len(img.shape) == 2:
                 img = np.expand_dims(img, axis=2)
             og_data.append(img)
@@ -209,11 +202,10 @@ def main():
             Image.fromarray(noisy_img).save(f'../results/tench/noisy_input_{i}.png')
 
     # predict images
-    model = models[args.model]()
     if og_data.__class__.__name__ != "DataLoader":
-        noise_preds = model(noisy_batch).numpy()
+        noise_preds = model(noisy_batch, device).cpu().numpy()
         noise_acc = (noise_preds.argmax(axis=1)==args.true_label).sum()/noise_preds.shape[0]
-        normal_preds = model(og_data).numpy()
+        normal_preds = model(og_data, device).cpu().numpy()
         normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
     else:
         noise_acc = 0
@@ -221,9 +213,9 @@ def main():
         for batch in og_data:
             batch = batch[0].numpy()
             noisy_batch = (noise + batch).clip(0, 1)
-            noise_preds = model(noisy_batch).numpy()
+            noise_preds = model(noisy_batch, device).cpu().numpy()
             noise_acc += (noise_preds.argmax(axis=1)==args.true_label).sum()
-            normal_preds = model(batch).numpy()
+            normal_preds = model(batch, device).cpu().numpy()
             normal_acc += (normal_preds.argmax(axis=1)==args.true_label).sum()
         noise_acc /= len(og_data.dataset)
         normal_acc /= len(og_data.dataset)
@@ -232,6 +224,8 @@ def main():
     print(f"Best function evaluation: {round(best_eval, 2)}")
     print(f'[Original] correct predictions on class {args.true_label}: {normal_acc*100}%')
     print(f'[Noised] correct predictions on class {args.true_label}: {noise_acc*100}%')
+
+    return noise_acc, best_eval
 
 if __name__ == "__main__":
     main()
