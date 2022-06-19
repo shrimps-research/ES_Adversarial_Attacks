@@ -102,7 +102,7 @@ def main():
     models = {          'mnist_classifier' : MnistClassifier,
                         'flower_classifier': FlowerClassifier,
                         'xception_classifier': XceptionClassifier,
-                        'vit_classifier': ViT,
+                        'vit_classifier': ViTClassifier,
                         'perceiver_classifier': PerceiverClassifier }
     model = models[args.model]()
     model.model = model.model.to(device)
@@ -224,8 +224,6 @@ def main():
     print(f"Best function evaluation: {round(best_eval, 2)}")
     print(f'[Original] correct predictions on class {args.true_label}: {normal_acc*100}%')
     print(f'[Noised] correct predictions on class {args.true_label}: {noise_acc*100}%')
-
-    return noise_acc, best_eval
 
 if __name__ == "__main__":
     main()
