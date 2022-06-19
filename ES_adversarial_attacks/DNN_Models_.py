@@ -47,6 +47,17 @@ class MnistClassifier:
             x = np.expand_dims(x, axis=0)
         return self.model(x)
 
+"""
+class XceptionClassifier:
+    def __init__(self):
+        self.model = tf.keras.applications.Xception(weights='imagenet', include_top=True, input_shape=(299,299,3))
+
+    def __call__(self, x):
+        if len(x.shape) == 3:
+            # add batch dim
+            x = np.expand_dims(x, axis=0)
+        return self.model(x)
+"""
 
 class XceptionClassifier:
     def __init__(self):
@@ -72,9 +83,7 @@ class XceptionClassifier:
 class ViTClassifier:
     def __init__(self):
         import timm
-        self.model = timm.create_model('vit_base_patch16_224', 
-                                        pretrained=True,
-                                        num_classes=1000).float()
+        self.model = timm.create_model('vit_base_patch16_224', pretrained=True, num_classes=1000).float()
         self.model.eval()
     
     def __call__(self, x, device):
