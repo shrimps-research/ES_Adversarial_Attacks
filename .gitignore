@@ -3,3 +3,4 @@ classes/__pycache__
 tf_model/__pycache__
 data/__pycache__
 data/img_data/imagenet
+data
