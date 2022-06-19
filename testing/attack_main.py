@@ -102,7 +102,7 @@ def main():
     models = {          'mnist_classifier' : MnistClassifier,
                         'flower_classifier': FlowerClassifier,
                         'xception_classifier': XceptionClassifier,
-                        'vit_classifier': ViTClassifier,
+                        'vit_classifier': ViT,
                         'perceiver_classifier': PerceiverClassifier }
     model = models[args.model]()
     model.model = model.model.to(device)
@@ -132,7 +132,7 @@ def main():
     ])
     if args.dataloader:
         og_data = datasets.ImageFolder(args.input_path, transform=transform)
-        og_data = DataLoader(og_data, batch_size=256, shuffle=True)
+        og_data = DataLoader(og_data, batch_size=1300, shuffle=True)
     else:
         og_data = []
         for img_name in os.listdir(args.input_path):

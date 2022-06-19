@@ -80,7 +80,7 @@ class Crossentropy(Evaluation):
         return loss_sign * np.log(predictions[self.true_label])
 
     def predict(self, batch):
-        batch_size = min(64, batch.shape[0])
+        batch_size = min(256, batch.shape[0])
         return [self.model(b, self.device).cpu().numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
 
     def evaluate(self, batch, pop_size, dataloader=False):
