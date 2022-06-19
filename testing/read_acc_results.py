@@ -1,6 +1,6 @@
 import numpy as np
 
-with open("test.txt", "r") as res_file:
+with open("noisy_acc_komodo_single.txt", "r") as res_file:
     noisy_preds = []
     fooled_noisy_pred = 0
     not_fooled_img_names = []
