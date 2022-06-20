@@ -47,17 +47,6 @@ class MnistClassifier:
             x = np.expand_dims(x, axis=0)
         return self.model(x)
 
-"""
-class XceptionClassifier:
-    def __init__(self):
-        self.model = tf.keras.applications.Xception(weights='imagenet', include_top=True, input_shape=(299,299,3))
-
-    def __call__(self, x):
-        if len(x.shape) == 3:
-            # add batch dim
-            x = np.expand_dims(x, axis=0)
-        return self.model(x)
-"""
 
 class XceptionClassifier:
     def __init__(self):
@@ -79,7 +68,8 @@ class XceptionClassifier:
             logits = self.model(torch.tensor(x, dtype=torch.float32).to(device))
             return torch.nn.functional.softmax(logits, dim=1)
 
-class ViT:
+
+class ViTClassifier:
     def __init__(self):
         import timm
         self.model = timm.create_model('vit_base_patch16_224', 
@@ -100,25 +90,6 @@ class ViT:
         with torch.no_grad():
             logits = self.model(torch.tensor(x, dtype=torch.float32).to(device))
             return torch.nn.functional.softmax(logits, dim=1)
-
-class ViTClassifier:
-    def __init__(self):
-        from pytorch_pretrained_vit import ViT
-        self.model = ViT('B_32_imagenet1k', pretrained=True).float()
-        self.model.eval()
-
-    def __call__(self, x, device):
-        if len(x.shape) == 3:
-            # transpose dims from HxWxC to CxHxW
-            x = np.transpose(x, (2, 0, 1))
-            # add batch dim
-            x = np.expand_dims(x, axis=0)
-        elif len(x.shape) == 4:
-            # transpose dims from BxHxWxC to BxCxHxW
-            x = np.transpose(x, (0, 3, 1, 2))
-
-        with torch.no_grad():
-            return self.model(torch.tensor(x, dtype=torch.float32).to(device))
 
 
 class PerceiverClassifier:
