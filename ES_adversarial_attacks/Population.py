@@ -39,9 +39,9 @@ class Population:
         """ Initialize sigma values depending on the mutation method of choice.
         """
         if self.mutation.__class__.__name__ == "OneSigma":
-            self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), np.max(self.individuals)/6, size=self.pop_size)
+            self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), max(0, np.max(self.individuals)/6), size=self.pop_size)
         else:
-            self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), np.max(self.individuals)/6, size=(self.pop_size, self.ind_dim))
+            self.sigmas = np.random.uniform(max(0, np.min(self.individuals)/6), max(0, np.max(self.individuals)/6), size=(self.pop_size, self.ind_dim))
 
     def reshape_ind(self, individual):
         """ Reshape a single individual

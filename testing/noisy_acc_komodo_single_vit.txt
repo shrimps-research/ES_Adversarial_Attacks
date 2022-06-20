@@ -2068,9 +2068,6 @@ Best function evaluation: -0.5799999833106995
 [Original] correct predictions on class 48: 100.0%
 [Noised] correct predictions on class 48: 100.0%
 
-n01695060_8369.JPEG:
-
-
 n01695060_8380.JPEG:
 Best function evaluation: -1.3899999856948853
 [Original] correct predictions on class 48: 100.0%
@@ -3590,9 +3587,6 @@ n01695060_15132.JPEG:
 Best function evaluation: -4.059999942779541
 [Original] correct predictions on class 48: 100.0%
 [Noised] correct predictions on class 48: 0.0%
-
-n01695060_15139.JPEG:
-
 
 n01695060_15144.JPEG:
 Best function evaluation: -5.289999961853027
@@ -5644,9 +5638,6 @@ Best function evaluation: -0.23999999463558197
 [Original] correct predictions on class 48: 100.0%
 [Noised] correct predictions on class 48: 100.0%
 
-n01695060_27750.JPEG:
-
-
 n01695060_27783.JPEG:
 Best function evaluation: -2.490000009536743
 [Original] correct predictions on class 48: 100.0%
@@ -6491,4 +6482,3 @@ n01695060_46684.JPEG:
 Best function evaluation: -0.6499999761581421
 [Original] correct predictions on class 48: 100.0%
 [Noised] correct predictions on class 48: 100.0%
-
