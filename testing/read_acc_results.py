@@ -1,6 +1,6 @@
 import numpy as np
 
-with open("noisy_acc_komodo_single.txt", "r") as res_file:
+with open("noisy_acc_komodo_single_vit.txt", "r") as res_file:
     noisy_preds = []
     fooled_noisy_pred = 0
     not_fooled_img_names = []
@@ -26,3 +26,4 @@ print(f"Fooled images: {fooled_noisy_pred}/{len(noisy_preds)} ({fooled_noisy_pre
         +f"Mean noisy pred: {mean_noisy_pred} +- {std_noisy_pred}\n" \
         +f"Median noisy pred: {median_noisy_pred}")
 # print(f"List of not fooled images:\n{not_fooled_img_names}")
+print(f"Number of not fooled images: {len(not_fooled_img_names)}")
