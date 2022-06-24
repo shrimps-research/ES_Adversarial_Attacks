@@ -1,0 +1,12 @@
+config search on xception and tench (99.8% initial)
+
+0.02e 0.9d 10000b
+-6.730000019073486 -> 0.12% tench
+99.7% goldfish
+
+0.05e 0.1d 10000b
+-0.019999999552965164 -> 98.0% tench
+
+0.05e 0.4d 10000b
+-15.34000015258789 -> 0.0000002% tench
+99.9% goldfish

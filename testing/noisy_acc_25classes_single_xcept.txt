@@ -1,0 +1,999 @@
+0_0.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 100.0%
+
+0_1.JPEG:
+Best function evaluation: -1.0
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 0.0%
+
+0_2.JPEG:
+Best function evaluation: -10.149999618530273
+[Original] correct predictions on class 0: 0.0%
+[Noised] correct predictions on class 0: 0.0%
+
+0_3.JPEG:
+Best function evaluation: -7.199999809265137
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 0.0%
+
+0_4.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 100.0%
+
+0_5.JPEG:
+Best function evaluation: -0.41999998688697815
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 100.0%
+
+0_6.JPEG:
+Best function evaluation: -0.029999999329447746
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 100.0%
+
+0_7.JPEG:
+Best function evaluation: -7.300000190734863
+[Original] correct predictions on class 0: 100.0%
+[Noised] correct predictions on class 0: 0.0%
+
+2_0.JPEG:
+Best function evaluation: -2.640000104904175
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_1.JPEG:
+Best function evaluation: -5.619999885559082
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_2.JPEG:
+Best function evaluation: -7.900000095367432
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_3.JPEG:
+Best function evaluation: -10.130000114440918
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_4.JPEG:
+Best function evaluation: -7.079999923706055
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_5.JPEG:
+Best function evaluation: -1.7000000476837158
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_6.JPEG:
+Best function evaluation: -3.940000057220459
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+2_7.JPEG:
+Best function evaluation: -1.2200000286102295
+[Original] correct predictions on class 2: 100.0%
+[Noised] correct predictions on class 2: 0.0%
+
+4_0.JPEG:
+Best function evaluation: -14.270000457763672
+[Original] correct predictions on class 4: 0.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_1.JPEG:
+Best function evaluation: -10.710000038146973
+[Original] correct predictions on class 4: 100.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_2.JPEG:
+Best function evaluation: -14.260000228881836
+[Original] correct predictions on class 4: 0.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_3.JPEG:
+Best function evaluation: -11.739999771118164
+[Original] correct predictions on class 4: 100.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_4.JPEG:
+Best function evaluation: -0.800000011920929
+[Original] correct predictions on class 4: 100.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_5.JPEG:
+Best function evaluation: -7.539999961853027
+[Original] correct predictions on class 4: 100.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_6.JPEG:
+Best function evaluation: -6.599999904632568
+[Original] correct predictions on class 4: 100.0%
+[Noised] correct predictions on class 4: 0.0%
+
+4_7.JPEG:
+Best function evaluation: -8.869999885559082
+[Original] correct predictions on class 4: 0.0%
+[Noised] correct predictions on class 4: 0.0%
+
+11_0.JPEG:
+Best function evaluation: -7.050000190734863
+[Original] correct predictions on class 11: 0.0%
+[Noised] correct predictions on class 11: 0.0%
+
+11_1.JPEG:
+Best function evaluation: -4.820000171661377
+[Original] correct predictions on class 11: 100.0%
+[Noised] correct predictions on class 11: 0.0%
+
+11_2.JPEG:
+Best function evaluation: -2.9600000381469727
+[Original] correct predictions on class 11: 100.0%
+[Noised] correct predictions on class 11: 0.0%
+
+11_3.JPEG:
+Best function evaluation: -11.829999923706055
+[Original] correct predictions on class 11: 0.0%
+[Noised] correct predictions on class 11: 0.0%
+
+11_4.JPEG:
+Best function evaluation: -0.47999998927116394
+[Original] correct predictions on class 11: 100.0%
+[Noised] correct predictions on class 11: 100.0%
+
+11_5.JPEG:
+Best function evaluation: -15.09000015258789
+[Original] correct predictions on class 11: 100.0%
+[Noised] correct predictions on class 11: 0.0%
+
+11_6.JPEG:
+Best function evaluation: -12.350000381469727
+[Original] correct predictions on class 11: 100.0%
+[Noised] correct predictions on class 11: 0.0%
+
+11_7.JPEG:
+Best function evaluation: -6.400000095367432
+[Original] correct predictions on class 11: 0.0%
+[Noised] correct predictions on class 11: 0.0%
+
+29_0.JPEG:
+Best function evaluation: -5.840000152587891
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 0.0%
+
+29_1.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 100.0%
+
+29_2.JPEG:
+Best function evaluation: -13.050000190734863
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 0.0%
+
+29_3.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 100.0%
+
+29_4.JPEG:
+Best function evaluation: -11.579999923706055
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 0.0%
+
+29_5.JPEG:
+Best function evaluation: -12.390000343322754
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 0.0%
+
+29_6.JPEG:
+Best function evaluation: -11.5
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 0.0%
+
+29_7.JPEG:
+Best function evaluation: -7.639999866485596
+[Original] correct predictions on class 29: 100.0%
+[Noised] correct predictions on class 29: 0.0%
+
+34_0.JPEG:
+Best function evaluation: -0.11999999731779099
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 100.0%
+
+34_1.JPEG:
+Best function evaluation: -10.800000190734863
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 0.0%
+
+34_2.JPEG:
+Best function evaluation: -1.559999942779541
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 0.0%
+
+34_3.JPEG:
+Best function evaluation: -2.3499999046325684
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 0.0%
+
+34_4.JPEG:
+Best function evaluation: -7.5
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 0.0%
+
+34_5.JPEG:
+Best function evaluation: -0.6000000238418579
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 100.0%
+
+34_6.JPEG:
+Best function evaluation: -0.20000000298023224
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 100.0%
+
+34_7.JPEG:
+Best function evaluation: -0.029999999329447746
+[Original] correct predictions on class 34: 100.0%
+[Noised] correct predictions on class 34: 100.0%
+
+42_0.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 42: 100.0%
+[Noised] correct predictions on class 42: 100.0%
+
+42_1.JPEG:
+Best function evaluation: -11.34000015258789
+[Original] correct predictions on class 42: 0.0%
+[Noised] correct predictions on class 42: 0.0%
+
+42_2.JPEG:
+Best function evaluation: -13.029999732971191
+[Original] correct predictions on class 42: 0.0%
+[Noised] correct predictions on class 42: 0.0%
+
+42_3.JPEG:
+Best function evaluation: -14.880000114440918
+[Original] correct predictions on class 42: 100.0%
+[Noised] correct predictions on class 42: 0.0%
+
+42_4.JPEG:
+Best function evaluation: -3.9100000858306885
+[Original] correct predictions on class 42: 100.0%
+[Noised] correct predictions on class 42: 0.0%
+
+42_5.JPEG:
+Best function evaluation: -9.529999732971191
+[Original] correct predictions on class 42: 100.0%
+[Noised] correct predictions on class 42: 0.0%
+
+42_6.JPEG:
+Best function evaluation: -8.720000267028809
+[Original] correct predictions on class 42: 100.0%
+[Noised] correct predictions on class 42: 0.0%
+
+42_7.JPEG:
+Best function evaluation: -3.940000057220459
+[Original] correct predictions on class 42: 100.0%
+[Noised] correct predictions on class 42: 0.0%
+
+48_0.JPEG:
+Best function evaluation: -6.800000190734863
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 0.0%
+
+48_1.JPEG:
+Best function evaluation: -7.46999979019165
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 0.0%
+
+48_2.JPEG:
+Best function evaluation: -3.1600000858306885
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 0.0%
+
+48_3.JPEG:
+Best function evaluation: -0.25999999046325684
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 100.0%
+
+48_4.JPEG:
+Best function evaluation: -2.5399999618530273
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 0.0%
+
+48_5.JPEG:
+Best function evaluation: -2.490000009536743
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 0.0%
+
+48_6.JPEG:
+Best function evaluation: -10.09000015258789
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 0.0%
+
+48_7.JPEG:
+Best function evaluation: -0.029999999329447746
+[Original] correct predictions on class 48: 100.0%
+[Noised] correct predictions on class 48: 100.0%
+
+64_0.JPEG:
+Best function evaluation: -3.4200000762939453
+[Original] correct predictions on class 64: 100.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_1.JPEG:
+Best function evaluation: -1.4800000190734863
+[Original] correct predictions on class 64: 100.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_2.JPEG:
+Best function evaluation: -2.819999933242798
+[Original] correct predictions on class 64: 100.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_3.JPEG:
+Best function evaluation: -9.90999984741211
+[Original] correct predictions on class 64: 0.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_4.JPEG:
+Best function evaluation: -10.819999694824219
+[Original] correct predictions on class 64: 100.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_5.JPEG:
+Best function evaluation: -18.920000076293945
+[Original] correct predictions on class 64: 0.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_6.JPEG:
+Best function evaluation: -4.480000019073486
+[Original] correct predictions on class 64: 100.0%
+[Noised] correct predictions on class 64: 0.0%
+
+64_7.JPEG:
+Best function evaluation: -3.9100000858306885
+[Original] correct predictions on class 64: 100.0%
+[Noised] correct predictions on class 64: 0.0%
+
+77_0.JPEG:
+Best function evaluation: -4.989999771118164
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_1.JPEG:
+Best function evaluation: -1.6399999856948853
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_2.JPEG:
+Best function evaluation: -1.2999999523162842
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_3.JPEG:
+Best function evaluation: -0.9700000286102295
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_4.JPEG:
+Best function evaluation: -7.539999961853027
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_5.JPEG:
+Best function evaluation: -10.359999656677246
+[Original] correct predictions on class 77: 0.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_6.JPEG:
+Best function evaluation: -5.550000190734863
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+77_7.JPEG:
+Best function evaluation: -7.900000095367432
+[Original] correct predictions on class 77: 100.0%
+[Noised] correct predictions on class 77: 0.0%
+
+80_0.JPEG:
+Best function evaluation: -5.199999809265137
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 0.0%
+
+80_1.JPEG:
+Best function evaluation: -2.2799999713897705
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 0.0%
+
+80_2.JPEG:
+Best function evaluation: -7.820000171661377
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 0.0%
+
+80_3.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 100.0%
+
+80_4.JPEG:
+Best function evaluation: -1.3700000047683716
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 0.0%
+
+80_5.JPEG:
+Best function evaluation: -0.3499999940395355
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 100.0%
+
+80_6.JPEG:
+Best function evaluation: -5.0
+[Original] correct predictions on class 80: 100.0%
+[Noised] correct predictions on class 80: 0.0%
+
+80_7.JPEG:
+Best function evaluation: -5.690000057220459
+[Original] correct predictions on class 80: 0.0%
+[Noised] correct predictions on class 80: 0.0%
+
+88_0.JPEG:
+Best function evaluation: -13.140000343322754
+[Original] correct predictions on class 88: 0.0%
+[Noised] correct predictions on class 88: 0.0%
+
+88_1.JPEG:
+Best function evaluation: -6.71999979019165
+[Original] correct predictions on class 88: 100.0%
+[Noised] correct predictions on class 88: 0.0%
+
+88_2.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 88: 100.0%
+[Noised] correct predictions on class 88: 100.0%
+
+88_3.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 88: 100.0%
+[Noised] correct predictions on class 88: 100.0%
+
+88_4.JPEG:
+Best function evaluation: -7.099999904632568
+[Original] correct predictions on class 88: 100.0%
+[Noised] correct predictions on class 88: 0.0%
+
+88_5.JPEG:
+Best function evaluation: -5.96999979019165
+[Original] correct predictions on class 88: 100.0%
+[Noised] correct predictions on class 88: 0.0%
+
+88_6.JPEG:
+Best function evaluation: -19.40999984741211
+[Original] correct predictions on class 88: 0.0%
+[Noised] correct predictions on class 88: 0.0%
+
+88_7.JPEG:
+Best function evaluation: -13.699999809265137
+[Original] correct predictions on class 88: 0.0%
+[Noised] correct predictions on class 88: 0.0%
+
+90_0.JPEG:
+Best function evaluation: -1.9199999570846558
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 0.0%
+
+90_1.JPEG:
+Best function evaluation: -0.10000000149011612
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 100.0%
+
+90_2.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 100.0%
+
+90_3.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 100.0%
+
+90_4.JPEG:
+Best function evaluation: -4.130000114440918
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 0.0%
+
+90_5.JPEG:
+Best function evaluation: -1.649999976158142
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 0.0%
+
+90_6.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 100.0%
+
+90_7.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 90: 100.0%
+[Noised] correct predictions on class 90: 100.0%
+
+91_0.JPEG:
+Best function evaluation: -4.199999809265137
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_1.JPEG:
+Best function evaluation: -2.190000057220459
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_2.JPEG:
+Best function evaluation: -6.980000019073486
+[Original] correct predictions on class 91: 0.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_3.JPEG:
+Best function evaluation: -12.930000305175781
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_4.JPEG:
+Best function evaluation: -4.550000190734863
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_5.JPEG:
+Best function evaluation: -8.489999771118164
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_6.JPEG:
+Best function evaluation: -5.75
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+91_7.JPEG:
+Best function evaluation: -10.050000190734863
+[Original] correct predictions on class 91: 100.0%
+[Noised] correct predictions on class 91: 0.0%
+
+94_0.JPEG:
+Best function evaluation: -5.730000019073486
+[Original] correct predictions on class 94: 100.0%
+[Noised] correct predictions on class 94: 0.0%
+
+94_1.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 94: 100.0%
+[Noised] correct predictions on class 94: 100.0%
+
+94_2.JPEG:
+Best function evaluation: -15.710000038146973
+[Original] correct predictions on class 94: 100.0%
+[Noised] correct predictions on class 94: 0.0%
+
+94_3.JPEG:
+Best function evaluation: -13.75
+[Original] correct predictions on class 94: 100.0%
+[Noised] correct predictions on class 94: 0.0%
+
+94_4.JPEG:
+Best function evaluation: -10.460000038146973
+[Original] correct predictions on class 94: 0.0%
+[Noised] correct predictions on class 94: 0.0%
+
+94_5.JPEG:
+Best function evaluation: -0.11999999731779099
+[Original] correct predictions on class 94: 100.0%
+[Noised] correct predictions on class 94: 100.0%
+
+94_6.JPEG:
+Best function evaluation: -0.14000000059604645
+[Original] correct predictions on class 94: 100.0%
+[Noised] correct predictions on class 94: 100.0%
+
+94_7.JPEG:
+Best function evaluation: -6.239999771118164
+[Original] correct predictions on class 94: 0.0%
+[Noised] correct predictions on class 94: 0.0%
+
+108_0.JPEG:
+Best function evaluation: -5.139999866485596
+[Original] correct predictions on class 108: 0.0%
+[Noised] correct predictions on class 108: 0.0%
+
+108_1.JPEG:
+Best function evaluation: -4.21999979019165
+[Original] correct predictions on class 108: 100.0%
+[Noised] correct predictions on class 108: 0.0%
+
+108_2.JPEG:
+Best function evaluation: -0.07000000029802322
+[Original] correct predictions on class 108: 100.0%
+[Noised] correct predictions on class 108: 100.0%
+
+108_3.JPEG:
+Best function evaluation: -6.53000020980835
+[Original] correct predictions on class 108: 100.0%
+[Noised] correct predictions on class 108: 0.0%
+
+108_4.JPEG:
+Best function evaluation: -3.0899999141693115
+[Original] correct predictions on class 108: 100.0%
+[Noised] correct predictions on class 108: 0.0%
+
+108_5.JPEG:
+Best function evaluation: -0.7599999904632568
+[Original] correct predictions on class 108: 100.0%
+[Noised] correct predictions on class 108: 0.0%
+
+108_6.JPEG:
+Best function evaluation: -12.680000305175781
+[Original] correct predictions on class 108: 0.0%
+[Noised] correct predictions on class 108: 0.0%
+
+108_7.JPEG:
+Best function evaluation: -4.760000228881836
+[Original] correct predictions on class 108: 100.0%
+[Noised] correct predictions on class 108: 0.0%
+
+110_0.JPEG:
+Best function evaluation: -14.90999984741211
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+110_1.JPEG:
+Best function evaluation: -4.880000114440918
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+110_2.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 100.0%
+
+110_3.JPEG:
+Best function evaluation: -9.359999656677246
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+110_4.JPEG:
+Best function evaluation: -1.3600000143051147
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+110_5.JPEG:
+Best function evaluation: -9.1899995803833
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+110_6.JPEG:
+Best function evaluation: -1.149999976158142
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+110_7.JPEG:
+Best function evaluation: -2.490000009536743
+[Original] correct predictions on class 110: 100.0%
+[Noised] correct predictions on class 110: 0.0%
+
+111_0.JPEG:
+Best function evaluation: -4.599999904632568
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 0.0%
+
+111_1.JPEG:
+Best function evaluation: -0.07000000029802322
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 100.0%
+
+111_2.JPEG:
+Best function evaluation: -13.149999618530273
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 0.0%
+
+111_3.JPEG:
+Best function evaluation: -0.019999999552965164
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 100.0%
+
+111_4.JPEG:
+Best function evaluation: -12.850000381469727
+[Original] correct predictions on class 111: 0.0%
+[Noised] correct predictions on class 111: 0.0%
+
+111_5.JPEG:
+Best function evaluation: -3.2699999809265137
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 0.0%
+
+111_6.JPEG:
+Best function evaluation: -0.4399999976158142
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 100.0%
+
+111_7.JPEG:
+Best function evaluation: -3.809999942779541
+[Original] correct predictions on class 111: 100.0%
+[Noised] correct predictions on class 111: 0.0%
+
+115_0.JPEG:
+Best function evaluation: -11.510000228881836
+[Original] correct predictions on class 115: 100.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_1.JPEG:
+Best function evaluation: -7.849999904632568
+[Original] correct predictions on class 115: 100.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_2.JPEG:
+Best function evaluation: -16.8700008392334
+[Original] correct predictions on class 115: 0.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_3.JPEG:
+Best function evaluation: -4.130000114440918
+[Original] correct predictions on class 115: 100.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_4.JPEG:
+Best function evaluation: -7.190000057220459
+[Original] correct predictions on class 115: 100.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_5.JPEG:
+Best function evaluation: -11.970000267028809
+[Original] correct predictions on class 115: 100.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_6.JPEG:
+Best function evaluation: -6.929999828338623
+[Original] correct predictions on class 115: 0.0%
+[Noised] correct predictions on class 115: 0.0%
+
+115_7.JPEG:
+Best function evaluation: -2.6700000762939453
+[Original] correct predictions on class 115: 100.0%
+[Noised] correct predictions on class 115: 0.0%
+
+119_0.JPEG:
+Best function evaluation: -5.679999828338623
+[Original] correct predictions on class 119: 100.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_1.JPEG:
+Best function evaluation: -8.619999885559082
+[Original] correct predictions on class 119: 100.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_2.JPEG:
+Best function evaluation: -9.229999542236328
+[Original] correct predictions on class 119: 100.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_3.JPEG:
+Best function evaluation: -14.880000114440918
+[Original] correct predictions on class 119: 0.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_4.JPEG:
+Best function evaluation: -1.659999966621399
+[Original] correct predictions on class 119: 100.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_5.JPEG:
+Best function evaluation: -19.6200008392334
+[Original] correct predictions on class 119: 0.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_6.JPEG:
+Best function evaluation: -18.479999542236328
+[Original] correct predictions on class 119: 100.0%
+[Noised] correct predictions on class 119: 0.0%
+
+119_7.JPEG:
+Best function evaluation: -2.5799999237060547
+[Original] correct predictions on class 119: 100.0%
+[Noised] correct predictions on class 119: 0.0%
+
+123_0.JPEG:
+Best function evaluation: -8.09000015258789
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 0.0%
+
+123_1.JPEG:
+Best function evaluation: -0.07999999821186066
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 100.0%
+
+123_2.JPEG:
+Best function evaluation: -0.029999999329447746
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 100.0%
+
+123_3.JPEG:
+Best function evaluation: -5.349999904632568
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 0.0%
+
+123_4.JPEG:
+Best function evaluation: -0.20999999344348907
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 100.0%
+
+123_5.JPEG:
+Best function evaluation: -1.3899999856948853
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 0.0%
+
+123_6.JPEG:
+Best function evaluation: -16.40999984741211
+[Original] correct predictions on class 123: 0.0%
+[Noised] correct predictions on class 123: 0.0%
+
+123_7.JPEG:
+Best function evaluation: -8.609999656677246
+[Original] correct predictions on class 123: 100.0%
+[Noised] correct predictions on class 123: 0.0%
+
+130_0.JPEG:
+Best function evaluation: -10.199999809265137
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 0.0%
+
+130_1.JPEG:
+Best function evaluation: -0.03999999910593033
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 100.0%
+
+130_2.JPEG:
+Best function evaluation: -10.300000190734863
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 0.0%
+
+130_3.JPEG:
+Best function evaluation: -0.5699999928474426
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 100.0%
+
+130_4.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 100.0%
+
+130_5.JPEG:
+Best function evaluation: -4.840000152587891
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 0.0%
+
+130_6.JPEG:
+Best function evaluation: -1.0199999809265137
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 0.0%
+
+130_7.JPEG:
+Best function evaluation: -5.71999979019165
+[Original] correct predictions on class 130: 100.0%
+[Noised] correct predictions on class 130: 0.0%
+
+134_0.JPEG:
+Best function evaluation: -4.349999904632568
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_1.JPEG:
+Best function evaluation: -14.350000381469727
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_2.JPEG:
+Best function evaluation: -7.449999809265137
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_3.JPEG:
+Best function evaluation: -4.150000095367432
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_4.JPEG:
+Best function evaluation: -7.96999979019165
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_5.JPEG:
+Best function evaluation: -4.139999866485596
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_6.JPEG:
+Best function evaluation: -1.9299999475479126
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+134_7.JPEG:
+Best function evaluation: -1.6299999952316284
+[Original] correct predictions on class 134: 100.0%
+[Noised] correct predictions on class 134: 0.0%
+
+138_0.JPEG:
+Best function evaluation: -2.440000057220459
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 0.0%
+
+138_1.JPEG:
+Best function evaluation: -0.05000000074505806
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 100.0%
+
+138_2.JPEG:
+Best function evaluation: -5.25
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 0.0%
+
+138_3.JPEG:
+Best function evaluation: -2.1500000953674316
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 0.0%
+
+138_4.JPEG:
+Best function evaluation: -2.640000104904175
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 100.0%
+
+138_5.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 100.0%
+
+138_6.JPEG:
+Best function evaluation: -0.7900000214576721
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 100.0%
+
+138_7.JPEG:
+Best function evaluation: -0.05999999865889549
+[Original] correct predictions on class 138: 100.0%
+[Noised] correct predictions on class 138: 100.0%
+
+143_0.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 100.0%
+
+143_1.JPEG:
+Best function evaluation: -2.059999942779541
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 0.0%
+
+143_2.JPEG:
+Best function evaluation: -7.710000038146973
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 0.0%
+
+143_3.JPEG:
+Best function evaluation: -0.009999999776482582
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 100.0%
+
+143_4.JPEG:
+Best function evaluation: -6.710000038146973
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 0.0%
+
+143_5.JPEG:
+Best function evaluation: -15.510000228881836
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 0.0%
+
+143_6.JPEG:
+Best function evaluation: -0.0
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 100.0%
+
+143_7.JPEG:
+Best function evaluation: -3.5899999141693115
+[Original] correct predictions on class 143: 100.0%
+[Noised] correct predictions on class 143: 0.0%

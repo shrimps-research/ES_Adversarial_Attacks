@@ -6,10 +6,10 @@ python attack_main.py ^
 -min ^
 -b 10000 ^
 -ps 2 -os 4 ^
--d 0.1 ^
+-d 0.4 ^
 -e 0.05 ^
 -r intermediate ^
--m individual ^
+-m one_fifth ^
 -s plus_selection ^
 -fp 5 ^
 -v 2
