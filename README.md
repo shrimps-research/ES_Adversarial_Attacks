@@ -40,16 +40,3 @@ python evaluate.py
 ```
 
 In order to customize the evaluation you need to modify the script. A CLI will probably be provided in the future.
-
-
-## Results (so far)
-### Attack on a simple MLP trained on MNIST
-<img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/mnist_example.png" width="700px" />
-
-### Attack on Xception trained on ImageNet (mutation: intermediate)
-<img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/xception_ind_example.png" width="700px" />
-
-### Attack on Xception trained on ImageNet (mutation: 1/5 success rule)
-<img src="https://github.com/OhGreat/ES_Adversarial_Attacks/blob/main/images/xception_onefifth_example.png" width="700px" />
-
-### Soon: attacks on ViT and Perceiver IO
