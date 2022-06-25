@@ -47,3 +47,6 @@ In order to customize the evaluation you need to modify the script. A CLI will p
 
 ## Examples
 Some example scripts to setup configurations are available under the `testing` directory, both in **.sh** and **.bat** formats.
+
+The following image instead, is an example of the results expected with different configurations of epsilon and downsampling, on the Xception classification model.
+ <img src="https://github.com/shrimps-research/ES_Adversarial_Attacks/blob/main/images/xception_config_search.png" width="100%" />
