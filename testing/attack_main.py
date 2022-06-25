@@ -7,6 +7,7 @@ from PIL import Image
 from torchvision import datasets
 from torchvision import transforms as T
 from torch.utils.data import DataLoader
+from transformers import add_start_docstrings
 
 # Setting paths to folders
 sys.path.append('..')
@@ -25,6 +26,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-dataloader', action='store_true', 
                         dest='dataloader')
+    parser.add_argument('-batches', type=int, nargs='+',
+                        default=(1000,256))
     parser.add_argument('-eval', action='store', 
                         dest='evaluation', type=str,
                         default='ackley')
@@ -99,9 +102,7 @@ def main():
     selections = {      'plus_selection': PlusSelection(),
                         'comma_selection': CommaSelection() }
 
-    models = {          'mnist_classifier' : MnistClassifier,
-                        'flower_classifier': FlowerClassifier,
-                        'xception_classifier': XceptionClassifier,
+    models = {          'xception_classifier': XceptionClassifier,
                         'vit_classifier': ViTClassifier,
                         'perceiver_classifier': PerceiverClassifier }
     model = models[args.model]()
@@ -114,12 +115,15 @@ def main():
                                     model,
                                     args.true_label,
                                     device=device,
+                                    minibatch=args.batches[1],
                                     minimize=args.minimize,
                                     targeted=args.targeted),
                         'blind_evaluation': 
                                 BlindEvaluation(
                                     model,
                                     args.true_label,
+                                    device=device,
+                                    minibatch=args.batches[1],
                                     minimize=args.minimize,
                                     targeted=args.targeted) }
 
@@ -132,7 +136,14 @@ def main():
     ])
     if args.dataloader:
         og_data = datasets.ImageFolder(args.input_path, transform=transform)
-        og_data = DataLoader(og_data, batch_size=1300, shuffle=True)
+        og_data = DataLoader(og_data, batch_size=args.batches[0], shuffle=True)
+        # initial images predictions
+        normal_acc = 0
+        for batch in og_data:
+            batch = batch[0].numpy()
+            normal_preds = model(batch, device).cpu().numpy()
+            normal_acc += (normal_preds.argmax(axis=1)==args.true_label).sum()
+        normal_acc /= len(og_data.dataset)
     else:
         og_data = []
         for img_name in os.listdir(args.input_path):
@@ -142,12 +153,10 @@ def main():
                 img = np.expand_dims(img, axis=2)
             og_data.append(img)
         og_data = np.stack(og_data)
-
-    # initial image prediction
-    # model = models[args.model]()
-    # normal_preds = model(og_data).numpy()
-    # normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
-    # print(f'\nOriginal prediction: {normal_acc} on class {args.true_label}')
+        # initial image prediction
+        normal_preds = model(og_data, device).cpu().numpy()
+        normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
+    print(f'\nOriginal prediction: {normal_acc} on class {args.true_label}')
 
     # load starting noise
     # TODO fix for batches
@@ -189,7 +198,7 @@ def main():
     noise = parents.upsample_ind(noise)
 
     # save best noise
-    Image.fromarray((noise * 255).astype(np.uint8)).save('../results/tench/noise.png')
+    Image.fromarray((noise * 255).astype(np.uint8)).save('../results/noise.png')
 
     # save final image
     if og_data.__class__.__name__ != "DataLoader":
@@ -199,7 +208,7 @@ def main():
             if noisy_img.shape[-1] == 1:
                 noisy_img = np.squeeze(noisy_img, axis=2)
             noisy_img = (noisy_img * 255).astype(np.uint8)
-            Image.fromarray(noisy_img).save(f'../results/tench/noisy_input_{i}.png')
+            Image.fromarray(noisy_img).save(f'../results/noisy_input_{i}.png')
 
     # predict images
     if og_data.__class__.__name__ != "DataLoader":

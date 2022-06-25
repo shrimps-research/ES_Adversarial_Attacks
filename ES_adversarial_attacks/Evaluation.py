@@ -1,5 +1,3 @@
-from scipy.stats import entropy
-from PIL import Image
 import numpy as np
 
 
@@ -46,12 +44,13 @@ class Rastringin(Evaluation):
 class Crossentropy(Evaluation):
     """ Classic crossentropy evaluation.
     """
-    def __init__(self, model, true_label, device, minimize=True, targeted=False):
+    def __init__(self, model, true_label, device, minibatch, minimize=True, targeted=False):
         self.model = model
         self.true_label = int(true_label)
         self.device = device
         self.minimize = minimize
         self.targeted = targeted
+        self.minibatch = minibatch
 
     def worst_eval(self):
         """ Return worst evaluation possible for the current problem configutation.
@@ -61,26 +60,8 @@ class Crossentropy(Evaluation):
         else:
             return np.inf if self.minimize else -np.inf
 
-    def evaluate_ind(self, noise, input_):
-        """ Deprecated.
-            If targeted attack, use crossentropy (-log(pred)) on target.
-            If untargeted attack, use negative crossentropy (log(pred)) on target.
-            Opposite of above if minimize is False.
-        """
-        # feasible input space contraint
-        # if np.min(input_) < 0 or np.max(input_) > 1:
-        #     return np.inf if self.targeted else 0
-        # prediction
-        predictions = self.model(np.expand_dims(noise + input_, axis=0))[0].numpy()
-        # return loss
-        if self.minimize:
-            loss_sign = (-1 if self.targeted else 1)
-        else:
-            loss_sign = (1 if self.targeted else -1)
-        return loss_sign * np.log(predictions[self.true_label])
-
     def predict(self, batch):
-        batch_size = min(256, batch.shape[0])
+        batch_size = min(self.minibatch, batch.shape[0])
         return [self.model(b, self.device).cpu().numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
 
     def evaluate(self, batch, pop_size, dataloader=False):
@@ -123,33 +104,49 @@ class Crossentropy(Evaluation):
 
 
 class BlindEvaluation(Evaluation):
-    """ Evaluation in blind mode of a batch of input samples:
-        the output of the model is only used to extract the batch accuracy information.
+    """ Blind evaluation that does not rely on logits 
     """
-    def __init__(self, model, true_label, minimize=True, targeted=False):
+    def __init__(self, model, true_label, device, minibatch, minimize=True, targeted=False):
         self.model = model
         self.true_label = int(true_label)
+        self.device = device
         self.minimize = minimize
         self.targeted = targeted
+        self.minibatch = minibatch
 
     def worst_eval(self):
+        """ Return worst evaluation possible for the current problem configutation.
+        """
         if not self.targeted:
-            return 1 if self.minimize else 0
+            return 0
         else:
-            return 1 if self.minimize else 0
+            return np.inf if self.minimize else -np.inf
 
-    def evaluate(self, batch, pop_size):
+    def predict(self, batch):
+        batch_size = min(self.minibatch, batch.shape[0])
+        return [self.model(b, self.device).cpu().numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
+
+    def evaluate(self, batch, pop_size, dataloader=False):
         """ If targeted attack, use crossentropy (-log(pred)) on target.
             If untargeted attack, use negative crossentropy (log(pred)) on target.
             Opposite of above if minimize is False.
+            This evaluation function work on batches of individuals and images.
         """
         # feasible input space contraint
         # if np.min(input_) < 0 or np.max(input_) > 1:
         #     return np.inf if self.targeted else 0
-        # prediction
-        batch_size = min(32, batch.shape[0])
-        predictions = [self.model(b).numpy() for b in np.array_split(batch, batch.shape[0] / batch_size)]
-        predictions = np.vstack(predictions)
+        # compute model predictions
+        if dataloader is None:  # batch contains all the noised images
+            predictions = np.vstack(self.predict(batch))
+        else:  # in this case batch contains only the noises
+            predictions = []
+            for og_batch in dataloader:
+                og_batch = og_batch[0].numpy().astype(np.float32)
+                noisy_batch = []
+                for noise in batch:
+                    noisy_batch.append((noise.astype(np.float32) + og_batch).clip(0, 1))
+                predictions += self.predict(np.vstack(noisy_batch))
+            predictions = np.vstack(predictions)
         # compute loss for the entire batch
         if self.minimize:
             loss_sign = (-1 if self.targeted else 1)
@@ -158,8 +155,5 @@ class BlindEvaluation(Evaluation):
         # calculate accuracy
         pred_groups = predictions.argmax(axis=1).reshape((pop_size, int(predictions.shape[0]/pop_size)))
         acc = (pred_groups==self.true_label).sum(axis=1)/pred_groups.shape[1]
-        
-        if (self.targeted and self.minimize) or (not self.targeted and not self.minimize):
-            acc = 1 - acc
-
-        return loss_sign * acc
+        # compute crossentropy loss for each ind mean prediction
+        return loss_sign * acc # - 0.1*entropy(pred_groups, axis=1) # * (1 + (1-acc))

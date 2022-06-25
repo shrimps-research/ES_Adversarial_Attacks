@@ -1,6 +1,4 @@
 import numpy as np
-import random
-import math
 from ES_adversarial_attacks.Population import Population
 
 class Mutation:
