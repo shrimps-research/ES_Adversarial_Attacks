@@ -102,7 +102,8 @@ def main():
     selections = {      'plus_selection': PlusSelection(),
                         'comma_selection': CommaSelection() }
 
-    models = {          'xception_classifier': XceptionClassifier,
+    models = {          'vgg_classifier': VGGClassifier,
+                        'xception_classifier': XceptionClassifier,
                         'vit_classifier': ViTClassifier,
                         'perceiver_classifier': PerceiverClassifier }
     model = models[args.model]()
@@ -129,13 +130,16 @@ def main():
 
     # load original image
     transform = T.Compose([
-        T.RandomResizedCrop(224),
-        T.RandomHorizontalFlip(),
+        T.Resize((224,224)),
         T.ToTensor(),
         lambda x: torch.permute(x, (1, 2, 0))
     ])
     if args.dataloader:
-        og_data = datasets.ImageFolder(args.input_path, transform=transform)
+        # because we already have the transforms to use from the model.
+        if args.model == "vgg_classifier": 
+            og_data = datasets.ImageFolder(args.input_path)
+        else:    
+            og_data = datasets.ImageFolder(args.input_path, transform=transform)
         og_data = DataLoader(og_data, batch_size=args.batches[0], shuffle=True)
         # initial images predictions
         normal_acc = 0
@@ -187,6 +191,7 @@ def main():
             downsample=args.downsample,
             start_noise=start_noise)
     
+    # run ES 
     start_time = time.time()
     parents, best_indiv, best_eval = es.run()
     end_time = time.time()
@@ -195,7 +200,8 @@ def main():
 
     # reshape and upsample the best noise
     noise = parents.reshape_ind(best_indiv)
-    noise = parents.upsample_ind(noise)
+    if args.downsample is not None:
+        noise = parents.upsample_ind(noise)
 
     # save best noise
     Image.fromarray((noise * 255).astype(np.uint8)).save('../results/noise.png')
@@ -209,6 +215,7 @@ def main():
                 noisy_img = np.squeeze(noisy_img, axis=2)
             noisy_img = (noisy_img * 255).astype(np.uint8)
             Image.fromarray(noisy_img).save(f'../results/noisy_input_{i}.png')
+            Image.fromarray(np.uint8(img*255)).save(f'../results/cropped_input_{i}.png')
 
     # predict images
     if og_data.__class__.__name__ != "DataLoader":

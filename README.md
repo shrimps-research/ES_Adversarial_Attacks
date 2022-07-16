@@ -4,6 +4,16 @@ This repository contains a framework for applying evolutionary strategies (ES) o
 ## Authors
 <a href="https://github.com/OhGreat">Dimitrios Ieronymakis</a>, <a href="https://github.com/riccardomajellaro">Riccardo Majellaro</a>, <a href="https://github.com/doctorblinch">Ivan Horokhovskyi</a>, <a href="https://github.com/pavlosZakkas">Pavlos Zakkas</a>, <a href="https://www.linkedin.com/in/andreas-paraskeva-2053141a3/">Andreas Paraskeva</a>
 
+## Install
+A `Python 3` environment is required to run the repository, to gether with the packages specified in `requirements.txt`. It is recommended to use `Anaconda` for the Python environment, with the following commands:
+```python
+conda create --name my_env
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+```
+```
+pip install -r requirements.txt
+```
+
 ## Run ES for Adversarial Attacks
 In this section we describe how to launch an ES for adversarial attacks, using the `attack_main.py` script. Using our script as a reference it is possible to create personalized scripts to apply ES on arbitrary problems.
 
