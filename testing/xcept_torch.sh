@@ -1,17 +1,16 @@
 #!/bin/bash
 
 python attack_main.py \
--model "xception_classifier" \
+-model "xception_torch" \
 -device "cuda" \
--batches 2000 32 \
+-batches 128 16 \
 -eval "crossentropy" \
 -in "../data/temp/" \
 -tl 0 \
 -min \
--b 1000 \
--ps 8 -os 50 \
--d 1 \
--e 0.02 \
+-b 3000 \
+-ps 12 -os 85 \
+-e 0.05 \
 -r "global_discrete" \
 -m "individual" \
 -s "comma_selection" \

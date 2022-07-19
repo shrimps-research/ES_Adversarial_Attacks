@@ -103,11 +103,13 @@ def main():
                         'comma_selection': CommaSelection() }
 
     models = {          'vgg_classifier': VGGClassifier,
+                        'xception_torch': XceptionTorch,
                         'xception_classifier': XceptionClassifier,
                         'vit_classifier': ViTClassifier,
                         'perceiver_classifier': PerceiverClassifier }
     model = models[args.model]()
     model.model = model.model.to(device)
+    model.model.eval()
 
     evaluations = {     'ackley': Ackley(),
                         'rastringin': Rastringin(),
@@ -134,11 +136,16 @@ def main():
         T.ToTensor(),
         lambda x: torch.permute(x, (1, 2, 0))
     ])
+    # used for stock pytorch models
+    new_transforms = T.Compose([
+        model.transforms, # stock transforms
+        # permutation required for the Population class...
+        lambda x: torch.permute(x, (1, 2, 0))
+    ])
     if args.dataloader:
-        # because we already have the transforms to use from the model.
-        if args.model == "vgg_classifier": 
-            og_data = datasets.ImageFolder(args.input_path)
-        else:    
+        if args.model == "vgg_classifier" or args.model == "xception_torch":
+            og_data = datasets.ImageFolder(args.input_path, transform=new_transforms) # model.transforms does not work for some reason
+        else:
             og_data = datasets.ImageFolder(args.input_path, transform=transform)
         og_data = DataLoader(og_data, batch_size=args.batches[0], shuffle=True)
         # initial images predictions
@@ -148,11 +155,15 @@ def main():
             normal_preds = model(batch, device).cpu().numpy()
             normal_acc += (normal_preds.argmax(axis=1)==args.true_label).sum()
         normal_acc /= len(og_data.dataset)
+        print(f'\nOriginal prediction: {normal_acc*100} on original class {args.true_label}')
     else:
         og_data = []
         for img_name in os.listdir(args.input_path):
             img = Image.open(args.input_path + img_name)
-            img = np.array(transform(img))
+            if args.model == "vgg_classifier" or args.model == "xception_torch":
+                img = new_transforms(img)
+            else:
+                img = np.array(transform(img))
             if len(img.shape) == 2:
                 img = np.expand_dims(img, axis=2)
             og_data.append(img)
@@ -160,7 +171,8 @@ def main():
         # initial image prediction
         normal_preds = model(og_data, device).cpu().numpy()
         normal_acc = (normal_preds.argmax(axis=1)==args.true_label).sum()/normal_preds.shape[0]
-    print(f'\nOriginal prediction: {normal_acc} on class {args.true_label}')
+        confidence = normal_preds.max(axis=1)[0]
+        print(f'\nOriginal prediction: {np.round(confidence*100,2)} confidence on class {normal_preds.argmax(axis=1).item()}, orig class: {args.true_label}')
 
     # load starting noise
     # TODO fix for batches

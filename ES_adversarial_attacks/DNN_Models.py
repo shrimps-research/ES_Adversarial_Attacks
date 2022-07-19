@@ -2,13 +2,12 @@ import numpy as np
 import torch
 from PIL import Image
 
-# TODO: fix
 class VGGClassifier(torch.nn.Module):
     def __init__(self):
         super(VGGClassifier, self).__init__()
         from torchvision.models import vgg19, VGG19_Weights
         # get the pretrained VGG19 network
-        self.weights = VGG19_Weights.DEFAULT
+        self.weights = VGG19_Weights.IMAGENET1K_V1
         self.model = vgg19(weights=self.weights)
         self.model.eval()
     
@@ -16,21 +15,32 @@ class VGGClassifier(torch.nn.Module):
         self.transforms = self.weights.transforms()
 
     def __call__(self, in_arr, device):
-        new_in = []
-        # use model prepeocessing
-        for x in in_arr:
-            x = np.clip(np.reshape(x,(224,224,3))*255, 0, 255).astype(np.uint8)
-            x = Image.fromarray(x) # pytorch transforms expect PIL image for some reason
-            x = self.transforms(x)
-            x = torch.unsqueeze(x,dim=0)
-            new_in.append(x)
-        new_in = torch.vstack(new_in)
 
         with torch.no_grad():
-            x = torch.tensor(x, dtype=torch.float32).to(device)
-            logits = self.model(new_in.to(device))
+            x = torch.tensor(in_arr, dtype=torch.float32).permute((0,3,1,2))
+            logits = self.model(x.to(device))
 
             # print("ret:",torch.nn.functional.softmax(logits, dim=1).argmax())
+            return torch.nn.functional.softmax(logits, dim=1)
+
+
+class XceptionTorch(torch.nn.Module):
+    def __init__(self):
+        super(XceptionTorch, self).__init__()
+        from torchvision.models import inception_v3, Inception_V3_Weights
+        # get the pretrained VGG19 network
+        self.weights = Inception_V3_Weights.IMAGENET1K_V1
+        self.model = inception_v3(weights=self.weights)
+        self.model.eval()
+    
+        # model preprocessing for images
+        self.transforms = self.weights.transforms()
+
+    def __call__(self, in_arr, device):
+        with torch.no_grad():
+            x = torch.tensor(in_arr, dtype=torch.float32).permute((0,3,1,2))
+            logits = self.model(x.to(device))
+
             return torch.nn.functional.softmax(logits, dim=1)
 
 

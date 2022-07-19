@@ -21,6 +21,7 @@ class Population:
             self.input_shape = input_.shape
         else:
             self.input_shape = next(iter(input_))[0].shape
+        # TODO: fix ind_dim for dataloaders when not downsampling
         if downsample is None:
             self.ind_dim = input_[0, :].size
         else:  # TODO generalize to generic data (only img now) -> maybe add ImagePopulation class
